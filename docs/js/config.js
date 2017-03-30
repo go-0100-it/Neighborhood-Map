@@ -12,7 +12,19 @@ requirejs.config({
         underscore: 'libs/underscore.min',
         backbone: 'libs/backbone.min',
         knockout: 'libs/knockout.min',
-        knockback: 'libs/knockback.min'
+        knockback: 'libs/knockback.min',
+        app: 'app',
+
+        /*Controllers*/
+        main_controller: 'controllers/main-controller',
+
+        /*Views*/
+        drawer_menu_view: 'views/drawer-menu-view',
+        dropdown_view: 'views/dropdown-view',
+        navbar_view: 'views/navbar-view',
+
+        /*Models*/
+        navbar_model: 'models/navbar-model'
     },
 
     shim: {
@@ -23,12 +35,23 @@ requirejs.config({
 
 });
 // Start the main app logic.
-requirejs(['jquery', 'underscore', 'backbone', 'knockout', 'knockback'], function($, _, bb, ko, kb) {
-    
-    console.log($);
-    console.log(_);
-    console.log(bb);
-    console.log(ko);
-    console.log(kb);
-    
+requirejs([
+            'jquery', 
+            'underscore', 
+            'backbone', 
+            'knockout', 
+            'knockback', 
+            'app', 
+            'util'
+        ], function($, _, bb, ko, kb, app, tpl) {
+            require([
+                'util'
+                ], function(tpl) {
+                    tpl.loadTemplates([
+                                    'drawer-list-item'
+                                ],function(){
+                                    console.log(app);
+                                    app.msg('app is loaded and available');
+                                });
+            });
 });

@@ -9,12 +9,38 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="css/dropdown-menu.css">
+        <link rel="stylesheet" type="text/css" href="css/navbar-view.css">
+        <link rel="stylesheet" type="text/css" href="css/drawer-menu.css">
+        <link rel="stylesheet" type="text/css" href="css/main-view.css">
         <script data-main="js/config" src="js/require.min.js"></script>
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        
+        <nav class="nav-bar" id="nav">
+            <div class="drawer-menu-contaier" id="drawer-menu-container">
+                <input type="checkbox" name="checkme" id="drawer-menu-check">
+                <div class="drawer-menu">
+                    <h2 class="drawer-menu-header">Places</h2>
+                    <ul class="drawer-menu-list">
+                        
+                    </ul>
+                </div>
+                <label for="drawer-menu-check" class="drawer-toggler"><span class="drawer-menu-span">≡</span></label>
+            </div>
+        </nav>
+        <div class="app-title-container">
+            <h4 class="header-h1">Time Tracker</h4>
+        </div>
+        <div class="dropdown">
+            <div id="options-menu-btn" class="dropbtn">
+                <span class="glyphicon">⋮</span>
+            </div>
+            <div class="dropdown-content dropdown-hide">
+                <a id="options-menu-item-1" class="dropdown-content-link">Manage Times</a>
+                <a id="options-menu-item-2" class="dropdown-content-link">Manage Locations</a>
+                <a id="options-menu-item-3" class="dropdown-content-link">Show Times</a>
+                <a id="options-menu-item-4" class="dropdown-content-link">Settings</a>
+            </div>
+        </div
     </body>
 </html>

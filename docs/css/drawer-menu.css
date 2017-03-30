@@ -1,0 +1,147 @@
+.drawer-menu-css-loaded {
+    height: 1px;
+}
+
+.drawer-menu {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    bottom: 0;
+    right: 0;
+    z-index: 15;
+    width: 300px;
+    opacity: 0.98;
+    background: #313030;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+}
+
+.drawer-toggler {
+    text-align: center;
+    position: relative;
+    display: flex;
+    float: left;
+    width: 60px;
+    height: 60px;
+    top: 10px;
+    left: 10px;
+    bottom: 0;
+    right: 0;
+    z-index: 15;
+    color: #252525;
+    background: #7e5f46;
+    font-size: 50px;
+    font-weight: 900;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+}
+
+.drawer-toggler:hover {
+    background: #8c6e55;
+    color: #444;
+}
+
+.drawer-menu-span {
+    display: inline-block;
+    margin: auto auto;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+}
+
+.drawer-menu-header {
+    color: #fff;
+    font-size: 30px;
+    text-align: center;
+    padding: 15px 0;
+    margin: 0;
+}
+
+.ninety-five-percent {
+    width: 95%;
+}
+
+.drawer-menu-list {
+    list-style: none;
+    padding: 0;
+}
+
+.drawer-li {
+    padding: 25px 20px;
+    color: #fff;
+    text-align: left;
+    font-size: 28px;
+}
+
+.drawer-li:hover {
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    background: #505050;
+}
+
+#drawer-menu-check {
+    display: none;
+}
+
+#drawer-menu-check:checked+.drawer-menu,
+drawer-toggler {
+    box-shadow: 0 2.5px 10px #111111;
+    left: 0;
+}
+
+#drawer-menu-check:checked~.drawer-toggler {
+    left: 250px;
+    box-shadow: 0 2.5px 10px #111111;
+    transform: rotate(90deg);
+}
+
+#drawer-menu-check:checked~.drawer-toggler>.drawer-menu-span {}
+
+.drawer-menu-item-selected {
+    background: #404040;
+}
+
+@media only screen and (max-width: 1300px) {
+    .drawer-toggler {
+        top: 5px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .drawer-menu {
+        left: -240px;
+        width: 240px;
+    }
+    .drawer-menu-header {
+        font-size: 28px;
+        padding: 10px 0;
+    }
+    .drawer-menu-list {
+        padding: 0;
+        margin: 0;
+    }
+    .drawer-li {
+        padding: 15px 20px;
+        font-size: 22px;
+    }
+    .drawer-toggler {
+        width: 52px;
+        height: 52px;
+        top: 12px;
+        left: 12px;
+        font-size: 38px;
+    }
+    #drawer-menu-check:checked~.drawer-toggler {
+        left: 210px;
+    }
+}
