@@ -1,9 +1,8 @@
 // More description
 
-define(['jquery', 'backbone', 'underscore'], function($, Backbone, _) {
+define(['jquery', 'backbone', 'underscore', 'drawer_menu_model'], function($, Backbone, _, DrawerMenuModel) {
     var DrawerList = Backbone.Collection.extend({
-        model: Times.Times,
-        url: 'https://time-tracker-b63cd.firebaseio.com/times'
+        model: DrawerMenuModel
     });
     return DrawerList;
 });

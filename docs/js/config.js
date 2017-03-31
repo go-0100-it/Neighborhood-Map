@@ -20,11 +20,13 @@ requirejs.config({
 
         /*Views*/
         drawer_menu_view: 'views/drawer-menu-view',
+        drawer_item_view: 'views/drawer-menu-item',
         dropdown_view: 'views/dropdown-view',
-        navbar_view: 'views/navbar-view',
+        navbar_filter_view: 'views/navbar-view',
 
         /*Models*/
-        navbar_model: 'models/navbar-model'
+        drawer_menu_model: 'models/drawer-menu-model',
+        drawer_menu_list: 'models/drawer-menu-list'
     },
 
     shim: {
@@ -36,22 +38,14 @@ requirejs.config({
 });
 // Start the main app logic.
 requirejs([
-            'jquery', 
-            'underscore', 
-            'backbone', 
-            'knockout', 
-            'knockback', 
-            'app', 
-            'util'
-        ], function($, _, bb, ko, kb, app, tpl) {
-            require([
-                'util'
-                ], function(tpl) {
-                    tpl.loadTemplates([
-                                    'drawer-list-item'
-                                ],function(){
-                                    console.log(app);
-                                    app.msg('app is loaded and available');
-                                });
-            });
+    'jquery',
+    'underscore',
+    'backbone',
+    'knockout',
+    'knockback',
+    'app'
+
+], function($, _, bb, ko, kb, app) {
+    //console.log(app);
+    app.initialize();
 });

@@ -7,26 +7,26 @@ define([
     ],
     function($, Backbone, _, DrawerMenuItem, tpl) {
 
-    var DrawerItemView = Backbone.View.extend({
-        /*model: new DrawerMenuItem(),*/
-        tagName: 'li',
-        className: 'drawer-list-item',
-        events: {
-            'click': 'onClick'
-        },
-        onClick: function() {
-            console.log("You clicked a drawer item");
-            // var date = new Date();
-            // postStartTime();
-        },
-        initialize: function() {
-            this.template = _.template(tpl.get('drawer-list-item'));
-        },
-        render: function() {
-            var data = this.model.toJSON();
-            this.$el.html(this.template(data));
-            return this;
-        }
-    });
-    return DrawerItemView;
+        var DrawerItemView = Backbone.View.extend({
+            model: new DrawerMenuItem(),
+            tagName: 'li',
+            className: 'drawer-list-item',
+            events: {
+                'click': 'onClick'
+            },
+            onClick: function() {
+                console.log("You clicked a drawer item");
+                // var date = new Date();
+                // postStartTime();
+            },
+            initialize: function() {
+                console.log(_);
+                this.template = _.template(tpl.get('drawer-menu-item'));
+            },
+            render: function() {
+                this.$el.html(this.template(this.model.toJSON()));
+                return this;
+            }
+        });
+        return DrawerItemView;
     });

@@ -4,7 +4,7 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'drawer-menu-item'
+        'drawer_item_view'
     ],
     function($, Backbone, _, DrawerItemView) {
 
@@ -12,10 +12,11 @@ define([
             el: '#drawer-menu-list',
             render: function() {
 
-                this.model.each(function(menuItem) {
-                    var itemView = new DrawerItemView({ model: menuItem }).render();
+                this.model.each(function(item) {
+                    console.log(item);
+                    var itemView = new DrawerItemView({ model: item }).render();
                     this.$el.append(itemView.$el);
-                    itemView.$el.attr('id', menuItem.toJSON());
+                    //itemView.$el.attr('id', menuItem.toJSON());
                 }, this);
 
                 return this;

@@ -1,5 +1,5 @@
-define([],
-    function() { // TODO: Need to require USER
+define(['main_controller'],
+    function(MainController) { // TODO: Need to require USER
         var Router = Backbone.Router.extend({
             // Constructor
             initialize: function() {
@@ -21,19 +21,35 @@ define([],
 
             'places': function() {
                 alert('Loading places view');
+                MainController.renderDrawerListView();
+                /* TODO:
+                   MainController.renderGoogleMap();
+                */
             },
 
             'news': function() {
                 alert('Loading news view');
+                /* TODO:
+                   MainController.renderNewsTabView();
+                */
             },
             'events': function() {
                 alert('Loading events view');
+                /* TODO:
+                   MainController.renderEventsTabView();
+                */
             },
             'weather': function() {
-               alert('Loading weather view');
+                alert('Loading weather view');
+                /* TODO:
+                   MainController.renderWeatherTabView();
+                */
             },
             'real-estate': function() {
                 alert('Loading real-estate view');
+                /* TODO:
+                   MainController.renderRealEstateTabView();
+                */
             },
         });
         return Router;

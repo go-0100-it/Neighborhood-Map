@@ -1,30 +1,13 @@
 // More description
 
-define(['jquery', 'backbone', 'underscore', 'main_controller'],
-    function($, backbone, _, MainController) {
+define(['jquery', 'backbone', 'underscore', 'drawer_menu_view', 'drawer_menu_list', 'drawer_menu_model'],
+    function($, backbone, _, DrawerMenuView, DrawerMenuList, DrawerMenuItem) {
         return {
-            initialize: function() {
-                $(document).ready(function() {
-                    var renderNavbar = function() {
-                        var navbar = new NavbarView().render();
-                        $(navbar).on('clickFromNav', function(evt, clickedEl) {
-                            alert('Event received from ' + clickedEl);
-                            // Initialize Dropdown View
-                        });
-                        //return navbar;
-                    };
-                    var renderDrawerMenu = function() {
-                        var drawerMenu = new DrawerView().render();
-                        //return drawerMenu;
-                    };
-                    var initialRender = function() {
-                        renderNavbar();
-                        renderDrawerMenu();
-                    }();
-                });
-                setTimeout(function() {
-                    $.hideLoading();
-                }, 2000);
-            },
+            renderDrawerListView: function() {
+                var items = [new DrawerMenuItem({ name: 'me', address: 'here' }), new DrawerMenuItem({ name: 'me', address: 'here' }), new DrawerMenuItem({ name: 'me', address: 'here' }), new DrawerMenuItem({ name: 'me', address: 'here' }), new DrawerMenuItem({ name: 'me', address: 'here' })];
+                var list = new DrawerMenuList(items);
+
+                var drawerListView = new DrawerMenuView({ model: list }).render();
+            }
         };
     });

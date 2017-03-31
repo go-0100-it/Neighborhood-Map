@@ -1,12 +1,13 @@
-
-define(['router', 'main_controller'],
-    function(Router, MainController) {
-        var router = new Router();
-        var msg = function(msg){
-            alert(msg);
-        }
-        msg('app is loading');
-        return {
-            msg: msg
-        }
-    });
+define(['util', 'router'], function(tpl, Router) {
+    var msg = function(msg) {
+        alert(msg);
+    };
+    return {
+        initialize: function() {
+            tpl.loadTemplates(['drawer-menu-item'], function() {
+                var router = new Router();
+            });
+        },
+        msg: msg
+    };
+});

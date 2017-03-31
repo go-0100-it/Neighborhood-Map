@@ -9,5 +9,5 @@ define(['jquery', 'backbone', 'underscore'], function($, Backbone, _) {
             };
         }
     });
-    return DrawerMenu;
+    return DrawerMenuItem;
 });
