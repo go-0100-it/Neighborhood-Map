@@ -5,7 +5,9 @@ define(['jquery', 'backbone', 'underscore'], function($, Backbone, _) {
         defaults: function() {
             return {
                 name: 'Place name',
-                address: 'Place address'
+                address: 'Place address',
+                longitude: 0,
+                latitude: 0
             };
         }
     });

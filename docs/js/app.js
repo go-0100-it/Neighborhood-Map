@@ -4,9 +4,9 @@ define(['util', 'router'], function(tpl, Router) {
     };
     return {
         initialize: function() {
-            tpl.loadTemplates(['drawer-menu-item'], function() {
-                var router = new Router();
-            });
+            // tpl.loadTemplates(['drawer-menu-item'], function() {
+            var router = new Router();
+            // });
         },
         msg: msg
     };

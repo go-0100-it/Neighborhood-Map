@@ -83,6 +83,11 @@
     font-size: 28px;
 }
 
+button.remove-button {
+    padding: 5px;
+    font-size: 100px;
+}
+
 .drawer-li:hover {
     color: rgba(255, 255, 255, 0.5);
     cursor: pointer;

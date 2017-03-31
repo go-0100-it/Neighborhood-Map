@@ -18,11 +18,11 @@ requirejs.config({
         /*Controllers*/
         main_controller: 'controllers/main-controller',
 
-        /*Views*/
-        drawer_menu_view: 'views/drawer-menu-view',
-        drawer_item_view: 'views/drawer-menu-item',
-        dropdown_view: 'views/dropdown-view',
-        navbar_filter_view: 'views/navbar-view',
+        /*ViewsModels*/
+        drawer_list_view_model: 'view-models/drawer-list-view-model',
+        drawer_item_view_model: 'view-models/drawer-item-view-model',
+        dropdown_view: 'view-models/dropdown-view',
+        navbar_filter_view: 'view-models/navbar-view',
 
         /*Models*/
         drawer_menu_model: 'models/drawer-menu-model',

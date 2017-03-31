@@ -21,6 +21,8 @@ define(['main_controller'],
 
             'places': function() {
                 alert('Loading places view');
+
+                // Calling function @ Maincontroller to create the drawer list.
                 MainController.renderDrawerListView();
                 /* TODO:
                    MainController.renderGoogleMap();
