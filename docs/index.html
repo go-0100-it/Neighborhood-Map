@@ -25,8 +25,9 @@
             <input type="checkbox" name="checkme" id="drawer-menu-check">
             <div class="drawer-menu">
                 <h2 class="drawer-menu-header">Places</h2>
-                <ul class="drawer-menu-list" id="drawer-menu-list">
-
+                <ul class="drawer-menu-list" id='kb_collection' data-bind="foreach: list">
+                    <li class="drawer-list-item" data-bind="text: name" ></li>
+                    <li class="drawer-list-item" data-bind="text: address" ></li>
                 </ul>
             </div>
             <label for="drawer-menu-check" class="drawer-toggler"><span class="drawer-menu-span">≡</span></label>
