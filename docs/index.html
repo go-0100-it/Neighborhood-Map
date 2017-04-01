@@ -25,11 +25,13 @@
             <input type="checkbox" name="checkme" id="drawer-menu-check">
             <div class="drawer-menu">
                 <h2 class="drawer-menu-header">Places</h2>
-                <button>Filter</button><button>New</button>
+                <div class="drawer-button-bar">
+                    <button class="drawer-button-bar-button">Filter</button><button class="drawer-button-bar-button">New</button>
+                </div>
                 <ul class="drawer-menu-list" id='kb_collection' data-bind="foreach: list">
                     <li class="drawer-list-item">
-                        <span class="li-name" data-bind="text: name"></span><button>⊗</button>
-                        <p class="li-addr" data-bind="text: address"></p>
+                        <div class="remove-button"><span class="remove-icon">⊗</span><span class="remove-title">remove</span></div>
+                        <div class="item-details"><span class="li-name" data-bind="text: name"></span><span class="li-addr" data-bind="text: address"></span></div>
                     </li>
                 </ul>
             </div>

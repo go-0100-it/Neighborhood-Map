@@ -5,11 +5,11 @@
 .drawer-menu {
     position: fixed;
     top: 0;
-    left: -300px;
+    left: -330px;
     bottom: 0;
     right: 0;
     z-index: 15;
-    width: 300px;
+    width: 330px;
     opacity: 0.98;
     background: #313030;
     transition: all 0.5s ease-in-out;
@@ -27,7 +27,7 @@
     width: 60px;
     height: 60px;
     top: 10px;
-    left: 10px;
+    left: -5px;
     bottom: 0;
     right: 0;
     z-index: 15;
@@ -61,31 +61,73 @@
 
 .drawer-menu-header {
     color: #fff;
-    font-size: 30px;
+    font-size: 36px;
     text-align: center;
     padding: 15px 0;
-    margin: 0;
+    margin: 10px 0 15px 0;
 }
 
 .ninety-five-percent {
     width: 95%;
 }
 
+.drawer-button-bar {
+    margin-bottom: 30px;
+}
+
+.drawer-button-bar-button {
+    width: 50%;
+    height: 40px;
+}
+
 .drawer-menu-list {
     list-style: none;
-    padding: 0;
+    padding: 0 15px;
 }
 
-.drawer-li {
-    padding: 25px 20px;
+.drawer-list-item {
+    display: block;
+    text-align: left;
+    margin: 30px 0;
+}
+
+.remove-button {
+    padding: 20px 0 0 0;
+    float: right;
+    border: none;
+    background: transparent;
+}
+
+.remove-icon {
+    display: block;
+    color: #c60e04;
+    font-size: 26px;
+}
+
+.remove-title {
+    display: block;
+    color: #fff;
+    font-size: 9px;
+}
+
+.item-details {
+    width: 275px;
+}
+
+.li-name {
+    display: block;
+    padding: 25px 0 0 0;
     color: #fff;
     text-align: left;
-    font-size: 28px;
+    font-size: 24px;
 }
 
-button.remove-button {
-    padding: 5px;
-    font-size: 100px;
+.li-addr {
+    display: block;
+    color: #fff;
+    text-align: left;
+    font-size: 12px;
+    float: left;
 }
 
 .drawer-li:hover {
@@ -105,7 +147,7 @@ drawer-toggler {
 }
 
 #drawer-menu-check:checked~.drawer-toggler {
-    left: 250px;
+    left: 275px;
     box-shadow: 0 2.5px 10px #111111;
     transform: rotate(90deg);
 }
@@ -124,8 +166,8 @@ drawer-toggler {
 
 @media only screen and (max-width: 500px) {
     .drawer-menu {
-        left: -240px;
-        width: 240px;
+        left: -290px;
+        width: 290px;
     }
     .drawer-menu-header {
         font-size: 28px;
@@ -147,6 +189,6 @@ drawer-toggler {
         font-size: 38px;
     }
     #drawer-menu-check:checked~.drawer-toggler {
-        left: 210px;
+        left: 250px;
     }
 }
