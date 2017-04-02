@@ -89,6 +89,7 @@
     display: block;
     text-align: left;
     margin: 30px 0;
+    cursor: pointer;
 }
 
 .remove-button {
@@ -96,6 +97,7 @@
     float: right;
     border: none;
     background: transparent;
+    cursor: pointer;
 }
 
 .remove-icon {
@@ -111,7 +113,7 @@
 }
 
 .item-details {
-    width: 275px;
+    width: 270px;
 }
 
 .li-name {

@@ -24,7 +24,6 @@
 .dropdown {
     position: relative;
     display: inline-block;
-    float: right;
 }
 
 .dropdown-items {

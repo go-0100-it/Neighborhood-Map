@@ -23,7 +23,7 @@ define(['main_controller'],
                 alert('Loading places view');
 
                 // Calling function @ Maincontroller to create the drawer list.
-                MainController.renderDrawerListView();
+                MainController.initMap(MainController.renderDrawerListView());
                 /* TODO:
                    MainController.renderGoogleMap();
                 */

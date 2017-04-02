@@ -17,6 +17,7 @@ requirejs.config({
 
         /*Controllers*/
         main_controller: 'controllers/main-controller',
+        google_maps_controller: 'controllers/google-maps-controller',
 
         /*ViewsModels*/
         drawer_list_view_model: 'view-models/drawer-list-view-model',
