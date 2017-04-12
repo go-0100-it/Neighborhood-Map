@@ -1,5 +1,5 @@
-define(['main_controller'],
-    function(MainController) { // TODO: Need to require USER
+define(['main_controller', 'map_controller'],
+    function(MainController, MapController) { // TODO: Need to require USER
 
         var Router = Backbone.Router.extend({
             // Constructor
@@ -23,8 +23,8 @@ define(['main_controller'],
             'places': function() {
                 alert('Loading places view');
 
-                // Calling function @ Maincontroller to create the drawer list.
-                MainController.initMap(MainController.renderDrawerListView());
+                // Calling function @ Maincontroller to create the drawer list
+                MapController().init(MainController.renderDrawerListView());
                 /* TODO:
                    MainController.renderGoogleMap();
                 */

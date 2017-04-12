@@ -2,17 +2,16 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'knockback',
         'knockout',
         'router'
     ],
-    function($, Backbone, _, kb, ko) {
+    function($, Backbone, _, ko) {
         var WeatherListViewModel = function(place) {
             var _this = this;
 
-            this.name = kb.observable(place, 'name');
-            this.address = kb.observable(place, 'address');
-            this.position = kb.observable(place, 'position');
+            this.name = ko.observable(place.name);
+            this.address = ko.observable(place.address);
+            this.position = ko.observable(place.position);
             this.onClickEventsTab = function() {
                 Backbone.history.navigate('#events/' + _this.name() + '/' + _this.address() + '/' + _this.position(), { trigger: true });
             };

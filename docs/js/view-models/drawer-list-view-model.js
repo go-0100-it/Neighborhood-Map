@@ -2,11 +2,10 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'knockback',
         'knockout',
-        'drawer_menu_model'
+        'map_controller'
     ],
-    function($, Backbone, _, kb, ko, DrawerMenuItem) {
+    function($, Backbone, _, ko, MapController) {
         var DrawerListViewModel = function(places) {
             console.log(this.places);
             var _this = this;
@@ -27,10 +26,10 @@ define([
             });
             this.addressInputVisible = ko.observable(false);
             this._places = places;
-            this.places = kb.collectionObservable(places);
+            this.places = ko.observableArray(places);
             this.onClick = function(place) {
                 console.dir(place);
-                var obj = { name: place.name(), address: place.address(), position: place.position() };
+                var obj = { name: place.name, address: place.address, position: place.position };
                 console.dir(obj);
                 Backbone.history.navigate('#news/' + obj.name + '/' + obj.address + '/' + obj.position, { trigger: true });
             };
@@ -43,11 +42,17 @@ define([
 
             this.addPlace = function() {
                 console.log(_this.places());
-                _this.places().push(new DrawerMenuItem({ name: 'New Place', address: _this.streetName(), position: _this.location }));
+                var place = ({ name: 'New Place', address: _this.streetName(), position: _this.location });
+                console.log(MapController);
+                MapController().addMarker(place);
+                _this.places.push(place);
+                
                 //_this.places = (_this.places);
             };
 
-            this.removePlace = function() {
+            this.removePlace = function(a, b, c) {
+                console.log(_this.places().indexOf(this));
+                //MapController().addMarker(_this.places.indexOf(this));
                 _this.places.remove(this);
             };
 
