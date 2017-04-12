@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="css/navbar-view.css">
     <link rel="stylesheet" type="text/css" href="css/drawer-menu.css">
     <link rel="stylesheet" type="text/css" href="css/main-view.css">
+    <link rel="stylesheet" type="text/css" href="css/news-view.css">
     <script data-main="js/config" src="js/require.min.js"></script>
 </head>
 
@@ -23,36 +24,13 @@
     <nav class="nav-bar" id="nav">
         <div class="drawer-menu-contaier" id="drawer-menu-container">
             <input type="checkbox" name="checkme" id="drawer-menu-check">
-            <div class="drawer-menu">
-                <h2 class="drawer-menu-header">Places</h2>
-                <div class="drawer-button-bar">
-                    <button class="drawer-button-bar-button">Filter</button><button class="drawer-button-bar-button">New</button>
-                </div>
-                <ul class="drawer-menu-list" id='kb_collection' data-bind="foreach: list">
-                    <li class="drawer-list-item">
-                        <div class="remove-button"><span class="remove-icon">⊗</span><span class="remove-title">remove</span></div>
-                        <div class="item-details"><span class="li-name" data-bind="text: name"></span><span class="li-addr" data-bind="text: address"></span></div>
-                    </li>
-                </ul>
-            </div>
+            <div class="drawer-menu" id="drawer-menu"></div>
             <label for="drawer-menu-check" class="drawer-toggler"><span class="drawer-menu-span">≡</span></label>
         </div>
     </nav>
-    <div class="app-title-container">
-        <h4 class="header-h1">Time Tracker</h4>
-        <div class="map-container">
-            <div id="map"></div>
-        </div>
-    </div>
-    <div class="dropdown">
-        <div id="options-menu-btn" class="dropbtn">
-            <span class="glyphicon">⋮</span>
-        </div>
-        <div class="dropdown-content dropdown-hide">
-            <a id="options-menu-item-1" class="dropdown-content-link">Manage Times</a>
-            <a id="options-menu-item-2" class="dropdown-content-link">Manage Locations</a>
-            <a id="options-menu-item-3" class="dropdown-content-link">Show Times</a>
-            <a id="options-menu-item-4" class="dropdown-content-link">Settings</a>
+    <div class="container">
+        <div class="app-title-container">
+            <div class="container-view" id="container-view"></div>
         </div>
     </div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcqT6Cvr1Qr7B3BqhkinjManD4gywWGHA" async defer></script>

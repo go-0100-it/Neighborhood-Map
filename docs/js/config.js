@@ -14,6 +14,7 @@ requirejs.config({
         knockout: 'libs/knockout.min',
         knockback: 'libs/knockback.min',
         app: 'app',
+        util: 'util',
 
         /*Controllers*/
         main_controller: 'controllers/main-controller',
@@ -22,12 +23,23 @@ requirejs.config({
         /*ViewsModels*/
         drawer_list_view_model: 'view-models/drawer-list-view-model',
         drawer_item_view_model: 'view-models/drawer-item-view-model',
-        dropdown_view: 'view-models/dropdown-view',
-        navbar_filter_view: 'view-models/navbar-view',
+        news_list_view_model: 'view-models/news-list-view-model',
+        events_list_view_model: 'view-models/events-list-view-model',
+        weather_list_view_model: 'view-models/weather-list-view-model',
+        real_estate_list_view_model: 'view-models/real-estate-list-view-model',
 
         /*Models*/
         drawer_menu_model: 'models/drawer-menu-model',
-        drawer_menu_list: 'models/drawer-menu-list'
+        drawer_menu_list: 'models/drawer-menu-list',
+
+        /*Views*/
+        drawer_list_view: 'views/drawer-list-view',
+        navbar_filter_view: 'view-models/navbar-view',
+        news_view: 'views/news-view',
+        weather_view: 'views/weather-view',
+        events_view: 'views/events-view',
+        real_estate_view: 'views/real-estate-view',
+        map_view: 'views/map-view'
     },
 
     shim: {
@@ -44,9 +56,13 @@ requirejs([
     'backbone',
     'knockout',
     'knockback',
-    'app'
+    'util'
 
-], function($, _, bb, ko, kb, app) {
-    //console.log(app);
-    app.initialize();
+], function($, _, bb, ko, kb, tpl) {
+    tpl.loadTemplates(['drawer-list-view-tpl', 'map', 'news-view', 'events-view', 'weather-view', 'real-estate-view'], function() {
+        console.log(tpl);
+        require(['app'], function(app) {
+            app.initialize();
+        });
+    });
 });

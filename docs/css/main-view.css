@@ -56,7 +56,7 @@ body {
     margin: 125px auto;
 }
 
-.map-container {
+.container-view {
     position: absolute;
     top: 0;
     left: 0;
@@ -70,6 +70,17 @@ body {
     /* 4:3 ratio*/
     height: 0;
     overflow: hidden;
+}
+
+#news-view,
+#weather-view,
+#events-view,
+#real-estate-view {
+    margin: 100px auto;
+}
+
+.news-h1 {
+    padding: 10px;
 }
 
 @keyframes spin {

@@ -1,5 +1,6 @@
 define(['main_controller'],
     function(MainController) { // TODO: Need to require USER
+
         var Router = Backbone.Router.extend({
             // Constructor
             initialize: function() {
@@ -13,10 +14,10 @@ define(['main_controller'],
                 // Calls the home method when there is no hashtag on the url
                 '': 'places',
                 'places': 'places',
-                'news': 'news',
-                'events': 'events',
-                'weather': 'weather',
-                'real-estate': 'real-estate'
+                'news/:name/:address/:position': 'news',
+                'events/:name/:address/:position': 'events',
+                'weather/:name/:address/:position': 'weather',
+                'real-estate/:name/:address/:position': 'real-estate'
             },
 
             'places': function() {
@@ -29,26 +30,34 @@ define(['main_controller'],
                 */
             },
 
-            'news': function() {
-                alert('Loading news view');
+            'news': function(name, address, position) {
+                var obj = { name: name, address: address, position: position };
+                MainController.renderDrawerListView();
+                MainController.renderNewsView(obj);
                 /* TODO:
                    MainController.renderNewsTabView();
                 */
             },
-            'events': function() {
-                alert('Loading events view');
+            'events': function(name, address, position) {
+                var obj = { name: name, address: address, position: position };
+                MainController.renderDrawerListView();
+                MainController.renderEventsView(obj);
                 /* TODO:
-                   MainController.renderEventsTabView();
+                   MainControllner.renderEventsTabView();
                 */
             },
-            'weather': function() {
-                alert('Loading weather view');
+            'weather': function(name, address, position) {
+                var obj = { name: name, address: address, position: position };
+                MainController.renderDrawerListView();
+                MainController.renderWeatherView(obj);
                 /* TODO:
                    MainController.renderWeatherTabView();
                 */
             },
-            'real-estate': function() {
-                alert('Loading real-estate view');
+            'real-estate': function(name, address, position) {
+                var obj = { name: name, address: address, position: position };
+                MainController.renderDrawerListView();
+                MainController.renderRealEstateView(obj);
                 /* TODO:
                    MainController.renderRealEstateTabView();
                 */

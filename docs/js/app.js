@@ -1,4 +1,4 @@
-define(['util', 'router'], function(tpl, Router) {
+define(['router'], function(Router) {
     var msg = function(msg) {
         alert(msg);
     };
