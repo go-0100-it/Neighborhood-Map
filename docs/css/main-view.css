@@ -20,7 +20,7 @@ body {
 .container {
     z-index: 0;
     position: relative;
-    width: 60%;
+    width: 100%;
     margin: 0 auto;
     padding-top: 120px;
     text-align: center;

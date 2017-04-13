@@ -11,15 +11,19 @@ define([
             this.streetName = ko.observable('');
             this.location = '';
             this.formattedStreetName = ko.computed(function() {
-                var geocoder = new google.maps.Geocoder();
-                //var location = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY';
-                geocoder.geocode({ 'address': _this.streetName() }, function(results, status) {
-                    if (status == 'OK') {
-                        _this.location = (results[0].geometry.location.toJSON());
-                    } else {
-                        alert('Geocode was not successful for the following reason: ' + status);
-                    }
-                });
+                if (typeof google === 'object' && typeof google.maps === 'object') {
+                    var geocoder = new google.maps.Geocoder();
+                    //var location = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY';
+                    geocoder.geocode({ 'address': _this.streetName() }, function(results, status) {
+                        if (status == 'OK') {
+                            _this.location = (results[0].geometry.location.toJSON());
+                        } else {
+                            alert('Geocode was not successful for the following reason: ' + status);
+                        }
+                    });
+                }else{
+                    console.log("Google's Geocoder API is currently unavailable.");
+                }
             });
             this.addressInputVisible = ko.observable(false);
             this.places = ko.observableArray(places);

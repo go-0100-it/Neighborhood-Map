@@ -15,7 +15,7 @@ define([
         var map = function(places) {
             var _this = this;
             this.init = function(places) {
-                if (google) {
+                if (typeof google === 'object' && typeof google.maps === 'object') {
                     _this.map = {};
                     var mapView = new MapView().render();
                     var uluru = { lat: 43.6898244, lng: -79.61650999999999 };
@@ -29,7 +29,7 @@ define([
 
                 } else {
                     //Do something else because Google maps is unavailable
-                    console.log('Google Maps is unavailable');
+                    console.log("Google's Maps API is currently unavailable");
                 }
             };
 
@@ -40,6 +40,12 @@ define([
                 } else {
                     _marker.setAnimation(google.maps.Animation.BOUNCE);
                     _infowindow.open(_map, _marker);
+                    setTimeout(function(){ 
+                        var btnOverlay = $("img[src$='maps.gstatic.com/mapfiles/transparent.png']")[0];
+                        btnOverlay.addEventListener('click', function(){
+                            _marker.setAnimation(null);
+                        })
+                     }, 200);
                 }
             };
 
@@ -64,6 +70,7 @@ define([
                 var infowindow = new google.maps.InfoWindow({
                     content: '<div><h2>' + place.name + '</h2><img src="https://maps.googleapis.com/maps/api/streetview?size=600x300&location=' + place.position.lat + ', ' + place.position.lng + '&heading=151.78&pitch=-0.76&key=AIzaSyBSpWUS_wBjBq5kXfnbQO19ewpQPdStRDg"><button>CLICK ME</button></div>'
                 });
+                
                 (function(_infowindow, _map, _marker) {
                     _marker.addListener('click', function() {
                         _this.toggleMarker(_infowindow, _map, _marker);
