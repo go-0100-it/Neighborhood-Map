@@ -13,7 +13,6 @@ define([
                 var that = this;
                 var loadTemplate = function(index) {
                     var name = names[index];
-                    console.log('Loading template: ' + name);
                     $.get('templates/' + name + '.html', function(data) {
                         that.templates[name] = data;
                         index++;
@@ -25,7 +24,6 @@ define([
                     });
                 };
                 loadTemplate(0);
-                console.log('All templates loaded')
             },
             // Get template by name from hash of preloaded templates
             get: function(name) {

@@ -59,7 +59,6 @@ define([
                     ko.applyBindings(placesViewModel, $('#drawer-menu-container')[0]);
                     listRendered = true;
                 }
-                console.dir(placesViewModel.places());
                 return placesViewModel.places();
             },
 
@@ -76,7 +75,7 @@ define([
 
                 var eventsView = new EventsView().render();
 
-                var eventsListViewModel = new EventsListViewModel({ name: place.name, address: place.address, position: place.position });
+                var eventsListViewModel = new EventsListViewModel({ name: place.name, address: place.address, position: place.position, lat: place.lat, lng: place.lng });
 
                 ko.applyBindings(eventsListViewModel, $('#events-view')[0]);
 
