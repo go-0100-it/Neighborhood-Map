@@ -120,7 +120,8 @@
     cursor: pointer;
 }
 
-.address-input {
+.address-input,
+.place-name-input {
     width: 98%;
     height: 30px;
 }

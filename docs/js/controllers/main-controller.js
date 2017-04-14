@@ -46,11 +46,11 @@ define([
             renderDrawerListView: function() {
 
                 // creating an array of new Backbone models for the individual items of the collection.
-                var places = [{ name: 'My current address', address: 'here', position: { lat: 43.6898244, lng: -79.61650999999999 } },
-                    { name: 'Cabin in the woods', address: 'here', position: { lat: 43.9898244, lng: -79.31650999999999 } },
-                    { name: 'Colorado Springs Home', address: 'here', position: { lat: 43.7898244, lng: -79.21650999999999 } },
-                    { name: 'Sports complex Indiana', address: 'here', position: { lat: 43.6398244, lng: -79.91650999999999 } },
-                    { name: 'Florida Home Resort', address: 'here', position: { lat: 43.7398244, lng: -79.81650999999999 } }
+                var places = [{ name: 'My home address', address: '33 Fisher St, Brantford, Ontario', position: { lat: 43.122680, lng: -80.302352 } },
+                    { name: 'CN Tower', address: '301 Front St W, Toronto, Ontario', position: { lat: 43.6426, lng: -79.3871 } },
+                    { name: 'Niagra Falls Canada', address: 'Niagra Falls, Ontario, Canada', position: { lat: 43.083354, lng: -79.074129 } },
+                    { name: 'Center Island Toronto', address: 'Toronto, ON M5J 2V3, Canada', position: { lat: 43.623409, lng: -79.368683 } },
+                    { name: 'Home for sale', address: '42 Chaucer Pl, Woodstock, Ontario', position: { lat: 43.123772, lng: -80.728070 } }
                 ];
 
                 // creating a new Backbone collection and passing it to the DrawerListViewModel to create an observable collection 

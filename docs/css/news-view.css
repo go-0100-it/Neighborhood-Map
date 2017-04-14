@@ -37,3 +37,7 @@ ul.tabs li.current {
     width: 100%;
     padding: 0px;
 }
+
+.tab-view-container {
+    width: 65%;
+}

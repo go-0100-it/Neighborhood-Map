@@ -29,7 +29,7 @@ define([
 
                 } else {
                     //Do something else because Google maps is unavailable
-                    console.log("Google's Maps API is currently unavailable");
+                    alert("Google's Maps API is currently unavailable");
                 }
             };
 
@@ -40,12 +40,20 @@ define([
                 } else {
                     _marker.setAnimation(google.maps.Animation.BOUNCE);
                     _infowindow.open(_map, _marker);
-                    setTimeout(function(){ 
+                    setTimeout(function() {
                         var btnOverlay = $("img[src$='maps.gstatic.com/mapfiles/transparent.png']")[0];
-                        btnOverlay.addEventListener('click', function(){
-                            _marker.setAnimation(null);
-                        })
-                     }, 200);
+                        var closeBtn = $("img[src$='maps.gstatic.com/mapfiles/api-3/images/mapcnt6.png']")[0];
+                        if (typeof btnOverlay === 'object') {
+                            btnOverlay.addEventListener('click', function() {
+                                _marker.setAnimation(null);
+                            });
+                        }
+                        if (typeof closeBtn === 'object') {
+                            closeBtn.addEventListener('click', function() {
+                                _marker.setAnimation(null);
+                            });
+                        }
+                    }, 200);
                 }
             };
 
@@ -68,9 +76,14 @@ define([
                 _this.markers.push(marker);
 
                 var infowindow = new google.maps.InfoWindow({
-                    content: '<div><h2>' + place.name + '</h2><img src="https://maps.googleapis.com/maps/api/streetview?size=600x300&location=' + place.position.lat + ', ' + place.position.lng + '&heading=151.78&pitch=-0.76&key=AIzaSyBSpWUS_wBjBq5kXfnbQO19ewpQPdStRDg"><button>CLICK ME</button></div>'
+                    content: '<div>' +
+                        '<h1>' + place.name + '</h1>' +
+                        '<img src="https://maps.googleapis.com/maps/api/streetview?size=600x300&location=' + place.position.lat + ', ' + place.position.lng + '&heading=151.78&pitch=-0.76&key=AIzaSyBSpWUS_wBjBq5kXfnbQO19ewpQPdStRDg">' +
+                        '<h3>' + place.address + '</h3>' +
+                        '<h3>Latitude: ' + place.position.lat + '&nbsp&nbsp Longitude: ' + place.position.lng + '</h3>' +
+                        '</div>'
                 });
-                
+
                 (function(_infowindow, _map, _marker) {
                     _marker.addListener('click', function() {
                         _this.toggleMarker(_infowindow, _map, _marker);

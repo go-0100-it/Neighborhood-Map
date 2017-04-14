@@ -2,7 +2,14 @@
 <div class="drawer-button-bar">
     <button class="drawer-button-bar-button">Filter</button><button class="drawer-button-bar-button" data-bind="click: toggleAddressInput">New</button>
     <div data-bind="visible: addressInputVisible">
-        <input class="address-input" data-bind="value: streetName" placeholder=' Enter new address here...' />
+        <input class="place-name-input" data-bind="value: name" placeholder=' Give you new place a name...' />
+        <input class="address-input" data-bind="value: address" placeholder=' Enter new address here...' />
+        <input class="address-input" type="search" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off" placeholder="search address" />
+        <ul class="drawer-menu-list" data-bind="foreach: { data: searchResults, as: 'result' }">
+            <li class="drawer-list-item">
+                <span class="li-name" data-bind="text: result.formatted_address"></span>
+            </li>
+        </ul>
         <button class="add-button" data-bind="click: addPlace">ADD</button>
     </div>
 </div>
