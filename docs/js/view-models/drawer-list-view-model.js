@@ -5,76 +5,73 @@ define([
         'knockout',
         'map_controller'
     ],
-    function($, Backbone, _, ko, MapController) {
+    function($, Backbone, _, ko, _Map) {
         var DrawerListViewModel = function(places) {
             var _this = this;
-            this.name = '';
-            this.address = ko.observable('');
-            this.location = '';
-            this.query = ko.observable('');
+            this.name = ko.observable();
             this.searchResults = ko.observableArray([]);
-            this.formattedStreetName = ko.computed(function() {
-                if (typeof google === 'object' && typeof google.maps === 'object') {
-                    var geocoder = new google.maps.Geocoder();
-                    //var location = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY';
-                    geocoder.geocode({ 'address': _this.address() }, function(results, status) {
-                        if (status == 'OK') {
-                            _this.location = (results[0].geometry.location.toJSON());
-                        } else {
-                            alert('Geocode was not successful for the following reason: ' + status);
-                        }
-                    });
-                } else {
-                    console.log("Google's Geocoder API is currently unavailable.");
-                }
-            });
-            this.addressInputVisible = ko.observable(false);
+            this.selectedPlace = ko.observable({});
+            this.selectedFormattedAddress = ko.observable('');
+            this.query = ko.observable('');
+            this.addressSearchVisible = ko.observable(false);
+            this.searchInputVisible = ko.observable(true);
+            this.selectedPlaceDisplayVisible = ko.observable(false);
+            this.addButtonVisible = ko.observable(false);
             this.places = ko.observableArray(places);
             this.onClick = function(place) {
                 var obj = { name: place.name, address: place.address, position: place.position };
                 Backbone.history.navigate('#news/' + obj.name + '/' + obj.address + '/' + obj.position, { trigger: true });
             };
 
+            this.onSelectAddress = function(place) {
+                _this.selectedPlace(place);
+                _this.selectedFormattedAddress(_this.selectedPlace().formatted_address);
+                _this.toggleSearchInput();
+                _this.toggleSelectedPlace();
+                _this.toggleAddButton();
+                _this.searchResults([]);
+            };
+
             this.searchAddress = function(value) {
-                if (typeof google === 'object' && typeof google.maps === 'object') {
-                    var geocoder = new google.maps.Geocoder();
-                    _this.searchResults([]);
-                    //var location = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY';
-                    geocoder.geocode({ 'address': value }, function(results, status) {
-                        if (status == 'OK' && value !== '' && value !== ' ') {
-                            var i = 0;
-                            results.forEach(function(result) {
-                                if (i < 5) {
-                                    _this.searchResults.push(result);
-                                }
-                                i++;
-                            });
-                        } else {
-                            console.log('Geocode was not successful. Status Code: ' + status);
-                            _this.searchResults([]);
-                        }
-                        console.dir(_this.searchResults());
-                    });
-                } else {
-                    console.log("Google's Geocoder API is currently unavailable.");
-                }
+                _Map().searchAddress(value, _this.searchResults);
             };
 
             this.addPlace = function() {
-                var place = ({ name: _this.name, address: _this.address(), position: _this.location });
-                MapController().addMarker(place);
+                var position = { lat: _this.selectedPlace().geometry.location.lat(), lng: _this.selectedPlace().geometry.location.lng() };
+                var place = { name: _this.name(), address: _this.selectedPlace().formatted_address, position: position };
+                _Map().addMarker(place);
                 _this.places.push(place);
-
-                //_this.places = (_this.places);
+                _this.toggleAddressSearch();
+                _this.resetSearchView();
+                _this.name('');
+                _this.query('');
             };
 
             this.removePlace = function() {
-                MapController().removeMarker(_this.places.indexOf(this));
+                _Map().removeMarker(_this.places.indexOf(this));
                 _this.places.remove(this);
             };
 
-            this.toggleAddressInput = function() {
-                _this.addressInputVisible(!_this.addressInputVisible());
+            this.toggleAddressSearch = function() {
+                _this.addressSearchVisible(!_this.addressSearchVisible());
+            };
+
+            this.toggleSearchInput = function() {
+                _this.searchInputVisible(!_this.searchInputVisible());
+            };
+
+            this.toggleSelectedPlace = function() {
+                _this.selectedPlaceDisplayVisible(!_this.selectedPlaceDisplayVisible());
+            };
+
+            this.toggleAddButton = function() {
+                _this.addButtonVisible(!_this.addButtonVisible());
+            };
+
+            this.resetSearchView = function() {
+                _this.toggleSearchInput();
+                _this.toggleSelectedPlace();
+                _this.toggleAddButton();
             };
 
             this.query.subscribe(this.searchAddress);

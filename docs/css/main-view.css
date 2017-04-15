@@ -1,3 +1,7 @@
+.main-view-css-loaded {
+    height: 1px;
+}
+
 body {
     width: 100%;
     margin: 0;
@@ -66,9 +70,10 @@ body {
 
 #map {
     position: relative;
+    margin-top: 80px;
     padding-bottom: 50%;
     /* 4:3 ratio*/
-    height: 0;
+    height: 100%;
     overflow: hidden;
 }
 

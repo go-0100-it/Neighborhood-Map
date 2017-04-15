@@ -5,13 +5,15 @@
 .drawer-menu {
     position: fixed;
     top: 0;
-    left: -330px;
+    left: 0;
     bottom: 0;
     right: 0;
     z-index: 15;
-    width: 330px;
+    width: 450px;
     opacity: 0.98;
     background: #313030;
+    overflow: auto;
+    box-shadow: 0 2.5px 10px #111111;
     transition: all 0.5s ease-in-out;
     -webkit-transition: all 0.5s ease-in-out;
     -ms-transition: all 0.5s ease-in-out;
@@ -26,8 +28,8 @@
     float: left;
     width: 60px;
     height: 60px;
-    top: 10px;
-    left: -5px;
+    top: 0;
+    left: 400px;
     bottom: 0;
     right: 0;
     z-index: 15;
@@ -37,6 +39,8 @@
     font-weight: 900;
     border-radius: 5px;
     cursor: pointer;
+    box-shadow: 0 2.5px 10px #111111;
+    transform: rotate(90deg);
     transition: all 0.5s ease-in-out;
     -webkit-transition: all 0.5s ease-in-out;
     -ms-transition: all 0.5s ease-in-out;
@@ -88,7 +92,7 @@
 .drawer-list-item {
     display: block;
     text-align: left;
-    margin: 30px 0;
+    padding: 0 15px 30px 15px;
     cursor: pointer;
 }
 
@@ -146,9 +150,8 @@
     float: left;
 }
 
-.drawer-li:hover {
+.drawer-list-item:hover {
     color: rgba(255, 255, 255, 0.5);
-    cursor: pointer;
     background: #505050;
 }
 
@@ -156,16 +159,15 @@
     display: none;
 }
 
-#drawer-menu-check:checked+.drawer-menu,
-drawer-toggler {
-    box-shadow: 0 2.5px 10px #111111;
-    left: 0;
+#drawer-menu-check:checked+.drawer-menu {
+    box-shadow: none;
+    left: -450px;
 }
 
 #drawer-menu-check:checked~.drawer-toggler {
-    left: 275px;
-    box-shadow: 0 2.5px 10px #111111;
-    transform: rotate(90deg);
+    left: -10px;
+    box-shadow: none;
+    transform: rotate(0deg);
 }
 
 #drawer-menu-check:checked~.drawer-toggler>.drawer-menu-span {}
@@ -175,14 +177,26 @@ drawer-toggler {
 }
 
 @media only screen and (max-width: 1300px) {
+    .drawer-menu {
+        width: 400px;
+    }
     .drawer-toggler {
-        top: 5px;
+        left: 350px;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    .drawer-menu {
+        width: 330px;
+    }
+    .drawer-toggler {
+        left: 280px;
+        font-size: 38px;
     }
 }
 
 @media only screen and (max-width: 500px) {
     .drawer-menu {
-        left: -290px;
         width: 290px;
     }
     .drawer-menu-header {
@@ -200,11 +214,11 @@ drawer-toggler {
     .drawer-toggler {
         width: 52px;
         height: 52px;
-        top: 12px;
-        left: 12px;
+        top: 5px;
+        left: 265px;
         font-size: 38px;
     }
     #drawer-menu-check:checked~.drawer-toggler {
-        left: 250px;
+        left: 5px;
     }
 }

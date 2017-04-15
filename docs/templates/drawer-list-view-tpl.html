@@ -1,21 +1,21 @@
 <h2 class="drawer-menu-header">Places</h2>
 <div class="drawer-button-bar">
-    <button class="drawer-button-bar-button">Filter</button><button class="drawer-button-bar-button" data-bind="click: toggleAddressInput">New</button>
-    <div data-bind="visible: addressInputVisible">
-        <input class="place-name-input" data-bind="value: name" placeholder=' Give you new place a name...' />
-        <input class="address-input" data-bind="value: address" placeholder=' Enter new address here...' />
-        <input class="address-input" type="search" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off" placeholder="search address" />
+    <button class="drawer-button-bar-button">Filter</button><button class="drawer-button-bar-button" data-bind="click: toggleAddressSearch">New</button>
+    <div data-bind="visible: addressSearchVisible">
+        <input class="place-name-input" data-bind="value: name, valueUpdate: 'keyup'" placeholder=' Give your new place a name...' />
+        <div class="selected-place-display" data-bind="visible: selectedPlaceDisplayVisible"><span data-bind="text: selectedFormattedAddress"></span></div>
+        <input class="address-input" type="search" data-bind="value: query, valueUpdate: 'keyup', visible: searchInputVisible" autocomplete="off" placeholder="search address" />
         <ul class="drawer-menu-list" data-bind="foreach: { data: searchResults, as: 'result' }">
             <li class="drawer-list-item">
-                <span class="li-name" data-bind="text: result.formatted_address"></span>
+                <span class="li-name" data-bind="text: result.formatted_address, click: $parent.onSelectAddress"></span>
             </li>
         </ul>
-        <button class="add-button" data-bind="click: addPlace">ADD</button>
+        <hr/>
+        <button class="drawer-button-bar-button" data-bind="click: resetSearchView, visible: addButtonVisible">Cancel</button><button class="drawer-button-bar-button" data-bind="click: addPlace, visible: addButtonVisible">ADD</button>
     </div>
-</div>
-<ul class="drawer-menu-list" data-bind="foreach: { data: places, as: 'place' }">
-    <li class="drawer-list-item">
-        <div class="remove-button" data-bind="click: $parent.removePlace"><span class="remove-icon">⊗</span><span class="remove-title">remove</span></div>
-        <div class="item-details" data-bind="click: $parent.onClick"><span class="li-name" data-bind="text: place.name"></span><span class="li-addr" data-bind="text: place.address"></span></div>
-    </li>
-</ul>
+    <ul class="drawer-menu-list" data-bind="foreach: { data: places, as: 'place' }">
+        <li class="drawer-list-item">
+            <div class="remove-button" data-bind="click: $parent.removePlace"><span class="remove-icon">⊗</span><span class="remove-title">remove</span></div>
+            <div class="item-details" data-bind="click: $parent.onClick"><span class="li-name" data-bind="text: place.name"></span><span class="li-addr" data-bind="text: place.address"></span></div>
+        </li>
+    </ul>

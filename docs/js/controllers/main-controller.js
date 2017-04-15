@@ -15,7 +15,8 @@ define([
         'news_view',
         'events_view',
         'weather_view',
-        'real_estate_view'
+        'real_estate_view',
+        'map_controller'
     ],
     function(
         $,
@@ -32,7 +33,8 @@ define([
         NewsView,
         EventsView,
         WeatherView,
-        RealEstateView
+        RealEstateView,
+        MapController
     ) {
 
         var listRendered;
@@ -97,6 +99,9 @@ define([
 
                 ko.applyBindings(realEstateViewModel, $('#real-estate-view')[0]);
 
+            },
+            map: function() {
+                return MapController();
             }
         };
     });
