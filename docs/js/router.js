@@ -21,11 +21,9 @@ define(['jquery', 'main_controller'],
             },
 
             'places': function() {
-                alert('Loading places view');
-
                 // Calling function @ Maincontroller to create the drawer list
-                if (MainController.map()) {
-                    MainController.map().init(MainController.renderDrawerListView());
+                if (!MainController().map) {
+                    MainController().renderMap().init(MainController().renderDrawerListView());
                 } else {
                     $('#container-view').hide();
                     $('#map-container-view').show();
@@ -38,32 +36,76 @@ define(['jquery', 'main_controller'],
 
             'news': function(name, address, position) {
                 var obj = { name: name, address: address, position: position };
-                MainController.renderDrawerListView();
-                MainController.renderNewsView(obj);
+                $('#container-view').show();
+                $('#map-container-view').hide();
+                if (!MainController().drawerListView) {
+                    MainController().renderDrawerListView();
+                } else {
+                    console.log("Drawer List view rendered");
+                }
+                if (!MainController().tabsView) {
+                    MainController().renderTabsView(obj);
+                } else {
+                    console.log("Tabs view rendered");
+                }
+                MainController().renderNewsView(obj);
                 /* TODO:
                    MainController.renderNewsTabView();
                 */
             },
             'events': function(name, address, position) {
                 var obj = { name: name, address: address, position: position };
-                MainController.renderDrawerListView();
-                MainController.renderEventsView(obj);
+                $('#container-view').show();
+                $('#map-container-view').hide();
+                if (!MainController().drawerListView) {
+                    MainController().renderDrawerListView();
+                } else {
+                    console.log("Drawer List view rendered");
+                }
+                if (!MainController().tabsView) {
+                    MainController().renderTabsView(obj);
+                } else {
+                    console.log("Tabs view rendered");
+                }
+                MainController().renderEventsView(obj);
                 /* TODO:
                    MainControllner.renderEventsTabView();
                 */
             },
             'weather': function(name, address, position) {
                 var obj = { name: name, address: address, position: position };
-                MainController.renderDrawerListView();
-                MainController.renderWeatherView(obj);
+                $('#container-view').show();
+                $('#map-container-view').hide();
+                if (!MainController().drawerListView) {
+                    MainController().renderDrawerListView();
+                } else {
+                    console.log("Drawer List view rendered");
+                }
+                if (!MainController().tabsView) {
+                    MainController().renderTabsView(obj);
+                } else {
+                    console.log("Tabs view rendered");
+                }
+                MainController().renderWeatherView(obj);
                 /* TODO:
                    MainController.renderWeatherTabView();
                 */
             },
             'real-estate': function(name, address, position) {
                 var obj = { name: name, address: address, position: position };
-                MainController.renderDrawerListView();
-                MainController.renderRealEstateView(obj);
+                $('#container-view').show();
+                $('#map-container-view').hide();
+                if (!MainController().drawerListView) {
+                    MainController().renderDrawerListView();
+                } else {
+                    console.log("Drawer List view rendered");
+                }
+                if (!MainController().tabsView) {
+                    MainController().renderTabsView(obj);
+                } else {
+                    console.log("Tabs view rendered");
+                }
+                MainController().renderRealEstateView(obj);
                 /* TODO:
                    MainController.renderRealEstateTabView();
                 */

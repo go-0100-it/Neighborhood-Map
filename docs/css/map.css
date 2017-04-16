@@ -16,18 +16,6 @@
     max-height: 100%;
 }
 
-.map-icon-container {
-    display: flex;
-    float: right;
-    width: 60px;
-    height: 60px;
-}
-
-#map-icon {
-    max-width: 100%;
-    max-height: 100%;
-}
-
 @media only screen and (max-width: 500px) {
     .map-icon-container {
         margin: 5px 5px 0 0;

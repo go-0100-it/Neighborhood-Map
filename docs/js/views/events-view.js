@@ -6,7 +6,7 @@
      ],
      function($, Backbone, _, tpl) {
          var EventsView = Backbone.View.extend({
-             el: '#container-view',
+             el: '#tab-container',
              initialize: function() {
                  this.template = _.template(tpl.get('events-view'));
              },

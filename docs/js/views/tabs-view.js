@@ -5,15 +5,15 @@
          'util'
      ],
      function($, Backbone, _, tpl) {
-         var WeaterView = Backbone.View.extend({
-             el: '#tab-container',
+         var EventsView = Backbone.View.extend({
+             el: '#container-view',
              initialize: function() {
-                 this.template = _.template(tpl.get('weather-view'));
+                 this.template = _.template(tpl.get('tabs-view'));
              },
              render: function() {
                  this.$el.html(this.template());
                  return this;
              }
          });
-         return WeaterView;
+         return EventsView;
      });

@@ -9,19 +9,6 @@ define([
         var RealEstateListViewModel = function(place) {
             var _this = this;
 
-            this.name = ko.observable(place.name);
-            this.address = ko.observable(place.address);
-            this.position = ko.observable(place.position);
-            this.onClickEventsTab = function() {
-                Backbone.history.navigate('#events/' + _this.name() + '/' + _this.address() + '/' + _this.position(), { trigger: true });
-            };
-            this.onClickNewsTab = function() {
-                Backbone.history.navigate('#news/' + _this.name() + '/' + _this.address() + '/' + _this.position(), { trigger: true });
-            };
-            this.onClickWeatherTab = function() {
-                Backbone.history.navigate('#weather/' + _this.name() + '/' + _this.address() + '/' + _this.position(), { trigger: true });
-            };
-
             return this;
         };
         return RealEstateListViewModel;

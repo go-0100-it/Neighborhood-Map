@@ -21,6 +21,7 @@ requirejs.config({
 
         /*ViewsModels*/
         drawer_list_view_model: 'view-models/drawer-list-view-model',
+        tabs_view_model: 'view-models/tabs-view-model',
         news_list_view_model: 'view-models/news-list-view-model',
         events_list_view_model: 'view-models/events-list-view-model',
         weather_list_view_model: 'view-models/weather-list-view-model',
@@ -29,6 +30,7 @@ requirejs.config({
         /*Views*/
         drawer_list_view: 'views/drawer-list-view',
         navbar_filter_view: 'view-models/navbar-view',
+        tabs_view: 'views/tabs-view',
         news_view: 'views/news-view',
         weather_view: 'views/weather-view',
         events_view: 'views/events-view',
@@ -52,7 +54,7 @@ requirejs([
     'util'
 
 ], function($, _, bb, ko, tpl) {
-    tpl.loadTemplates(['drawer-list-view-tpl', 'map', 'news-view', 'events-view', 'weather-view', 'real-estate-view'], function() {
+    tpl.loadTemplates(['drawer-list-view-tpl', 'map', 'tabs-view', 'news-view', 'events-view', 'weather-view', 'real-estate-view'], function() {
         require(['app'], function(app) {
             app.initialize();
         });
