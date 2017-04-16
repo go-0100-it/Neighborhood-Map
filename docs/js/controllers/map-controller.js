@@ -33,7 +33,7 @@ define([
                 }
             };
 
-            this.toggleMarker = function(_infowindow, _map, _marker) {
+            this.toggleMarker = function(_infowindow, _map, _marker, _place) {
                 if (_marker.getAnimation() !== null) {
                     _marker.setAnimation(null);
                     _infowindow.close(_map, _marker);
@@ -53,7 +53,7 @@ define([
                                 _marker.setAnimation(null);
                             });
                         }
-                    }, 200);
+                    }, 1500);
                 }
             };
 
@@ -74,29 +74,43 @@ define([
                 });
 
                 _this.markers.push(marker);
-
                 var infowindow = new google.maps.InfoWindow({
                     content: '<div>' +
                         '<h1>' + place.name + '</h1>' +
-                        '<img src="https://maps.googleapis.com/maps/api/streetview?size=600x300&location=' + place.position.lat + ', ' + place.position.lng + '&heading=151.78&pitch=-0.76&key=AIzaSyBSpWUS_wBjBq5kXfnbQO19ewpQPdStRDg">' +
+                        '<img id="info-img" src="https://maps.googleapis.com/maps/api/streetview?size=400x200&location=' + place.position.lat + ', ' + place.position.lng + '&heading=151.78&pitch=-0.76&key=AIzaSyBSpWUS_wBjBq5kXfnbQO19ewpQPdStRDg">' +
                         '<h3>' + place.address + '</h3>' +
                         '<h3>Latitude: ' + place.position.lat + '&nbsp&nbsp Longitude: ' + place.position.lng + '</h3>' +
+                        '<button type="submit" class="map-info-btn" onclick="(' + _this.infoWindowBtnClick(place, _this.map) + '())">Get Info</button>' +
                         '</div>'
                 });
 
-                (function(_infowindow, _map, _marker) {
+                (function(_infowindow, _map, _marker, _place) {
                     _marker.addListener('click', function() {
-                        _this.toggleMarker(_infowindow, _map, _marker);
+                        _this.toggleMarker(_infowindow, _map, _marker, _place);
                     });
                     setTimeout(function() {
                         _marker.setMap(_map);
                     }, i * 300);
-                })(infowindow, _this.map, marker);
+                })(infowindow, _this.map, marker, place);
+            };
+
+            this.infoWindowBtnClick = function(place) {
+                this.place = place;
+                return function() {
+                    $('#map-container-view').hide();
+                    $('#container-view').show();
+                    Backbone.history.navigate('#news/' + place.name + '/' + place.address + '/' + place.position, { trigger: true });
+                };
             };
 
             this.removeMarker = function(index) {
                 _this.markers[index].setMap(null);
                 _this.markers.splice(index, 1);
+            };
+
+            this.centerOnLocation = function(place) {
+                requestedLocation = new google.maps.LatLng(place.position.lat, place.position.lng);
+                _this.map.panTo(requestedLocation);
             };
 
             this.searchAddress = function(value, searchResults) {

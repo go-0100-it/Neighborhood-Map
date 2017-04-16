@@ -6,16 +6,19 @@
         <div class="selected-place-display" data-bind="visible: selectedPlaceDisplayVisible"><span data-bind="text: selectedFormattedAddress"></span></div>
         <input class="address-input" type="search" data-bind="value: query, valueUpdate: 'keyup', visible: searchInputVisible" autocomplete="off" placeholder="search address" />
         <ul class="drawer-menu-list" data-bind="foreach: { data: searchResults, as: 'result' }">
-            <li class="drawer-list-item">
-                <span class="li-name" data-bind="text: result.formatted_address, click: $parent.onSelectAddress"></span>
+            <li class="drawer-list-item search-results">
+                <span class="li-name search-results" data-bind="text: result.formatted_address, click: $parent.onSelectAddress"></span>
             </li>
         </ul>
-        <hr/>
-        <button class="drawer-button-bar-button" data-bind="click: resetSearchView, visible: addButtonVisible">Cancel</button><button class="drawer-button-bar-button" data-bind="click: addPlace, visible: addButtonVisible">ADD</button>
     </div>
+    <hr/>
+    <button class="drawer-button-bar-button" data-bind="click: resetSearchView, visible: addButtonVisible">Cancel</button><button class="drawer-button-bar-button" data-bind="click: addPlace, visible: addButtonVisible">ADD</button>
+</div>
+<div class="list-container">
     <ul class="drawer-menu-list" data-bind="foreach: { data: places, as: 'place' }">
-        <li class="drawer-list-item">
+        <li class="drawer-list-item" data-bind="event: { mouseover: $parent.centerLocation }">
             <div class="remove-button" data-bind="click: $parent.removePlace"><span class="remove-icon">⊗</span><span class="remove-title">remove</span></div>
             <div class="item-details" data-bind="click: $parent.onClick"><span class="li-name" data-bind="text: place.name"></span><span class="li-addr" data-bind="text: place.address"></span></div>
         </li>
     </ul>
+</div>

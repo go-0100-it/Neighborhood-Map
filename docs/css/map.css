@@ -1,0 +1,41 @@
+.map-info-btn {
+    width: 100px;
+    height: 40px;
+}
+
+#map {
+    height: 100vh;
+    width: 100vw;
+    top: -30vw;
+    left: 0;
+    position: absolute;
+}
+
+#info-img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.map-icon-container {
+    display: flex;
+    float: right;
+    width: 60px;
+    height: 60px;
+}
+
+#map-icon {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+@media only screen and (max-width: 500px) {
+    .map-icon-container {
+        margin: 5px 5px 0 0;
+        width: 38px;
+        height: 38px;
+    }
+    #map {
+        top: -25vh;
+        left: 0;
+    }
+}

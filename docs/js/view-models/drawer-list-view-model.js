@@ -3,9 +3,10 @@ define([
         'backbone',
         'underscore',
         'knockout',
+        'main_controller',
         'map_controller'
     ],
-    function($, Backbone, _, ko, _Map) {
+    function($, Backbone, _, ko, MainController, _Map) {
         var DrawerListViewModel = function(places) {
             var _this = this;
             this.name = ko.observable();
@@ -20,6 +21,8 @@ define([
             this.places = ko.observableArray(places);
             this.onClick = function(place) {
                 var obj = { name: place.name, address: place.address, position: place.position };
+                $('#map-container-view').hide();
+                $('#container-view').show();
                 Backbone.history.navigate('#news/' + obj.name + '/' + obj.address + '/' + obj.position, { trigger: true });
             };
 
@@ -65,7 +68,12 @@ define([
             };
 
             this.toggleAddButton = function() {
+                console.log("Calling Mouse over");
                 _this.addButtonVisible(!_this.addButtonVisible());
+            };
+
+            this.centerLocation = function(place) {
+                _Map().centerOnLocation(place);
             };
 
             this.resetSearchView = function() {

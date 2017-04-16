@@ -60,12 +60,14 @@ body {
     margin: 125px auto;
 }
 
-.container-view {
+.container-view,
+.map-container-view {
     position: absolute;
     top: 0;
     left: 0;
     width: 100% !important;
     height: 100% !important;
+    z-index: 200;
 }
 
 #map {

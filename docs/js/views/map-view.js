@@ -6,7 +6,7 @@
      ],
      function($, Backbone, _, tpl) {
          var MapView = Backbone.View.extend({
-             el: '#container-view',
+             el: '#map-container-view',
              initialize: function() {
                  this.template = _.template(tpl.get('map'));
              },
