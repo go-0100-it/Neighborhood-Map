@@ -22,8 +22,9 @@ define(['jquery', 'main_controller'],
 
             'places': function() {
                 // Calling function @ Maincontroller to create the drawer list
-                if (!MainController().map) {
-                    MainController().renderMap().init(MainController().renderDrawerListView());
+                console.dir(MainController);
+                if (!MainController.map) {
+                    MainController.renderDrawerListView();
                 } else {
                     $('#container-view').hide();
                     $('#map-container-view').show();
@@ -38,17 +39,13 @@ define(['jquery', 'main_controller'],
                 var obj = { name: name, address: address, position: position };
                 $('#container-view').show();
                 $('#map-container-view').hide();
-                if (!MainController().drawerListView) {
-                    MainController().renderDrawerListView();
+                if (!MainController.drawerListView) {
+                    MainController.renderDrawerListView();
                 } else {
                     console.log("Drawer List view rendered");
                 }
-                if (!MainController().tabsView) {
-                    MainController().renderTabsView(obj);
-                } else {
-                    console.log("Tabs view rendered");
-                }
-                MainController().renderNewsView(obj);
+                MainController.renderTabsView(obj);
+                MainController.renderNewsView(obj);
                 /* TODO:
                    MainController.renderNewsTabView();
                 */
@@ -57,17 +54,13 @@ define(['jquery', 'main_controller'],
                 var obj = { name: name, address: address, position: position };
                 $('#container-view').show();
                 $('#map-container-view').hide();
-                if (!MainController().drawerListView) {
-                    MainController().renderDrawerListView();
+                if (!MainController.drawerListView) {
+                    MainController.renderDrawerListView();
                 } else {
                     console.log("Drawer List view rendered");
                 }
-                if (!MainController().tabsView) {
-                    MainController().renderTabsView(obj);
-                } else {
-                    console.log("Tabs view rendered");
-                }
-                MainController().renderEventsView(obj);
+                MainController.renderTabsView(obj);
+                MainController.renderEventsView(obj);
                 /* TODO:
                    MainControllner.renderEventsTabView();
                 */
@@ -76,17 +69,13 @@ define(['jquery', 'main_controller'],
                 var obj = { name: name, address: address, position: position };
                 $('#container-view').show();
                 $('#map-container-view').hide();
-                if (!MainController().drawerListView) {
-                    MainController().renderDrawerListView();
+                if (!MainController.drawerListView) {
+                    MainController.renderDrawerListView();
                 } else {
                     console.log("Drawer List view rendered");
                 }
-                if (!MainController().tabsView) {
-                    MainController().renderTabsView(obj);
-                } else {
-                    console.log("Tabs view rendered");
-                }
-                MainController().renderWeatherView(obj);
+                MainController.renderTabsView(obj);
+                MainController.renderWeatherView(obj);
                 /* TODO:
                    MainController.renderWeatherTabView();
                 */
@@ -95,17 +84,13 @@ define(['jquery', 'main_controller'],
                 var obj = { name: name, address: address, position: position };
                 $('#container-view').show();
                 $('#map-container-view').hide();
-                if (!MainController().drawerListView) {
-                    MainController().renderDrawerListView();
+                if (!MainController.drawerListView) {
+                    MainController.renderDrawerListView();
                 } else {
                     console.log("Drawer List view rendered");
                 }
-                if (!MainController().tabsView) {
-                    MainController().renderTabsView(obj);
-                } else {
-                    console.log("Tabs view rendered");
-                }
-                MainController().renderRealEstateView(obj);
+                MainController.renderTabsView(obj);
+                MainController.renderRealEstateView(obj);
                 /* TODO:
                    MainController.renderRealEstateTabView();
                 */

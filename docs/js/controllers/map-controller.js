@@ -12,7 +12,7 @@ define([
         ko,
         MapView
     ) {
-        var map = function(places) {
+        var Map = function() {
             var _this = this;
             this.init = function(places) {
                 if (typeof google === 'object' && typeof google.maps === 'object') {
@@ -80,27 +80,33 @@ define([
                         '<img id="info-img" src="https://maps.googleapis.com/maps/api/streetview?size=400x200&location=' + place.position.lat + ', ' + place.position.lng + '&heading=151.78&pitch=-0.76&key=AIzaSyBSpWUS_wBjBq5kXfnbQO19ewpQPdStRDg">' +
                         '<h3>' + place.address + '</h3>' +
                         '<h3>Latitude: ' + place.position.lat + '&nbsp&nbsp Longitude: ' + place.position.lng + '</h3>' +
-                        '<button type="submit" class="map-info-btn" onclick="(' + _this.infoWindowBtnClick(place, _this.map) + '())">Get Info</button>' +
-                        '</div>'
+                        '<button type="submit" class="map-info-btn" id="infoWin-' + i + '">Get Info</button>' +
+                        '</div>',
+                    place: place,
+                    clickListenerAdded: false
                 });
 
-                (function(_infowindow, _map, _marker, _place) {
+
+
+                (function(_infowindow, _map, _marker, _place, _i) {
+                    google.maps.event.addDomListener(_infowindow, 'domready', function() {
+                        console.log(_infowindow.clickListenerAdded);
+                        if (!_infowindow.clickListenerAdded) {
+                            $('#infoWin-' + _i).click(function() {
+                                $('#map-container-view').hide();
+                                $('#container-view').show();
+                                Backbone.history.navigate('#news/' + _infowindow.place.name + '/' + _infowindow.place.address + '/' + _infowindow.place.position, { trigger: true });
+                            });
+                            _infowindow.clickListenerAdded = true;
+                        }
+                    });
                     _marker.addListener('click', function() {
                         _this.toggleMarker(_infowindow, _map, _marker, _place);
                     });
                     setTimeout(function() {
                         _marker.setMap(_map);
                     }, i * 300);
-                })(infowindow, _this.map, marker, place);
-            };
-
-            this.infoWindowBtnClick = function(place) {
-                this.place = place;
-                return function() {
-                    $('#map-container-view').hide();
-                    $('#container-view').show();
-                    Backbone.history.navigate('#news/' + place.name + '/' + place.address + '/' + place.position, { trigger: true });
-                };
+                })(infowindow, _this.map, marker, place, i);
             };
 
             this.removeMarker = function(index) {
@@ -137,8 +143,6 @@ define([
                     console.log("Google's Geocoder API is currently unavailable.");
                 }
             };
-
-            return this;
         };
-        return map;
+        return Map;
     });

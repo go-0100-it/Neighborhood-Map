@@ -2,13 +2,12 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'knockout',
-        'main_controller',
-        'map_controller'
+        'knockout'
     ],
-    function($, Backbone, _, ko, MainController, _Map) {
-        var DrawerListViewModel = function(places) {
+    function($, Backbone, _, ko) {
+        var DrawerListViewModel = function(places, Map) {
             var _this = this;
+            this.map = Map;
             this.name = ko.observable();
             this.searchResults = ko.observableArray([]);
             this.selectedPlace = ko.observable({});
@@ -21,7 +20,7 @@ define([
             this.places = ko.observableArray(places);
             this.onClick = function(place) {
                 var obj = { name: place.name, address: place.address, position: place.position };
-                $('#map-container-view').hide();
+                $('#_this.map-container-view').hide();
                 $('#container-view').show();
                 Backbone.history.navigate('#news/' + obj.name + '/' + obj.address + '/' + obj.position, { trigger: true });
             };
@@ -36,13 +35,13 @@ define([
             };
 
             this.searchAddress = function(value) {
-                _Map().searchAddress(value, _this.searchResults);
+                _this.map.searchAddress(value, _this.searchResults);
             };
 
             this.addPlace = function() {
                 var position = { lat: _this.selectedPlace().geometry.location.lat(), lng: _this.selectedPlace().geometry.location.lng() };
                 var place = { name: _this.name(), address: _this.selectedPlace().formatted_address, position: position };
-                _Map().addMarker(place);
+                _this.map.addMarker(place);
                 _this.places.push(place);
                 _this.toggleAddressSearch();
                 _this.resetSearchView();
@@ -51,7 +50,7 @@ define([
             };
 
             this.removePlace = function() {
-                _Map().removeMarker(_this.places.indexOf(this));
+                _this.map.removeMarker(_this.places.indexOf(this));
                 _this.places.remove(this);
             };
 
@@ -73,7 +72,7 @@ define([
             };
 
             this.centerLocation = function(place) {
-                _Map().centerOnLocation(place);
+                _this.map.centerOnLocation(place);
             };
 
             this.resetSearchView = function() {

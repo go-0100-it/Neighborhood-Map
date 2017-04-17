@@ -1,0 +1,49 @@
+.tabs-view-css-loaded {
+    height: 1px;
+}
+
+ul.tabs {
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    display: inline-flex;
+    list-style: none;
+}
+
+ul.tabs li {
+    background: none;
+    color: #222;
+    display: inline-block;
+    padding: 10px 0;
+    margin: 0px;
+    width: 25%;
+    cursor: pointer;
+}
+
+ul.tabs li.current {
+    background: #ededed;
+    color: #222;
+}
+
+.tab-content {
+    display: none;
+    background: #ededed;
+    padding: 15px;
+}
+
+.tab-content.current {
+    display: inherit;
+}
+
+.tabs-container {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0px;
+}
+
+.tab-view-container {
+    width: 65%;
+    margin: 0 auto;
+    padding-top: 100px;
+}

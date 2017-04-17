@@ -77,13 +77,6 @@ body {
     overflow: hidden;
 }
 
-#news-view,
-#weather-view,
-#events-view,
-#real-estate-view {
-    margin: 100px auto 0 auto;
-}
-
 .map-icon-container {
     z-index: 10;
     position: absolute;
