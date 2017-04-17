@@ -74,7 +74,7 @@ define([
 
                 var tabsViewModel = new TabsViewModel({ name: place.name, address: place.address, position: place.position });
 
-                ko.applyBindings(tabsViewModel, $('#tabs-view')[0]);
+                ko.applyBindings(tabsViewModel, $('#tabs-container')[0]);
             };
 
             this.renderNewsView = function(place) {

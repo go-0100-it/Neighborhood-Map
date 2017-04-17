@@ -5,7 +5,7 @@
          'util'
      ],
      function($, Backbone, _, tpl) {
-         var WeaterView = Backbone.View.extend({
+         var WeatherView = Backbone.View.extend({
              el: '#tab-container',
              initialize: function() {
                  this.template = _.template(tpl.get('weather-view'));
@@ -15,5 +15,5 @@
                  return this;
              }
          });
-         return WeaterView;
+         return WeatherView;
      });
