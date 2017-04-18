@@ -14,7 +14,7 @@ requirejs.config({
         knockout: 'libs/knockout.min',
         app: 'app',
         util: 'util',
-        events_API: 'http://api.eventful.com/js/api',
+        events_API: 'https://api.eventful.com/js/api',
 
         /*Controllers*/
         main_controller: 'controllers/main-controller',
