@@ -22,78 +22,30 @@ define(['jquery', 'main_controller'],
 
             'places': function() {
                 // Calling function @ Maincontroller to create the drawer list
-                console.dir(MainController);
-                if (!MainController.map) {
-                    MainController.renderDrawerListView();
-                } else {
-                    $('#container-view').hide();
-                    $('#map-container-view').show();
-                }
-
-                /* TODO:
-                   MainController.renderGoogleMap();
-                */
+                MainController.renderDrawerListView();
+                $('#container-view').hide();
+                $('#map-container-view').show();
             },
 
             'news': function(name, address, position) {
                 var obj = { name: name, address: address, position: position };
-                $('#container-view').show();
-                $('#map-container-view').hide();
-                if (!MainController.drawerListView) {
-                    MainController.renderDrawerListView();
-                } else {
-                    console.log("Drawer List view rendered");
-                }
-                MainController.renderTabsView(obj);
-                MainController.renderNewsView(obj);
-                /* TODO:
-                   MainController.renderNewsTabView();
-                */
+                MainController.renderTabsView(obj, 'news');
+
             },
-            'events': function(name, address, position) {
-                var obj = { name: name, address: address, position: position };
-                $('#container-view').show();
-                $('#map-container-view').hide();
-                if (!MainController.drawerListView) {
-                    MainController.renderDrawerListView();
-                } else {
-                    console.log("Drawer List view rendered");
-                }
-                MainController.renderTabsView(obj);
-                MainController.renderEventsView(obj);
-                /* TODO:
-                   MainControllner.renderEventsTabView();
-                */
+            'events': function(name, address, lat, lng) {
+                var obj = { name: name, address: address, lat: lat, lng: lng };
+                MainController.renderTabsView(obj, 'events');
+
             },
             'weather': function(name, address, position) {
                 var obj = { name: name, address: address, position: position };
-                $('#container-view').show();
-                $('#map-container-view').hide();
-                if (!MainController.drawerListView) {
-                    MainController.renderDrawerListView();
-                } else {
-                    console.log("Drawer List view rendered");
-                }
-                MainController.renderTabsView(obj);
-                MainController.renderWeatherView(obj);
-                /* TODO:
-                   MainController.renderWeatherTabView();
-                */
+                MainController.renderTabsView(obj, 'weather');
+
             },
             'real-estate': function(name, address, position) {
                 var obj = { name: name, address: address, position: position };
-                $('#container-view').show();
-                $('#map-container-view').hide();
-                if (!MainController.drawerListView) {
-                    MainController.renderDrawerListView();
-                } else {
-                    console.log("Drawer List view rendered");
-                }
-                MainController.renderTabsView(obj);
-                MainController.renderRealEstateView(obj);
-                /* TODO:
-                   MainController.renderRealEstateTabView();
-                */
+                MainController.renderTabsView(obj, 'real-estate');
+
             },
         });
         return Router;

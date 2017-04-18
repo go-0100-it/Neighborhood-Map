@@ -8,7 +8,7 @@
          var DrawerListView = Backbone.View.extend({
              el: '#drawer-menu',
              initialize: function() {
-                 this.template = _.template(tpl.get('drawer-list-view-tpl'));
+                 this.template = _.template(tpl.get('drawer-list-view'));
              },
              render: function() {
                  this.$el.html(this.template());

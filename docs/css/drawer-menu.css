@@ -76,7 +76,7 @@
 }
 
 .drawer-button-bar {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .drawer-button-bar-button {
@@ -86,19 +86,33 @@
 
 .drawer-menu-list {
     list-style: none;
-    padding: 0 15px;
+    padding: 0;
 }
 
 .drawer-list-item {
     display: block;
     text-align: left;
-    padding: 0 15px 30px 15px;
+    padding: 0 20px 30px 20px;
     cursor: pointer;
 }
 
 .drawer-list-item.search-results {
     padding: 15px;
     cursor: pointer;
+}
+
+.selected-place-display {
+    width: 100%;
+    height: auto;
+    padding: 14px 10px;
+    color: #333;
+    background-color: #ddd;
+    text-align: left;
+    font-size: 18px;
+}
+
+.warning {
+    background-color: #f28585;
 }
 
 .remove-button {
@@ -131,8 +145,10 @@
 
 .address-input,
 .place-name-input {
-    width: 98%;
-    height: 30px;
+    width: 100%;
+    height: 50px;
+    font-size: 18px;
+    padding: 0 10px;
 }
 
 .item-details {

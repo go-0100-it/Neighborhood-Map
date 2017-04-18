@@ -9,6 +9,9 @@ define([
             var _this = this;
             this.map = Map;
             this.name = ko.observable();
+            this.name.subscribe(function(){
+                _this.nameRequestVisible(false);
+            });
             this.searchResults = ko.observableArray([]);
             this.selectedPlace = ko.observable({});
             this.selectedFormattedAddress = ko.observable('');
@@ -17,21 +20,23 @@ define([
             this.searchInputVisible = ko.observable(true);
             this.selectedPlaceDisplayVisible = ko.observable(false);
             this.addButtonVisible = ko.observable(false);
+            this.nameRequestVisible = ko.observable(false);
             this.places = ko.observableArray(places);
             this.onClick = function(place) {
-                var obj = { name: place.name, address: place.address, position: place.position };
+                var obj = { name: place.name, address: place.address, lat: place.lat, lng: place.lng };
                 $('#_this.map-container-view').hide();
                 $('#container-view').show();
-                Backbone.history.navigate('#news/' + obj.name + '/' + obj.address + '/' + obj.position, { trigger: true });
+                Backbone.history.navigate('#events/' + obj.name + '/' + obj.address + '/' + obj.lat + '/' + obj.lng, { trigger: true });
             };
 
             this.onSelectAddress = function(place) {
-                _this.selectedPlace(place);
-                _this.selectedFormattedAddress(_this.selectedPlace().formatted_address);
-                _this.toggleSearchInput();
-                _this.toggleSelectedPlace();
-                _this.toggleAddButton();
-                _this.searchResults([]);
+                
+                    _this.selectedPlace(place);
+                    _this.selectedFormattedAddress(_this.selectedPlace().formatted_address);
+                    _this.toggleSearchInput();
+                    _this.toggleSelectedPlace();
+                    _this.toggleAddButton();
+                    _this.searchResults([]);
             };
 
             this.searchAddress = function(value) {
@@ -39,14 +44,18 @@ define([
             };
 
             this.addPlace = function() {
-                var position = { lat: _this.selectedPlace().geometry.location.lat(), lng: _this.selectedPlace().geometry.location.lng() };
-                var place = { name: _this.name(), address: _this.selectedPlace().formatted_address, position: position };
-                _this.map.addMarker(place);
-                _this.places.push(place);
-                _this.toggleAddressSearch();
-                _this.resetSearchView();
-                _this.name('');
-                _this.query('');
+                if(_this.name()){
+                    _this.nameRequestVisible(false);
+                    var place = { name: _this.name(), address: _this.selectedPlace().formatted_address, lat: _this.selectedPlace().geometry.location.lat(), lng: _this.selectedPlace().geometry.location.lng() };
+                    _this.map.addMarker(place);
+                    _this.places.push(place);
+                    _this.toggleAddressSearch();
+                    _this.resetSearchView();
+                    _this.name('');
+                    _this.query('');
+                }else{
+                _this.nameRequestVisible(true);
+            }
             };
 
             this.removePlace = function() {
@@ -76,6 +85,7 @@ define([
             };
 
             this.resetSearchView = function() {
+                _this.nameRequestVisible(false);
                 _this.toggleSearchInput();
                 _this.toggleSelectedPlace();
                 _this.toggleAddButton();

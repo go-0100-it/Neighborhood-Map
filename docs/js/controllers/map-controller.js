@@ -14,6 +14,7 @@ define([
     ) {
         var Map = function() {
             var _this = this;
+            this.searching = false;
             this.init = function(places) {
                 if (typeof google === 'object' && typeof google.maps === 'object') {
                     _this.map = {};
@@ -68,7 +69,7 @@ define([
             this.addMarker = function(place, i) {
                 i = i ? i : 1;
                 var marker = new google.maps.Marker({
-                    position: place.position,
+                    position: { lat: place.lat , lng: place.lng },
                     title: place.name,
                     animation: google.maps.Animation.DROP
                 });
@@ -77,9 +78,9 @@ define([
                 var infowindow = new google.maps.InfoWindow({
                     content: '<div>' +
                         '<h1>' + place.name + '</h1>' +
-                        '<img id="info-img" src="https://maps.googleapis.com/maps/api/streetview?size=400x200&location=' + place.position.lat + ', ' + place.position.lng + '&heading=151.78&pitch=-0.76&key=AIzaSyBSpWUS_wBjBq5kXfnbQO19ewpQPdStRDg">' +
+                        '<img id="info-img" src="https://maps.googleapis.com/maps/api/streetview?size=400x200&location=' + place.lat + ', ' + place.lng + '&heading=151.78&pitch=-0.76&key=AIzaSyBSpWUS_wBjBq5kXfnbQO19ewpQPdStRDg">' +
                         '<h3>' + place.address + '</h3>' +
-                        '<h3>Latitude: ' + place.position.lat + '&nbsp&nbsp Longitude: ' + place.position.lng + '</h3>' +
+                        '<h3>Latitude: ' + place.lat + '&nbsp&nbsp Longitude: ' + place.lng + '</h3>' +
                         '<button type="submit" class="map-info-btn" id="infoWin-' + i + '">Get Info</button>' +
                         '</div>',
                     place: place,
@@ -95,7 +96,7 @@ define([
                             $('#infoWin-' + _i).click(function() {
                                 $('#map-container-view').hide();
                                 $('#container-view').show();
-                                Backbone.history.navigate('#news/' + _infowindow.place.name + '/' + _infowindow.place.address + '/' + _infowindow.place.position, { trigger: true });
+                                Backbone.history.navigate('#events/' + _infowindow.place.name + '/' + _infowindow.place.address + '/' + _infowindow.place.lat + '/' +_infowindow.place.lng, { trigger: true });
                             });
                             _infowindow.clickListenerAdded = true;
                         }
@@ -115,12 +116,13 @@ define([
             };
 
             this.centerOnLocation = function(place) {
-                requestedLocation = new google.maps.LatLng(place.position.lat, place.position.lng);
+                requestedLocation = new google.maps.LatLng({lat: place.lat, lng: place.lng});
                 _this.map.panTo(requestedLocation);
             };
 
             this.searchAddress = function(value, searchResults) {
-                if (typeof google === 'object' && typeof google.maps === 'object') {
+                if (typeof google === 'object' && typeof google.maps === 'object' && !_this.searching) {
+                    _this.searching = true;
                     var geocoder = new google.maps.Geocoder();
                     searchResults([]);
                     //var location = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY';
@@ -131,7 +133,7 @@ define([
                                 if (i < 5) {
                                     searchResults.push(result);
                                 }
-                                i++;
+                                i += 1;
                             });
                         } else {
                             console.log('Geocode was not successful. Status Code: ' + status);
@@ -142,6 +144,7 @@ define([
                 } else {
                     console.log("Google's Geocoder API is currently unavailable.");
                 }
+                _this.searching = false;
             };
         };
         return Map;

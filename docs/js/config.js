@@ -14,10 +14,12 @@ requirejs.config({
         knockout: 'libs/knockout.min',
         app: 'app',
         util: 'util',
+        events_API: 'http://api.eventful.com/js/api',
 
         /*Controllers*/
         main_controller: 'controllers/main-controller',
         map_controller: 'controllers/map-controller',
+        data_controller: 'controllers/data-controller',
 
         /*ViewsModels*/
         drawer_list_view_model: 'view-models/drawer-list-view-model',
@@ -54,7 +56,7 @@ requirejs([
     'util'
 
 ], function($, _, bb, ko, tpl) {
-    tpl.loadTemplates(['drawer-list-view-tpl', 'map', 'tabs-view', 'news-view', 'events-view', 'weather-view', 'real-estate-view'], function() {
+    tpl.loadTemplates(['drawer-list-view', 'map', 'tabs-view', 'news-view', 'events-view', 'weather-view', 'real-estate-view'], function() {
         require(['app'], function(app) {
             app.initialize();
         });

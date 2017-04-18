@@ -6,12 +6,12 @@ define([
         'router'
     ],
     function($, Backbone, _, ko) {
-        var EventsListViewModel = function(place) {
+        var EventsListViewModel = function(place, data) {
             var _this = this;
             this.name = ko.observable(place.name);
             this.address = ko.observable(place.address);
-            this.position = ko.observable(place.position);
-            this.api_key = '2J8Xh6BQhcPvkQCd';
+            this.lat = ko.observable(place.lat);
+            this.lng = ko.observable(place.lng);
 
             return this;
         };
