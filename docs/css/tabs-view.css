@@ -37,6 +37,7 @@ ul.tabs li.current {
 }
 
 .tabs-container {
+    position: fixed;
     box-sizing: border-box;
     width: 100%;
     padding: 0px;

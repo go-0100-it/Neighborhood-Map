@@ -52,11 +52,14 @@ define([
                             { name: 'Center Island Toronto', address: 'Toronto, ON M5J 2V3, Canada', lat: 43.623409, lng: -79.368683 },
                             { name: 'Home for sale', address: '42 Chaucer Pl, Woodstock, Ontario', lat: 43.123772, lng: -80.728070 }
                         ];
-
                         _this.map = new Map();
                         _this.map.init(_this.places);
                         // creating a new Backbone collection and passing it to the DrawerListViewModel to create an observable collection 
-                        _this.placesViewModel = new DrawerListViewModel(_this.places, _this.map);
+                        _this.placesViewModel = new DrawerListViewModel(_this.places);
+                        _this.placesViewModel.map = _this.map;
+                        _this.placesViewModel.updatePlacesData = function(place){
+                            DataController.updatePlacesData(place);
+                        };
                         ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
                     }
                 });
@@ -89,7 +92,7 @@ define([
             this.renderView = function(args, data) {
                 _this[args[0]] = new(args[1])().render();
                 console.log(data);
-                _this[args[2]] = new args[3]({ name: args[5].name, address: args[5].address, lat: args[5].lat, lng: args[5].lng });
+                _this[args[2]] = new args[3]({ name: args[5].name, address: args[5].address, lat: args[5].lat, lng: args[5].lng }, data);
                 if (!!!ko.dataFor($(args[4])[0])) {
                     ko.applyBindings(_this[args[2]], $(args[4])[0]);
                 }

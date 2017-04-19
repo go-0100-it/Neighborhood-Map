@@ -28,7 +28,7 @@ define([
                     // Note: this relies on the custom toString() methods below
                     func(oData);
                 });
-            }
+            };
             this.getEventsDataList = function(func, args) {
                 var newDate = new Date();
                 var formattedMonthStart = ((newDate.getMonth() + 1) < 10) ? ('0' + (newDate.getMonth() + 1)) : (newDate.getMonth() + 1);
@@ -44,14 +44,18 @@ define([
                     where: where,
                     within: 10,
                     "date": startDate + '-' + endDate,
-                    page_size: 10,
-                    sort_order: "popularity",
+                    page_size: 40,
+                    sort_order: "date",
+                    sort_direction: 'ascending'
                 };
                 EVDB.API.call("/events/search", oArgs, function(oData) {
                     // Note: this relies on the custom toString() methods below
                     func(args, oData);
                 });
-            }
+            };
+            this.updatePlacesData = function(place){
+                console.log('Place: ' + place);
+            };
         };
         return new DataController();
     });

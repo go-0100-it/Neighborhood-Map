@@ -125,7 +125,6 @@ define([
                     _this.searching = true;
                     var geocoder = new google.maps.Geocoder();
                     searchResults([]);
-                    //var location = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY';
                     geocoder.geocode({ 'address': value }, function(results, status) {
                         if (status == 'OK' && value !== '' && value !== ' ') {
                             var i = 0;

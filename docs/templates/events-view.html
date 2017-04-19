@@ -2,4 +2,26 @@
     <h1 class="events-span">LOCAL EVENTS</h1>
     <h3 data-bind="text: name"></h3>
     <h4 data-bind="text: address"></h4>
+    <div class="tab-list-container">
+        <ul class="tab-list" data-bind="foreach: { data: events, as: 'event' }">
+            <li class="tab-list-item">
+                <div class="tab-list-item-container">
+                    <div class="tab-list-item-img">
+                        <img class="item-img" data-bind="attr: { src: event.image !== null ? event.image.medium.url : 'res/images/placeholder.png' }" >
+                    </div>
+                    <h2 class="event-title" data-bind="text: event.title"></h2>
+                    <h3 class="event-time" data-bind="text: event.start_time"></h3>
+                    <p class="event-desc" data-bind="text: event.description"></p>
+                    <h3 class="venue-title">Venue</h3>
+                    <p class="event-venue" data-bind="text: event.venue_name"></p>
+                    <p class="venue-addr" data-bind="text: event.venue_address"></p>
+                    <p class="venue-city" data-bind="text: event.venue_city"></p>
+                </div>
+            </li>
+            <br>
+            <br>
+            <br>
+            <br>
+        </ul>
+    </div>
 </div>

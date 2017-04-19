@@ -5,9 +5,8 @@ define([
         'knockout'
     ],
     function($, Backbone, _, ko) {
-        var DrawerListViewModel = function(places, Map) {
+        var DrawerListViewModel = function(places) {
             var _this = this;
-            this.map = Map;
             this.name = ko.observable();
             this.name.subscribe(function(){
                 _this.nameRequestVisible(false);
@@ -49,13 +48,14 @@ define([
                     var place = { name: _this.name(), address: _this.selectedPlace().formatted_address, lat: _this.selectedPlace().geometry.location.lat(), lng: _this.selectedPlace().geometry.location.lng() };
                     _this.map.addMarker(place);
                     _this.places.push(place);
+                    _this.updatePlacesData(place);
                     _this.toggleAddressSearch();
                     _this.resetSearchView();
                     _this.name('');
                     _this.query('');
                 }else{
-                _this.nameRequestVisible(true);
-            }
+                    _this.nameRequestVisible(true);
+                }
             };
 
             this.removePlace = function() {

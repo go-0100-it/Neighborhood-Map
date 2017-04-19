@@ -12,7 +12,7 @@ define([
             this.address = ko.observable(place.address);
             this.lat = ko.observable(place.lat);
             this.lng = ko.observable(place.lng);
-
+            this.events = ko.observableArray(data.events.event);
             return this;
         };
         return EventsListViewModel;
