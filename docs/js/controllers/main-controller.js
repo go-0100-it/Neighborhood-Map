@@ -42,7 +42,7 @@ define([
             // collection is changed.
             this.renderDrawerListView = function() {
                 require(['drawer_list_view_model', 'drawer_list_view', 'map_controller'], function(DrawerListViewModel, DrawerListView, Map) {
-                    if(!_this.drawerListView){
+                    if (!_this.drawerListView) {
                         _this.drawerListView = new DrawerListView().render();
 
                         // creating an array of new Backbone models for the individual items of the collection.
@@ -66,27 +66,28 @@ define([
                 $('#container-view').show();
                 $('#map-container-view').hide();
                 var args = ['tabsView', TabsView, 'tabsViewModel', TabsViewModel, '#tabs-container', place];
-                _this.renderView(args, 'Hello');
-           
-                switch(view) {
+                _this.renderView(args, { lat: 'Hello', lng: 'World' });
+
+                switch (view) {
                     case 'news':
-                        var args = ['newsView', NewsView, 'newsListViewModel', NewsListViewModel, '#news-view', place];
+                        args = ['newsView', NewsView, 'newsListViewModel', NewsListViewModel, '#news-view', place];
                         _this.renderView(args);
-                    break;
+                        break;
                     case 'events':
-                        var args = ['eventsView', EventsView, 'eventsListViewModel', EventsListViewModel, '#events-view', place];
+                        console.log('Calling events');
+                        args = ['eventsView', EventsView, 'eventsListViewModel', EventsListViewModel, '#events-view', place];
                         DataController.getEventsDataList(_this.renderView, args);
-                    break;
+                        break;
                     case 'weather':
                         _this.renderView('weatherView', WeatherView, 'weatherListViewModel', WeatherListViewModel, '#weather-view', place);
-                    break;
+                        break;
                     case 'real-estate':
                         _this.renderView('realEstateView', RealEstateView, 'realEstateViewModel', RealEstateListViewModel, '#real-estate-view', place);
-                    break;
+                        break;
                 };
             };
             this.renderView = function(args, data) {
-                _this[args[0]] = new (args[1])().render();
+                _this[args[0]] = new(args[1])().render();
                 console.log(data);
                 _this[args[2]] = new args[3]({ name: args[5].name, address: args[5].address, lat: args[5].lat, lng: args[5].lng });
                 if (!!!ko.dataFor($(args[4])[0])) {

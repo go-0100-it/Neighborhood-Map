@@ -14,10 +14,10 @@ define(['jquery', 'main_controller'],
                 // Calls the home method when there is no hashtag on the url
                 '': 'places',
                 'places': 'places',
-                'news/:name/:address/:position': 'news',
-                'events/:name/:address/:position': 'events',
-                'weather/:name/:address/:position': 'weather',
-                'real-estate/:name/:address/:position': 'real-estate'
+                'news/:name/:address/:lat/:lng': 'news',
+                'events/:name/:address/:lat/:lng': 'events',
+                'weather/:name/:address/:lat/:lng': 'weather',
+                'real-estate/:name/:address/:lat/:lng': 'real-estate'
             },
 
             'places': function() {
@@ -28,7 +28,7 @@ define(['jquery', 'main_controller'],
             },
 
             'news': function(name, address, position) {
-                var obj = { name: name, address: address, position: position };
+                var obj = { name: name, address: address, lat: lat, lng: lng };
                 MainController.renderTabsView(obj, 'news');
 
             },
@@ -38,12 +38,12 @@ define(['jquery', 'main_controller'],
 
             },
             'weather': function(name, address, position) {
-                var obj = { name: name, address: address, position: position };
+                var obj = { name: name, address: address, lat: lat, lng: lng };
                 MainController.renderTabsView(obj, 'weather');
 
             },
             'real-estate': function(name, address, position) {
-                var obj = { name: name, address: address, position: position };
+                var obj = { name: name, address: address, lat: lat, lng: lng };
                 MainController.renderTabsView(obj, 'real-estate');
 
             },

@@ -18,27 +18,33 @@ define([
         var DataController = function() {
             var _this = this;
             this.eventsApiKey = '2J8Xh6BQhcPvkQCd';
-            this.getEventData = function (func) {
+            this.getEventData = function(func) {
                 var oArgs = {
-                            app_key: _this.eventsApiKey,
-                            id: "20218701",
-                            page_size: 25 ,
+                    app_key: _this.eventsApiKey,
+                    id: "20218701",
+                    page_size: 25,
                 };
                 EVDB.API.call("/events/get", oArgs, function(oData) {
-                // Note: this relies on the custom toString() methods below
+                    // Note: this relies on the custom toString() methods below
                     func(oData);
                 });
             }
             this.getEventsDataList = function(func, args) {
-                var where = args[5].lat+','+args[5].lng;
-                console.dir(args[5]+','+args[5]);
+                var newDate = new Date();
+                var formattedMonthStart = ((newDate.getMonth() + 1) < 10) ? ('0' + (newDate.getMonth() + 1)) : (newDate.getMonth() + 1);
+                var startDate = newDate.getFullYear() + formattedMonthStart + newDate.getDate() + '00';
+                var formattedMonthEnd = ((newDate.getMonth() + 1) < 10) ? ('0' + (newDate.getMonth() + 1)) : (newDate.getMonth() + 1);
+                var endDate = (newDate.getFullYear() + 1) + formattedMonthEnd + newDate.getDate() + '00';
+                console.log(startDate);
+                var where = args[5].lat + ',' + args[5].lng;
+                console.dir(args[5] + ',' + args[5]);
                 var oArgs = {
                     app_key: _this.eventsApiKey,
                     q: "events",
-                    where: where, 
-                    within: 5,
-                    "date": "2015061000-2017122000",
-                    page_size: 5,
+                    where: where,
+                    within: 10,
+                    "date": startDate + '-' + endDate,
+                    page_size: 10,
                     sort_order: "popularity",
                 };
                 EVDB.API.call("/events/search", oArgs, function(oData) {
