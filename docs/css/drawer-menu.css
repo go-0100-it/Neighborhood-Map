@@ -2,8 +2,13 @@
     height: 1px;
 }
 
-.drawer-menu-container {
+#drawer-menu-container {
     position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    max-height: 75vh;
 }
 
 .drawer-menu {
@@ -14,6 +19,7 @@
     right: 0;
     z-index: 15;
     width: 450px;
+    height: 100%;
     opacity: 0.98;
     overflow: auto;
     background: #313030;
@@ -225,6 +231,7 @@
 
 @media only screen and (max-width: 500px) {
     .drawer-menu {
+        position: fixed;
         width: 290px;
     }
     .drawer-menu-header {
