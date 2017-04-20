@@ -2,7 +2,7 @@
     height: 1px;
 }
 
-ul.tabs {
+#tabs {
     box-sizing: border-box;
     margin: 0px;
     padding: 0px;
@@ -11,17 +11,16 @@ ul.tabs {
     list-style: none;
 }
 
-ul.tabs li {
-    background: none;
+.tab-link {
     color: #222;
     display: inline-block;
-    padding: 10px 0;
+    padding: 20px 0;
     margin: 0px;
-    width: 25%;
+    width: 33.3%;
     cursor: pointer;
 }
 
-ul.tabs li.current {
+.tab-link.current {
     background: #ededed;
     color: #222;
 }
@@ -32,12 +31,16 @@ ul.tabs li.current {
     padding: 15px;
 }
 
+.tab-container {
+    margin-top: 205px;
+}
+
 .tab-content.current {
     display: inherit;
 }
 
 .tabs-container {
-    position: fixed;
+    position: relative;
     box-sizing: border-box;
     width: 100%;
     padding: 0px;
@@ -46,5 +49,33 @@ ul.tabs li.current {
 .tab-view-container {
     width: 65%;
     margin: 0 auto;
-    padding-top: 100px;
+    padding-top: 80px;
+}
+
+#places-info {
+    -webkit-box-shadow: 4px 0px 9px -2px rgba(133, 129, 129, 1);
+    -moz-box-shadow: 4px 0px 9px -2px rgba(133, 129, 129, 1);
+    box-shadow: 4px 0px 9px -2px rgba(133, 129, 129, 1);
+}
+
+.fixed-view {
+    position: fixed;
+    background: #ededed;
+    width: 65%;
+    height: 205px;
+    margin-top: 20px;
+}
+
+.tab-box-shadow-selected {
+    box-shadow: 4px -4px 9px 0px #858181;
+    -webkit-box-shadow: 4px -4px 9px 0px #858181;
+    -moz-box-shadow: 4px -4px 9px 0px #858181;
+    -o-box-shadow: 4px -4px 9px 0px #858181;
+}
+
+.tab-box-shadow {
+    box-shadow: inset 0px -16px 12px -14px #858181;
+    -webkit-box-shadow: inset 0px -16px 12px -14px #858181;
+    -moz-box-shadow: inset 0px -8px 10px -14px #858181;
+    -o-box-shadow: inset 0px -8px 10px -14px #858181;
 }

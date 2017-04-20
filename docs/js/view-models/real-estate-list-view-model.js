@@ -11,7 +11,6 @@ define([
             this.name = ko.observable(place.name);
             this.address = ko.observable(place.address);
             this.position = ko.observable(place.position);
-
             return this;
         };
         return RealEstateListViewModel;

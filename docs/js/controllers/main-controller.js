@@ -7,8 +7,6 @@ define([
         'knockout',
         'tabs_view_model',
         'tabs_view',
-        'news_list_view_model',
-        'news_view',
         'events_list_view_model',
         'events_view',
         'weather_list_view_model',
@@ -24,8 +22,6 @@ define([
         ko,
         TabsViewModel,
         TabsView,
-        NewsListViewModel,
-        NewsView,
         EventsListViewModel,
         EventsView,
         WeatherListViewModel,
@@ -57,7 +53,7 @@ define([
                         // creating a new Backbone collection and passing it to the DrawerListViewModel to create an observable collection 
                         _this.placesViewModel = new DrawerListViewModel(_this.places);
                         _this.placesViewModel.map = _this.map;
-                        _this.placesViewModel.updatePlacesData = function(place){
+                        _this.placesViewModel.updatePlacesData = function(place) {
                             DataController.updatePlacesData(place);
                         };
                         ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
@@ -70,12 +66,7 @@ define([
                 $('#map-container-view').hide();
                 var args = ['tabsView', TabsView, 'tabsViewModel', TabsViewModel, '#tabs-container', place];
                 _this.renderView(args, { lat: 'Hello', lng: 'World' });
-
                 switch (view) {
-                    case 'news':
-                        args = ['newsView', NewsView, 'newsListViewModel', NewsListViewModel, '#news-view', place];
-                        _this.renderView(args);
-                        break;
                     case 'events':
                         console.log('Calling events');
                         args = ['eventsView', EventsView, 'eventsListViewModel', EventsListViewModel, '#events-view', place];
@@ -87,7 +78,7 @@ define([
                     case 'real-estate':
                         _this.renderView('realEstateView', RealEstateView, 'realEstateViewModel', RealEstateListViewModel, '#real-estate-view', place);
                         break;
-                };
+                }
             };
             this.renderView = function(args, data) {
                 _this[args[0]] = new(args[1])().render();

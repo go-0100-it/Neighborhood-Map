@@ -1,12 +1,18 @@
 <div class="tab-view-container" id="tabs-view">
     <div class="tabs-container" id="tabs-container">
         <div class="map-icon-container" id="map-icon-container"><img id="map-icon" data-bind="click: onClickMapIcon" src="res/images/maps-icon.png" alt="Map icon"></div>
-        <ul class="tabs">
-            <li class="tab-link" data-bind="click: onClickNewsTab">Local News</li>
-            <li class="tab-link" data-bind="click: onClickWeatherTab">Local Weather</li>
-            <li class="tab-link" data-bind="click: onClickEventsTab">Local Events</li>
-            <li class="tab-link" data-bind="click: onClickRealEstateTab">Local Real-estate</li>
-        </ul>
+        <div class="fixed-view">
+            <ul class="tabs" id="tabs">
+                <li class="tab-link tab-box-shadow-selected" data-bind="click: onClickWeatherTab">Local Weather</li>
+                <li class="tab-link tab-box-shadow" data-bind="click: onClickEventsTab">Local Events</li>
+                <li class="tab-link tab-box-shadow" data-bind="click: onClickRealEstateTab">Local Real-estate</li>
+            </ul>
+            <div class="place-info-container" id="places-info">
+                <h1 class="events-span">LOCAL EVENTS</h1>
+                <h3 data-bind="text: name"></h3>
+                <h4 data-bind="text: address"></h4>
+            </div>
+        </div>
     </div>
     <div class="tab-container" id="tab-container">
     </div>
