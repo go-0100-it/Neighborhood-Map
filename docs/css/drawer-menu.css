@@ -4,15 +4,15 @@
 
 #drawer-menu-container {
     position: fixed;
-    max-height: 75vh;
+    max-height: 100vh;
 }
 
 .drawer-menu {
-    /*position: fixed;
+    position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
-    right: 0;*/
+    right: 0;
     z-index: 10;
     width: 450px;
     height: 100%;
