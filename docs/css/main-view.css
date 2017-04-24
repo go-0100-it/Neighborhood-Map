@@ -4,7 +4,53 @@
 
 body {
     margin: 0;
+    text-align: center;
 }
 
+.main-spinner {
+    width: 5vw;
+}
 
+.tabs-spinner {
+    width: 5vw;
+}
 
+.drawer-spinner {
+    width: 3.5vw;
+}
+
+.container {
+    position: absolute;
+    width: 100%;
+    top: 70px;
+    left: 0;
+}
+
+.container-view {
+    width: 65%;
+    margin: 0 auto;
+}
+
+.spinner-container {
+    width: 100%;
+    margin: 30vh auto;
+}
+
+@media only screen and (max-width: 500px) {
+    .container-view {
+        width: 100%;
+        margin: 0;
+    }
+    .main-spinner {
+        width: 20vw;
+    }
+    .drawer-spinner {
+        width: 15vw;
+    }
+    .tabs-spinner {
+        width: 20vw;
+    }
+    .spinner-container {
+        margin-top: 25vh;
+    }
+}

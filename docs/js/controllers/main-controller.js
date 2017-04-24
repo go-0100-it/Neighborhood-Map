@@ -38,6 +38,7 @@ define([
             // collection is changed.
             this.renderDrawerListView = function() {
                 require(['drawer_list_view_model', 'drawer_list_view', 'map_controller'], function(DrawerListViewModel, DrawerListView, Map) {
+
                     if (!_this.drawerListView) {
                         _this.drawerListView = new DrawerListView().render();
 
@@ -71,6 +72,7 @@ define([
                         console.log('Calling events');
                         args = ['eventsView', EventsView, 'eventsListViewModel', EventsListViewModel, '#events-view', place];
                         DataController.getEventsDataList(_this.renderView, args);
+                        DataController.getEventData("E0-001-101055873-5", function(data) { console.dir(data); });
                         break;
                     case 'weather':
                         _this.renderView('weatherView', WeatherView, 'weatherListViewModel', WeatherListViewModel, '#weather-view', place);

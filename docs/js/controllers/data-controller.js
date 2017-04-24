@@ -18,11 +18,11 @@ define([
         var DataController = function() {
             var _this = this;
             this.eventsApiKey = '2J8Xh6BQhcPvkQCd';
-            this.getEventData = function(func) {
+            this.getEventData = function(id, func) {
                 var oArgs = {
                     app_key: _this.eventsApiKey,
-                    id: "20218701",
-                    page_size: 25,
+                    id: id,
+                    page_size: 1,
                 };
                 EVDB.API.call("/events/get", oArgs, function(oData) {
                     // Note: this relies on the custom toString() methods below
@@ -53,7 +53,7 @@ define([
                     func(args, oData);
                 });
             };
-            this.updatePlacesData = function(place){
+            this.updatePlacesData = function(place) {
                 console.log('Place: ' + place);
             };
         };

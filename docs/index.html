@@ -3,7 +3,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js">
+<html>
 <!--<![endif]-->
 
 <head>
@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="css/drawer-menu.css">
     <link rel="stylesheet" type="text/css" href="css/main-view.css">
     <link rel="stylesheet" type="text/css" href="css/tabs-view.css">
+    <link rel="stylesheet" type="text/css" href="css/events-view.css">
     <link rel="stylesheet" type="text/css" href="css/map.css">
     <script data-main="js/config" src="js/require.min.js"></script>
 </head>
@@ -25,14 +26,21 @@
     <nav class="nav-bar" id="nav">
         <div class="drawer-menu-contaier" id="drawer-menu-container">
             <input type="checkbox" name="checkme" id="drawer-menu-check">
-            <div class="drawer-menu" id="drawer-menu"></div>
+            <div class="drawer-menu" id="drawer-menu">
+                <div class="spinner-container">
+                    <img class="drawer-spinner" src="res/images/loading-11.gif" />
+                </div>
+            </div>
             <label for="drawer-menu-check" class="drawer-toggler"><span class="drawer-menu-span">≡</span></label>
         </div>
     </nav>
     <div class="container">
-        <div class="app-title-container"></div>
-            <div class="container-view" id="container-view"></div>
-            <div class="map-container-view" id="map-container-view"></div>
+        <div class="container-view" id="container-view">
+            <div class="spinner-container">
+                <img class="main-spinner" src="res/images/loading-11.gif" />
+            </div>
+        </div>
+        <div class="map-container-view" id="map-container-view"> </div>
     </div>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcqT6Cvr1Qr7B3BqhkinjManD4gywWGHA" async defer></script>
 </body>
