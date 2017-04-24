@@ -59,6 +59,7 @@ define([
                         };
                         ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
                     }
+                    _this.map.rerenderMap(_this.places[0]);
                 });
             };
             this.renderTabsView = function(place, view) {
@@ -75,17 +76,25 @@ define([
                         DataController.getEventData("E0-001-101055873-5", function(data) { console.dir(data); });
                         break;
                     case 'weather':
-                        _this.renderView('weatherView', WeatherView, 'weatherListViewModel', WeatherListViewModel, '#weather-view', place);
+                        console.log('Calling weather');
+                        args = ['weatherView', WeatherView, 'weatherListViewModel', WeatherListViewModel, '#weather-view', place];
+                        _this.renderView(args, { Page: 'Weather' });
                         break;
                     case 'real-estate':
-                        _this.renderView('realEstateView', RealEstateView, 'realEstateViewModel', RealEstateListViewModel, '#real-estate-view', place);
+                        console.log('Calling real-estate');
+                        args = ['realEstateView', RealEstateView, 'realEstateViewModel', RealEstateListViewModel, '#real-estate-view', place];
+                        _this.renderView(args, { Page: 'Real-Estate' });
                         break;
                 }
             };
             this.renderView = function(args, data) {
                 _this[args[0]] = new(args[1])().render();
                 console.log(data);
-                _this[args[2]] = new args[3]({ name: args[5].name, address: args[5].address, lat: args[5].lat, lng: args[5].lng }, data);
+                if (!_this[args[2]]) {
+                    _this[args[2]] = new args[3]({ name: args[5].name, address: args[5].address, lat: args[5].lat, lng: args[5].lng }, data);
+                } else {
+                    _this[args[2]].place = args[5];
+                }
                 if (!!!ko.dataFor($(args[4])[0])) {
                     ko.applyBindings(_this[args[2]], $(args[4])[0]);
                 }

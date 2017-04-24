@@ -19,10 +19,10 @@ define([
                 if (typeof google === 'object' && typeof google.maps === 'object') {
                     _this.map = {};
                     var mapView = new MapView().render();
-                    var uluru = { lat: 43.6898244, lng: -79.61650999999999 };
+                    var firstPlace = { lat: places[0].lat, lng: places[0].lng };
                     _this.map = new google.maps.Map(document.getElementById('map'), {
                         zoom: 8,
-                        center: uluru
+                        center: firstPlace
                     });
 
                     _this.initMarkers(places);
@@ -32,6 +32,11 @@ define([
                     //Do something else because Google maps is unavailable
                     alert("Google's Maps API is currently unavailable");
                 }
+            };
+
+            this.rerenderMap = function(place) {
+                google.maps.event.trigger(_this.map, 'resize');
+                _this.centerOnLocation(place);
             };
 
             this.toggleMarker = function(_infowindow, _map, _marker, _place) {
@@ -69,7 +74,7 @@ define([
             this.addMarker = function(place, i) {
                 i = i ? i : 1;
                 var marker = new google.maps.Marker({
-                    position: { lat: place.lat , lng: place.lng },
+                    position: { lat: place.lat, lng: place.lng },
                     title: place.name,
                     animation: google.maps.Animation.DROP
                 });
@@ -96,7 +101,7 @@ define([
                             $('#infoWin-' + _i).click(function() {
                                 $('#map-container-view').hide();
                                 $('#container-view').show();
-                                Backbone.history.navigate('#events/' + _infowindow.place.name + '/' + _infowindow.place.address + '/' + _infowindow.place.lat + '/' +_infowindow.place.lng, { trigger: true });
+                                Backbone.history.navigate('#events/' + _infowindow.place.name + '/' + _infowindow.place.address + '/' + _infowindow.place.lat + '/' + _infowindow.place.lng, { trigger: true });
                             });
                             _infowindow.clickListenerAdded = true;
                         }
@@ -116,7 +121,7 @@ define([
             };
 
             this.centerOnLocation = function(place) {
-                requestedLocation = new google.maps.LatLng({lat: place.lat, lng: place.lng});
+                requestedLocation = new google.maps.LatLng({ lat: place.lat, lng: place.lng });
                 _this.map.panTo(requestedLocation);
             };
 

@@ -24,19 +24,18 @@ define(['jquery', 'main_controller'],
                 MainController.renderDrawerListView();
                 $('#container-view').hide();
                 $('#map-container-view').show();
-                google.maps.event.trigger(MainController.map, 'resize');
             },
             'events': function(name, address, lat, lng) {
                 var obj = { name: name, address: address, lat: lat, lng: lng };
                 MainController.renderTabsView(obj, 'events');
 
             },
-            'weather': function(name, address, position) {
+            'weather': function(name, address, lat, lng) {
                 var obj = { name: name, address: address, lat: lat, lng: lng };
                 MainController.renderTabsView(obj, 'weather');
 
             },
-            'real-estate': function(name, address, position) {
+            'real-estate': function(name, address, lat, lng) {
                 var obj = { name: name, address: address, lat: lat, lng: lng };
                 MainController.renderTabsView(obj, 'real-estate');
 

@@ -36,7 +36,7 @@ body {
     margin: 30vh auto;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 600px) {
     .container-view {
         width: 100%;
         margin: 0;

@@ -11,8 +11,66 @@
     width: 5vw;
 }
 
-@media only screen and (max-width: 500px) {
+
+/* Add a black background color to the top navigation */
+
+.tabs {
+    background-color: #333;
+    overflow: hidden;
+}
+
+
+/* Style the links inside the navigation bar */
+
+.tabs li {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+
+/* Change the color of links on hover */
+
+.tabs li:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+
+/* Hide the link that should open and close the topnav on small screens */
+
+.tabs .icon {
+    display: none;
+}
+
+@media only screen and (max-width: 600px) {
     .tabs-spinner {
         width: 20vw;
+    }
+    /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+    .tabs li:not(:first-child) {
+        display: none;
+    }
+    .tabs li.icon {
+        float: right;
+        display: block;
+    }
+    /* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+    .tabs.responsive {
+        position: relative;
+    }
+    .tabs.responsive li.icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+    .tabs.responsive li {
+        float: none;
+        display: block;
+        text-align: left;
     }
 }
