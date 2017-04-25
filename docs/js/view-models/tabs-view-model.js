@@ -15,11 +15,11 @@ define([
             this.lat = ko.observable(place.lat);
             this.lng = ko.observable(place.lng);
             this.expandTabsMenu = function() {
-                var x = document.getElementById("myTopnav");
-                if (x.className === "topnav") {
-                    x.className += " responsive";
+                var el = document.getElementById("tabs");
+                if (el.className === "tabs") {
+                    el.className += " responsive";
                 } else {
-                    x.className = "topnav";
+                    el.className = "tabs";
                 }
             };
             this.onClickWeatherTab = function() {

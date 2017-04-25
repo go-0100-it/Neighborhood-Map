@@ -181,6 +181,10 @@
     float: left;
 }
 
+.drawer-spinner {
+    width: 3.5vw;
+}
+
 .drawer-list-item:hover {
     color: rgba(255, 255, 255, 0.5);
     background: #505050;
@@ -270,6 +274,9 @@
         top: 5px;
         left: 265px;
         font-size: 30px;
+    }
+    .drawer-spinner {
+        width: 15vw;
     }
     #drawer-menu-check:checked~.drawer-toggler {
         left: 5px;

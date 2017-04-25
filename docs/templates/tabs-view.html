@@ -3,16 +3,16 @@
         <div class="map-icon-container" id="map-icon-container"><img id="map-icon" data-bind="click: onClickMapIcon" src="res/images/maps-icon.png" alt="Map icon"></div>
         <div class="fixed-view">
             <ul class="tabs" id="tabs">
-                <li class="tab-link tab-box-shadow-selected" data-bind="click: onClickWeatherTab">Local Weather</li>
                 <li class="tab-link tab-box-shadow" data-bind="click: onClickEventsTab">Local Events</li>
+                <li class="tab-link tab-box-shadow" data-bind="click: onClickWeatherTab">Local Weather</li>
                 <li class="tab-link tab-box-shadow" data-bind="click: onClickRealEstateTab">Local Real-estate</li>
                 <li class="icon" data-bind="click: expandTabsMenu">&#9776;</li>
             </ul>
-            <div class="place-info-container" id="places-info">
-                <h1 class="events-span">LOCAL EVENTS</h1>
-                <h3 data-bind="text: name"></h3>
-                <h4 data-bind="text: address"></h4>
-            </div>
+        </div>
+        <div class="place-info-container" id="places-info">
+            <h1 class="events-span">LOCAL EVENTS</h1>
+            <h3 data-bind="text: name"></h3>
+            <h4 data-bind="text: address"></h4>
         </div>
     </div>
 </div>

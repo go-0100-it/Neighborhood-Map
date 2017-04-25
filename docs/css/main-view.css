@@ -11,18 +11,10 @@ body {
     width: 5vw;
 }
 
-.tabs-spinner {
-    width: 5vw;
-}
-
-.drawer-spinner {
-    width: 3.5vw;
-}
-
 .container {
     position: absolute;
     width: 100%;
-    top: 70px;
+    top: 139px;
     left: 0;
 }
 
@@ -37,17 +29,14 @@ body {
 }
 
 @media only screen and (max-width: 600px) {
+    .container {
+        top: 35px;
+    }
     .container-view {
         width: 100%;
         margin: 0;
     }
     .main-spinner {
-        width: 20vw;
-    }
-    .drawer-spinner {
-        width: 15vw;
-    }
-    .tabs-spinner {
         width: 20vw;
     }
     .spinner-container {
