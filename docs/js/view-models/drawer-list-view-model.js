@@ -23,7 +23,7 @@ define([
             this.places = ko.observableArray(places);
             this.onClick = function(place) {
                 var obj = { name: place.name, address: place.address, lat: place.lat, lng: place.lng };
-                $('#_this.map-container-view').hide();
+                $('#map-container-view').hide();
                 $('#container-view').show();
                 Backbone.history.navigate('#events/' + obj.name + '/' + obj.address + '/' + obj.lat + '/' + obj.lng, { trigger: true });
             };

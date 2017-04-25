@@ -67,13 +67,16 @@ define([
                 $('#container-view').show();
                 $('#map-container-view').hide();
                 var args = ['tabsView', TabsView, 'tabsViewModel', TabsViewModel, '#tabs-container', place];
-                _this.renderView(args, { lat: 'Hello', lng: 'World' });
+                if (!_this.tabsView) {
+                    _this.renderView(args, { lat: 'Hello', lng: 'World' });
+                } else {
+                    _this.tabsViewModel.updatePlaces(place);
+                }
                 switch (view) {
                     case 'events':
                         console.log('Calling events');
                         args = ['eventsView', EventsView, 'eventsListViewModel', EventsListViewModel, '#events-view', place];
                         DataController.getEventsDataList(_this.renderView, args);
-                        DataController.getEventData("E0-001-101055873-5", function(data) { console.dir(data); });
                         break;
                     case 'weather':
                         console.log('Calling weather');
@@ -90,11 +93,7 @@ define([
             this.renderView = function(args, data) {
                 _this[args[0]] = new(args[1])().render();
                 console.log(data);
-                if (!_this[args[2]]) {
-                    _this[args[2]] = new args[3]({ name: args[5].name, address: args[5].address, lat: args[5].lat, lng: args[5].lng }, data);
-                } else {
-                    _this[args[2]].place = args[5];
-                }
+                _this[args[2]] = new args[3]({ name: args[5].name, address: args[5].address, lat: args[5].lat, lng: args[5].lng }, data);
                 if (!!!ko.dataFor($(args[4])[0])) {
                     ko.applyBindings(_this[args[2]], $(args[4])[0]);
                 }
