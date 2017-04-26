@@ -38,6 +38,7 @@ define([
             // Returning function that can be called to create drawer menu items, creates a collection from created items and using knockout via 
             // knockback bridge to render list into the view. The list created is an observable collection (array).  This means knockout will dynamiclly update the UI when the 
             // collection is changed.
+            this.dataController = new DataController();
             this.renderDrawerListView = function() {
                 require(['drawer_list_view_model', 'drawer_list_view', 'map_controller'], function(DrawerListViewModel, DrawerListView, Map) {
 
@@ -55,10 +56,9 @@ define([
                         _this.map.init(_this.places);
                         // creating a new Backbone collection and passing it to the DrawerListViewModel to create an observable collection 
                         _this.placesViewModel = new DrawerListViewModel(_this.places);
-                        _this.placesViewModel.pendingDataRequest(true);
                         _this.placesViewModel.map = _this.map;
                         _this.placesViewModel.updatePlacesData = function(place) {
-                            DataController.updatePlacesData(place);
+                            _this.dataController.updatePlacesData(place);
                         };
                         ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
                     }
@@ -80,7 +80,7 @@ define([
                     case 'events':
                         console.log('Calling events');
                         args = ['eventsView', EventsView, 'eventsListViewModel', EventsListViewModel, '#events-view', place];
-                        DataController.getEventsDataList(_this.renderView, args);
+                        _this.dataController.getEventsDataList(_this.renderView, args);
                         break;
                     case 'weather':
                         console.log('Calling weather');

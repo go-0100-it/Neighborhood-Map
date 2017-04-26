@@ -17,7 +17,14 @@ define([
 
         var DataController = function() {
             var _this = this;
+            this.dataRequestCount = 0;
             this.eventsApiKey = '2J8Xh6BQhcPvkQCd';
+            this.callbackSync = function(func, args, data, callbackId){
+                if(callbackId === _this.dataRequestCount){
+                    func(args, data);
+                    _this.dataRequestCount = 0;
+                }
+            };
             this.getEventData = function(id, func) {
                 var oArgs = {
                     app_key: _this.eventsApiKey,
@@ -30,7 +37,8 @@ define([
                 });
             };
             this.getEventsDataList = function(func, args) {
-                this.prototype.callback = func;
+                _this.dataRequestCount += 1;
+                var callId = _this.dataRequestCount;
                 var newDate = new Date();
                 var formattedMonthStart = ((newDate.getMonth() + 1) < 10) ? ('0' + (newDate.getMonth() + 1)) : (newDate.getMonth() + 1);
                 var startDate = newDate.getFullYear() + formattedMonthStart + newDate.getDate() + '00';
@@ -50,8 +58,7 @@ define([
                     sort_direction: 'ascending'
                 };
                 EVDB.API.call("/events/search", oArgs, function(oData) {
-                    // Note: this relies on the custom toString() methods below
-                    this.callback(args, oData);
+                    _this.callbackSync(func, args, oData, callId)
                 });
             };
             this.updatePlacesData = function(place) {
@@ -59,5 +66,5 @@ define([
                 console.log('Place: ' + place);
             };
         };
-        return new DataController();
+        return DataController;
     });
