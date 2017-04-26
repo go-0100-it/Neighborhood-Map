@@ -9,11 +9,11 @@ define([
         var TabsViewModel = function(place) {
             var _this = this;
             console.log(place);
-            this.place = place;
-            this.name = ko.observable(this.place.name);
-            this.address = ko.observable(this.place.address);
-            this.lat = ko.observable(this.place.lat);
-            this.lng = ko.observable(this.place.lng);
+            this.place = ko.observable(place);
+            this.name = ko.observable(this.place().name);
+            this.address = ko.observable(this.place().address);
+            this.lat = ko.observable(this.place().lat);
+            this.lng = ko.observable(this.place().lng);
             this.expandTabsMenu = function() {
                 var el = document.getElementById("tabs");
                 if (el.className === "tabs") {
@@ -22,23 +22,26 @@ define([
                     el.className = "tabs";
                 }
             };
-            this.updatePlaces = function(place) {
-                this.name(place.name);
-                this.address(place.address);
-                this.lat(place.lat);
-                this.lng(place.lng);
-            };
+            this.place.subscribe(function() {
+                _this.name(_this.place().name);
+                _this.address(_this.place().address);
+                _this.lat(_this.place().lat);
+                _this.lng(_this.place().lng);
+            });
             this.onClickWeatherTab = function() {
-                Backbone.history.navigate('#weather/' + _this.name + '/' + _this.address + '/' + _this.place.lat + '/' + _this.place.lng, { trigger: true });
+                _this.navigateTab('weather');
             };
             this.onClickRealEstateTab = function() {
-                Backbone.history.navigate('#real-estate/' + _this.place.name + '/' + _this.place.address + '/' + _this.place.lat + '/' + _this.place.lng, { trigger: true });
+                _this.navigateTab('real-estate');
             };
             this.onClickEventsTab = function() {
-                Backbone.history.navigate('#events/' + _this.place.name + '/' + _this.place.address + '/' + _this.place.lat + '/' + _this.place.lng, { trigger: true });
+                _this.navigateTab('events');
             };
             this.onClickMapIcon = function() {
                 Backbone.history.navigate('#places', { trigger: true });
+            };
+            this.navigateTab = function(tab) {
+                Backbone.history.navigate('#' + tab + '/' + _this.name() + '/' + _this.address() + '/' + _this.lat() + '/' + _this.lng(), { trigger: true });
             };
             return this;
         };

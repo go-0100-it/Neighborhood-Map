@@ -5,6 +5,7 @@ define([
         'backbone',
         'underscore',
         'knockout',
+        'util',
         'tabs_view_model',
         'tabs_view',
         'events_list_view_model',
@@ -20,6 +21,7 @@ define([
         backbone,
         _,
         ko,
+        tpl,
         TabsViewModel,
         TabsView,
         EventsListViewModel,
@@ -53,6 +55,7 @@ define([
                         _this.map.init(_this.places);
                         // creating a new Backbone collection and passing it to the DrawerListViewModel to create an observable collection 
                         _this.placesViewModel = new DrawerListViewModel(_this.places);
+                        _this.placesViewModel.pendingDataRequest(true);
                         _this.placesViewModel.map = _this.map;
                         _this.placesViewModel.updatePlacesData = function(place) {
                             DataController.updatePlacesData(place);
@@ -63,14 +66,15 @@ define([
                 });
             };
             this.renderTabsView = function(place, view) {
-                this.renderDrawerListView();
+                _this.renderDrawerListView();
                 $('#container-view').show();
                 $('#map-container-view').hide();
                 var args = ['tabsView', TabsView, 'tabsViewModel', TabsViewModel, '#tabs-container', place];
                 if (!_this.tabsView) {
                     _this.renderView(args, { lat: 'Hello', lng: 'World' });
                 } else {
-                    _this.tabsViewModel.updatePlaces(place);
+                    _this.tabsViewModel.place(place);
+                    $('#tab-container').html(_.template(tpl.get('tabs-spinner-view')));
                 }
                 switch (view) {
                     case 'events':
@@ -92,7 +96,6 @@ define([
             };
             this.renderView = function(args, data) {
                 _this[args[0]] = new(args[1])().render();
-                console.log(data);
                 _this[args[2]] = new args[3]({ name: args[5].name, address: args[5].address, lat: args[5].lat, lng: args[5].lng }, data);
                 if (!!!ko.dataFor($(args[4])[0])) {
                     ko.applyBindings(_this[args[2]], $(args[4])[0]);

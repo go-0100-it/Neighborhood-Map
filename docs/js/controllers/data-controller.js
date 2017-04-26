@@ -30,6 +30,7 @@ define([
                 });
             };
             this.getEventsDataList = function(func, args) {
+                this.prototype.callback = func;
                 var newDate = new Date();
                 var formattedMonthStart = ((newDate.getMonth() + 1) < 10) ? ('0' + (newDate.getMonth() + 1)) : (newDate.getMonth() + 1);
                 var startDate = newDate.getFullYear() + formattedMonthStart + newDate.getDate() + '00';
@@ -50,10 +51,11 @@ define([
                 };
                 EVDB.API.call("/events/search", oArgs, function(oData) {
                     // Note: this relies on the custom toString() methods below
-                    func(args, oData);
+                    this.callback(args, oData);
                 });
             };
             this.updatePlacesData = function(place) {
+                //Use to add place to places data in firebase database
                 console.log('Place: ' + place);
             };
         };

@@ -2,9 +2,10 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'knockout'
+        'knockout',
+        'util'
     ],
-    function($, Backbone, _, ko) {
+    function($, Backbone, _, ko, tpl) {
         var DrawerListViewModel = function(places) {
             var _this = this;
             this.name = ko.observable();
@@ -23,8 +24,6 @@ define([
             this.places = ko.observableArray(places);
             this.onClick = function(place) {
                 var obj = { name: place.name, address: place.address, lat: place.lat, lng: place.lng };
-                $('#map-container-view').hide();
-                $('#container-view').show();
                 Backbone.history.navigate('#events/' + obj.name + '/' + obj.address + '/' + obj.lat + '/' + obj.lng, { trigger: true });
             };
             this.onSelectAddress = function(place) {

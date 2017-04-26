@@ -54,7 +54,7 @@ requirejs([
     'util'
 
 ], function($, _, bb, ko, tpl) {
-    tpl.loadTemplates(['drawer-list-view', 'map', 'tabs-view', 'events-view', 'weather-view', 'real-estate-view'], function() {
+    tpl.loadTemplates(['drawer-list-view', 'map', 'tabs-view', 'events-view', 'weather-view', 'real-estate-view', 'tabs-spinner-view'], function() {
         require(['app'], function(app) {
             app.initialize();
         });
