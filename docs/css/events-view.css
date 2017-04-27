@@ -6,3 +6,7 @@
     list-style: none;
     padding: 0;
 }
+
+.tab-list-container {
+    padding: 16px 20px;
+}
