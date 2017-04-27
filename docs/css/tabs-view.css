@@ -3,7 +3,16 @@
 }
 
 .place-info-container {
-    padding: 18px 10px;
+    box-sizing: border-box;
+    padding: 20px 10px;
+    width: 50%;
+    margin: 0 auto;
+    background-color: #fff
+}
+
+.tab-container {
+    width: 50%;
+    margin: 0 auto;
 }
 
 .fixed-view {
@@ -57,12 +66,24 @@
     .tabs li {
         font-size: 16px;
     }
+    .place-info-container {
+        width: 70%;
+    }
+    .tab-container {
+        width: 70%;
+    }
 }
 
 @media only screen and (max-width: 600px) {
     .fixed-view {
         width: 100%;
         top: 34px;
+    }
+    .place-info-container {
+        width: 100%;
+    }
+    .tab-container {
+        width: 100%;
     }
     .tabs-spinner {
         width: 20vw;

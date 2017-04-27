@@ -8,5 +8,15 @@
 }
 
 .tab-list-container {
-    padding: 16px 20px;
+    padding: 0 20px;
+}
+
+.tab-list-item {
+    display: block;
+    margin: 10px 0;
+    background-color: rgba(140, 140, 140, 0.96);
+}
+
+.tab-list-item-container {
+    padding: 20px 0 1px 0;
 }
