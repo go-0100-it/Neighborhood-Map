@@ -14,7 +14,8 @@ define([
         'weather_view',
         'real_estate_list_view_model',
         'real_estate_view',
-        'data_controller'
+        'data_controller',
+        'map_controller'
     ],
     function(
         $,
@@ -30,7 +31,8 @@ define([
         WeatherView,
         RealEstateListViewModel,
         RealEstateView,
-        DataController
+        DataController, 
+        Map
     ) {
 
         var Main = function() {
@@ -39,34 +41,48 @@ define([
             // knockback bridge to render list into the view. The list created is an observable collection (array).  This means knockout will dynamiclly update the UI when the 
             // collection is changed.
             this.dataController = new DataController();
+            this.map = new Map();
+            this.initDrawerListView = function(){
+                if (!_this.drawerListView) {
+                    _this.getPlacesData();
+                }else{
+                    _this.map.refreshMap(_this.places[0], _this.map);
+                }
+            };
             this.renderDrawerListView = function() {
-                require(['drawer_list_view_model', 'drawer_list_view', 'map_controller'], function(DrawerListViewModel, DrawerListView, Map) {
-
-                    if (!_this.drawerListView) {
-                        _this.drawerListView = new DrawerListView().render();
-
-                        // creating an array of new Backbone models for the individual items of the collection.
-                        _this.places = [{ name: 'My home address', address: '33 Fisher St, Brantford, Ontario', lat: 43.122680, lng: -80.302352 },
-                            { name: 'CN Tower', address: '301 Front St W, Toronto, Ontario', lat: 43.6426, lng: -79.3871 },
-                            { name: 'Niagra Falls Canada', address: 'Niagra Falls, Ontario, Canada', lat: 43.083354, lng: -79.074129 },
-                            { name: 'Center Island Toronto', address: 'Toronto, ON M5J 2V3, Canada', lat: 43.623409, lng: -79.368683 },
-                            { name: 'Home for sale', address: '42 Chaucer Pl, Woodstock, Ontario', lat: 43.123772, lng: -80.728070 }
-                        ];
-                        _this.map = new Map();
-                        _this.map.init(_this.places);
-                        // creating a new Backbone collection and passing it to the DrawerListViewModel to create an observable collection 
-                        _this.placesViewModel = new DrawerListViewModel(_this.places);
-                        _this.placesViewModel.map = _this.map;
-                        _this.placesViewModel.updatePlacesData = function(place) {
-                            _this.dataController.updatePlacesData(place);
-                        };
-                        ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
+                require(['drawer_list_view_model', 'drawer_list_view'], function(DrawerListViewModel, DrawerListView) {
+                    _this.drawerListView = new DrawerListView().render();
+                    _this.map.init(_this.places);
+                    // creating a new Backbone collection and passing it to the DrawerListViewModel to create an observable collection 
+                    _this.placesViewModel = new DrawerListViewModel(_this.places);
+                    _this.placesViewModel.map = _this.map;
+                    _this.placesViewModel.updatePlacesData = function(place) {
+                        _this.dataController.updateUserPlaces(place);
+                    };
+                    ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
+                });
+            };
+            _this.getPlacesData = function(){
+                _this.places = [];
+                _this.dataController.getUserPlaces(function(places){
+                    if(places){
+                        $.each(places, function(key, value){
+                            _this.places.push({name: value.name, address: value.address, lat: value.lat, lng: value.lng});
+                        });
+                    }else{
+                        _this.dataController.getDefaultPlaces(function(places){
+                            $.each(places, function(key, value){
+                                _this.places.push({name: value.name, address: value.address, lat: value.lat, lng: value.lng});
+                            });
+                        });
                     }
-                    _this.map.rerenderMap(_this.places[0]);
+                    console.log(_this.places);
+                    // creating an array of new Backbone models for the individual items of the collection
+                    _this.renderDrawerListView();
                 });
             };
             this.renderTabsView = function(place, view) {
-                _this.renderDrawerListView();
+                _this.initDrawerListView();
                 $('#container-view').show();
                 $('#map-container-view').hide();
                 var args = ['tabsView', TabsView, 'tabsViewModel', TabsViewModel, '#tabs-container', place];

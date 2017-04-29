@@ -21,7 +21,7 @@ define(['jquery', 'main_controller'],
 
             'places': function() {
                 // Calling function @ Maincontroller to create the drawer list
-                MainController.renderDrawerListView();
+                MainController.initDrawerListView();
                 $('#container-view').hide();
                 $('#map-container-view').show();
             },

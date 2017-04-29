@@ -16,6 +16,12 @@ requirejs.config({
         util: 'util',
         events_API: 'https://api.eventful.com/js/api',
 
+        /*Firebase*/
+        firebase_app: 'https://www.gstatic.com/firebasejs/3.9.0/firebase-app',
+        firebase_auth: 'https://www.gstatic.com/firebasejs/3.9.0/firebase-auth',
+        firebase_data: 'https://www.gstatic.com/firebasejs/3.9.0/firebase-database',
+        firebase_helper: 'controllers/firebase-helper',
+
         /*Controllers*/
         main_controller: 'controllers/main-controller',
         map_controller: 'controllers/map-controller',
@@ -55,8 +61,20 @@ requirejs([
 
 ], function($, _, bb, ko, tpl) {
     tpl.loadTemplates(['drawer-list-view', 'map', 'tabs-view', 'events-view', 'weather-view', 'real-estate-view', 'tabs-spinner-view'], function() {
-        require(['app'], function(app) {
-            app.initialize();
+        // Start the main app logic.
+        requirejs(['firebase_app', 'firebase_auth', 'firebase_data'], function() {
+            // Initialize Firebase
+            requirejs(['firebase_helper'], function(fbHelper) {
+                var configFB = {
+                    apiKey: "AIzaSyAlFaHJIu2go9re03lp6AaunDBfuI9GkCk",
+                    authDomain: "neighbourhoodmap-1491157111381.firebaseapp.com",
+                    databaseURL: "https://neighbourhoodmap-1491157111381.firebaseio.com",
+                    projectId: "neighbourhoodmap-1491157111381",
+                    storageBucket: "neighbourhoodmap-1491157111381.appspot.com",
+                    messagingSenderId: "139908232326"
+                };
+                firebase.initializeApp(configFB);
+            });
         });
     });
 });

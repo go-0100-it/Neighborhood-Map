@@ -61,7 +61,21 @@ define([
                     _this.callbackSync(func, args, oData, callId)
                 });
             };
-            this.updatePlacesData = function(place) {
+            this.getDefaultPlaces = function(func){
+                firebase.database().ref("demo_places").once('value').then(function(snapshot) {
+                            var places = snapshot.val();
+                            console.log(places);
+                            func(places);
+                        });
+            };
+            this.getUserPlaces = function(func){
+                firebase.database().ref("0QAuE0hnVERfDGUQMoiAxZ6QmO92").once('value').then(function(snapshot) {
+                            var places = snapshot.val();
+                            console.log(places);
+                            func(places);
+                });
+            };
+            this.updateUserPlaces = function(place) {
                 //Use to add place to places data in firebase database
                 console.log('Place: ' + place);
             };

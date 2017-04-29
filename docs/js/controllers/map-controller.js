@@ -15,9 +15,10 @@ define([
         var Map = function() {
             var _this = this;
             this.searching = false;
+            this.map = {};
             this.init = function(places) {
                 if (typeof google === 'object' && typeof google.maps === 'object') {
-                    _this.map = {};
+                    
                     var mapView = new MapView().render();
                     var firstPlace = { lat: places[0].lat, lng: places[0].lng };
                     _this.map = new google.maps.Map(document.getElementById('map'), {
@@ -34,8 +35,8 @@ define([
                 }
             };
 
-            this.rerenderMap = function(place) {
-                google.maps.event.trigger(_this.map, 'resize');
+            this.refreshMap = function(place, map) {
+                google.maps.event.trigger(map, 'resize');
                 _this.centerOnLocation(place);
             };
 
