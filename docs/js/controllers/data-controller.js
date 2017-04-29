@@ -19,8 +19,8 @@ define([
             var _this = this;
             this.dataRequestCount = 0;
             this.eventsApiKey = '2J8Xh6BQhcPvkQCd';
-            this.callbackSync = function(func, args, data, callbackId){
-                if(callbackId === _this.dataRequestCount){
+            this.callbackSync = function(func, args, data, callbackId) {
+                if (callbackId === _this.dataRequestCount) {
                     func(args, data);
                     _this.dataRequestCount = 0;
                 }
@@ -61,18 +61,19 @@ define([
                     _this.callbackSync(func, args, oData, callId)
                 });
             };
-            this.getDefaultPlaces = function(func){
-                firebase.database().ref("demo_places").once('value').then(function(snapshot) {
-                            var places = snapshot.val();
-                            console.log(places);
-                            func(places);
-                        });
+            this.getDefaultPlaces = function(func) {
+                return [{ name: 'My Home Address', address: '33 Fisher St, Brantford, Ontario', lat: 43.12268, lng: -80.302352 },
+                    { name: 'CN Tower', address: '301 Front St W, Toronto, Ontario', lat: 43.6426, lng: -79.3871 },
+                    { name: 'Niagra Falls Canada', address: 'Niagra Falls, Ontario, Canada', lat: 43.083354, lng: -79.074129 },
+                    { name: 'Center Island Toronto', address: 'Toronto, ON M5J 2V3, Canada', lat: 43.623409, lng: -79.368683 },
+                    { name: 'Home for sale', address: '42 Chaucer Pl, Woodstock, Ontario', lat: 43.123772, lng: -80.72807 }
+                ];
             };
-            this.getUserPlaces = function(func){
+            this.getUserPlaces = function(func) {
                 firebase.database().ref("0QAuE0hnVERfDGUQMoiAxZ6QmO92").once('value').then(function(snapshot) {
-                            var places = snapshot.val();
-                            console.log(places);
-                            func(places);
+                    var places = snapshot.val();
+                    console.log(places);
+                    func(places);
                 });
             };
             this.updateUserPlaces = function(place) {

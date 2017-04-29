@@ -1,10 +1,10 @@
 define([],
     function() {
-        require(['jquery', 'app'],
-            function($, app) {
+        require(['jquery'],
+            function($) {
                 firebase.auth().signInAnonymously().catch(function(error) {
-                    alert('There was an during authentication (error: '+ error.code +'). The app is not connected to the database!')
-                    // Handle Errors here.
+                    alert('There was an during authentication (error: ' + error.code + '). The app is not connected to the database!')
+                        // Handle Errors here.
                     var errorCode = error.code;
                     var errorMessage = error.message;
                     // ...
@@ -16,12 +16,11 @@ define([],
                         var isAnonymous = user.isAnonymous;
                         window.uid = user.uid;
                         console.log(uid);
-                            app.initialize();
                         // ...
                     } else {
-                        
+
                     }
                     // ...
                 });
-        });
-});
+            });
+    });

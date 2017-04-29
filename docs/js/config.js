@@ -64,16 +64,17 @@ requirejs([
         // Start the main app logic.
         requirejs(['firebase_app', 'firebase_auth', 'firebase_data'], function() {
             // Initialize Firebase
-            requirejs(['firebase_helper'], function(fbHelper) {
-                var configFB = {
-                    apiKey: "AIzaSyAlFaHJIu2go9re03lp6AaunDBfuI9GkCk",
-                    authDomain: "neighbourhoodmap-1491157111381.firebaseapp.com",
-                    databaseURL: "https://neighbourhoodmap-1491157111381.firebaseio.com",
-                    projectId: "neighbourhoodmap-1491157111381",
-                    storageBucket: "neighbourhoodmap-1491157111381.appspot.com",
-                    messagingSenderId: "139908232326"
-                };
-                firebase.initializeApp(configFB);
+            var configFB = {
+                apiKey: "AIzaSyAlFaHJIu2go9re03lp6AaunDBfuI9GkCk",
+                authDomain: "neighbourhoodmap-1491157111381.firebaseapp.com",
+                databaseURL: "https://neighbourhoodmap-1491157111381.firebaseio.com",
+                projectId: "neighbourhoodmap-1491157111381",
+                storageBucket: "neighbourhoodmap-1491157111381.appspot.com",
+                messagingSenderId: "139908232326"
+            };
+            firebase.initializeApp(configFB);
+            requirejs(['app'], function(app) {
+                app.initialize();
             });
         });
     });
