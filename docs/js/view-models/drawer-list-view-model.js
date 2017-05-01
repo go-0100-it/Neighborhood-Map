@@ -41,9 +41,7 @@ define([
                 if (_this.name()) {
                     _this.nameRequestVisible(false);
                     var place = { name: _this.name(), address: _this.selectedPlace().formatted_address, lat: _this.selectedPlace().geometry.location.lat(), lng: _this.selectedPlace().geometry.location.lng() };
-                    _this.map.addMarker(place);
-                    _this.places.push(place);
-                    _this.updatePlacesData(place);
+                    _this.pushPlace(place);
                     _this.toggleAddressSearch();
                     _this.resetSearchView();
                     _this.name('');
@@ -51,6 +49,11 @@ define([
                 } else {
                     _this.nameRequestVisible(true);
                 }
+            };
+            this.pushPlace = function(place) {
+                _this.map.addMarker(place);
+                _this.places.push(place);
+                _this.updatePlacesData(place);
             };
             this.removePlace = function() {
                 _this.map.removeMarker(_this.places.indexOf(this));

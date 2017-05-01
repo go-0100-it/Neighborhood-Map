@@ -37,28 +37,33 @@ define([
 
         var Main = function() {
             var _this = this;
+            this.map = {};
             // Returning function that can be called to create drawer menu items, creates a collection from created items and using knockout via 
             // knockback bridge to render list into the view. The list created is an observable collection (array).  This means knockout will dynamiclly update the UI when the 
             // collection is changed.
             this.dataController = new DataController();
-            this.map = {};
             this.renderDrawerListView = function() {
                 require(['drawer_list_view_model', 'drawer_list_view'], function(DrawerListViewModel, DrawerListView) {
                     if (!_this.drawerListView) {
                         _this.drawerListView = new DrawerListView().render();
-                        _this.map = new Map();
-                        _this.places = _this.dataController.getDefaultPlaces();
-                        _this.map.init(_this.places);
                         // creating a new Backbone collection and passing it to the DrawerListViewModel to create an observable collection 
-                        _this.placesViewModel = new DrawerListViewModel(_this.places);
-                        _this.placesViewModel.map = _this.map;
+                        _this.placesViewModel = new DrawerListViewModel();
+                        _this.renderMap();
+                        _this.dataController.getUserPlaces(_this.placesViewModel.pushPlace);
                         _this.placesViewModel.updatePlacesData = function(place) {
                             _this.dataController.updateUserPlaces(place);
                         };
                         ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
                     }
-                    _this.map.refreshMap(_this.places[0]);
+                    var loc = _this.placesViewModel.places()[0] ? { lat: _this.placesViewModel.places()[0].lat, lng: _this.placesViewModel.places()[0].lng } : null;
+                    _this.map.refreshMap(loc);
+
                 });
+            };
+            this.renderMap = function() {
+                _this.map = new Map();
+                _this.map.init();
+                _this.placesViewModel.map = _this.map;
             };
             this.renderTabsView = function(place, view) {
                 _this.renderDrawerListView();

@@ -15,19 +15,15 @@ define([
         var Map = function() {
             var _this = this;
             this.searching = false;
-            this.init = function(places) {
+            this.markers = [];
+            this.init = function() {
                 if (typeof google === 'object' && typeof google.maps === 'object') {
 
                     var mapView = new MapView().render();
                     console.log('Map');
-                    console.log(places);
-                    var firstPlace = { lat: places[0].lat, lng: places[0].lng };
                     _this.map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: 8,
-                        center: firstPlace
+                        zoom: 8
                     });
-
-                    _this.initMarkers(places);
                     google.maps.InfoWindow.prototype.opened = false;
 
                 } else {
@@ -36,9 +32,11 @@ define([
                 }
             };
 
-            this.refreshMap = function(place) {
+            this.refreshMap = function(loc) {
                 google.maps.event.trigger(_this.map, 'resize');
-                _this.centerOnLocation(place);
+                if (loc) {
+                    _this.centerOnLocation(loc);
+                }
             };
 
             this.toggleMarker = function(_infowindow, _map, _marker, _place) {
@@ -66,7 +64,6 @@ define([
             };
 
             this.initMarkers = function(places) {
-                _this.markers = [];
                 var len = places.length;
                 for (var i = 0; i < len; i++) {
                     _this.addMarker(places[i], i);
@@ -113,6 +110,7 @@ define([
                         _marker.setMap(_map);
                     }, i * 300);
                 })(infowindow, _this.map, marker, place, i);
+                _this.refreshMap({ lat: place.lat, lng: place.lng });
             };
 
             this.removeMarker = function(index) {
