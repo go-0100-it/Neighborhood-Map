@@ -70,7 +70,7 @@ define([
                 ];
             };
             this.getUserPlaces = function(func) {
-                firebase.database().ref("demo_places").once('value').then(function(snapshot) {
+                firebase.database().ref("default").once('value').then(function(snapshot) {
                     var places = snapshot.val();
                     console.log(places);
                     $.each(places, function(key, value) {
