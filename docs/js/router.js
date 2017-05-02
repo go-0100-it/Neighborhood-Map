@@ -4,7 +4,6 @@ define(['jquery', 'main_controller'],
         var Router = Backbone.Router.extend({
             // Constructor
             initialize: function() {
-
                 //Required for Backbone to start listening to hashchange events
                 Backbone.history.start();
             },

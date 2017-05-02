@@ -8,7 +8,6 @@ define([
     function($, Backbone, _, ko) {
         var TabsViewModel = function(place) {
             var _this = this;
-            console.log(place);
             this.tabsList = ['events', 'weather', 'real-estate'];
             this.place = ko.observable(place);
             this.name = ko.observable(this.place().name);
@@ -17,15 +16,10 @@ define([
             this.lng = ko.observable(this.place().lng);
             this.expanded = ko.observable(false);
             this.expandedClass = ko.observable('');
-            this.selected = ko.observable('');
-            this.selected.subscribe(function(){
-
-            });
-            this.selectedClass = ko.observable('selected');
             this.toggleTabsMenu = function() {
                 if (_this.expanded()) {
                     _this.expandedClass('');
-                } else{
+                } else {
                     _this.expandedClass('responsive');
                 }
                 _this.expanded(!_this.expanded());

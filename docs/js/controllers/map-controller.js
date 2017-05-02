@@ -20,7 +20,6 @@ define([
                 if (typeof google === 'object' && typeof google.maps === 'object') {
 
                     var mapView = new MapView().render();
-                    console.log('Map');
                     _this.map = new google.maps.Map(document.getElementById('map'), {
                         zoom: 8
                     });
@@ -95,7 +94,6 @@ define([
 
                 (function(_infowindow, _map, _marker, _place, _i) {
                     google.maps.event.addDomListener(_infowindow, 'domready', function() {
-                        console.log(_infowindow.clickListenerAdded);
                         if (!_infowindow.clickListenerAdded) {
                             $('#infoWin-' + _i).click(function() {
                                 Backbone.history.navigate('#events/' + _infowindow.place.name + '/' + _infowindow.place.address + '/' + _infowindow.place.lat + '/' + _infowindow.place.lng, { trigger: true });

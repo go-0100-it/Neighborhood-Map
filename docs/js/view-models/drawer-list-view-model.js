@@ -69,7 +69,6 @@ define([
                 _this.selectedPlaceDisplayVisible(!_this.selectedPlaceDisplayVisible());
             };
             this.toggleAddButton = function() {
-                console.log("Calling Mouse over");
                 _this.addButtonVisible(!_this.addButtonVisible());
             };
             this.centerLocation = function(place) {

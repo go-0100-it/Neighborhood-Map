@@ -58,19 +58,25 @@ define([
                     sort_direction: 'ascending'
                 };
                 EVDB.API.call("/events/search", oArgs, function(oData) {
-                    _this.callbackSync(func, args, oData, callId)
+                    _this.callbackSync(func, args, oData, callId);
+                });
+            };
+            this.getUserPlaces = function(func, uid) {
+                firebase.database().ref(uid).once('value').then(function(snapshot) {
+                    var places = snapshot.val();
+                    if (places) {
+                        console.log(places);
+                        $.each(places, function(key, value) {
+                            func(value);
+                        });
+                    } else {
+                        _this.getDefaultPlaces(func);
+                    }
+
                 });
             };
             this.getDefaultPlaces = function(func) {
-                return [{ name: 'My Home Address', address: '33 Fisher St, Brantford, Ontario', lat: 43.12268, lng: -80.302352 },
-                    { name: 'CN Tower', address: '301 Front St W, Toronto, Ontario', lat: 43.6426, lng: -79.3871 },
-                    { name: 'Niagra Falls Canada', address: 'Niagra Falls, Ontario, Canada', lat: 43.083354, lng: -79.074129 },
-                    { name: 'Center Island Toronto', address: 'Toronto, ON M5J 2V3, Canada', lat: 43.623409, lng: -79.368683 },
-                    { name: 'Home for sale', address: '42 Chaucer Pl, Woodstock, Ontario', lat: 43.123772, lng: -80.72807 }
-                ];
-            };
-            this.getUserPlaces = function(func) {
-                firebase.database().ref("demo_places").once('value').then(function(snapshot) {
+                firebase.database().ref("default").once('value').then(function(snapshot) {
                     var places = snapshot.val();
                     console.log(places);
                     $.each(places, function(key, value) {
@@ -78,7 +84,7 @@ define([
                     });
                 });
             };
-            this.updateUserPlaces = function(place) {
+            this.updateUserPlaces = function(place, uid) {
                 //Use to add place to places data in firebase database
                 console.log('Place: ' + place);
             };

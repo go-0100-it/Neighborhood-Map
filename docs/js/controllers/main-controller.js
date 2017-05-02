@@ -15,7 +15,8 @@ define([
         'real_estate_list_view_model',
         'real_estate_view',
         'data_controller',
-        'map_controller'
+        'map_controller',
+        'firebase_helper'
     ],
     function(
         $,
@@ -32,13 +33,14 @@ define([
         RealEstateListViewModel,
         RealEstateView,
         DataController,
-        Map
+        Map,
+        FBHelper
     ) {
 
         var Main = function() {
             var _this = this;
             this.map = {};
-            // Returning function that can be called to create drawer menu items, creates a collection from created items and using knockout via 
+            // A function that can be called to create drawer menu items, creates a collection from created items and using knockout via 
             // knockback bridge to render list into the view. The list created is an observable collection (array).  This means knockout will dynamiclly update the UI when the 
             // collection is changed.
             this.dataController = new DataController();
@@ -49,9 +51,9 @@ define([
                         // creating a new Backbone collection and passing it to the DrawerListViewModel to create an observable collection 
                         _this.placesViewModel = new DrawerListViewModel();
                         _this.renderMap();
-                        _this.dataController.getUserPlaces(_this.placesViewModel.pushPlace);
+                        FBHelper.initAuth(_this.dataController.getUserPlaces, _this.placesViewModel.pushPlace);
                         _this.placesViewModel.updatePlacesData = function(place) {
-                            _this.dataController.updateUserPlaces(place);
+                            _this.dataController.updateUserPlaces(place, FBHelper.uid);
                         };
                         ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
                     }
@@ -78,17 +80,14 @@ define([
                 }
                 switch (view) {
                     case 'events':
-                        console.log('Calling events');
                         args = ['eventsView', EventsView, 'eventsListViewModel', EventsListViewModel, '#events-view', place];
                         _this.dataController.getEventsDataList(_this.renderView, args);
                         break;
                     case 'weather':
-                        console.log('Calling weather');
                         args = ['weatherView', WeatherView, 'weatherListViewModel', WeatherListViewModel, '#weather-view', place];
                         _this.renderView(args, { Page: 'Weather' });
                         break;
                     case 'real-estate':
-                        console.log('Calling real-estate');
                         args = ['realEstateView', RealEstateView, 'realEstateViewModel', RealEstateListViewModel, '#real-estate-view', place];
                         _this.renderView(args, { Page: 'Real-Estate' });
                         break;
