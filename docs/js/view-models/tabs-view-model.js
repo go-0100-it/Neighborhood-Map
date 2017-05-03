@@ -10,6 +10,7 @@ define([
             var _this = this;
             this.tabsList = ['events', 'weather', 'real-estate'];
             this.place = ko.observable(place);
+            this.id = ko.observable(this.place().id);
             this.name = ko.observable(this.place().name);
             this.address = ko.observable(this.place().address);
             this.lat = ko.observable(this.place().lat);
@@ -25,6 +26,7 @@ define([
                 _this.expanded(!_this.expanded());
             };
             this.place.subscribe(function() {
+                _this.id(_this.place().id);
                 _this.name(_this.place().name);
                 _this.address(_this.place().address);
                 _this.lat(_this.place().lat);
@@ -44,7 +46,7 @@ define([
             };
             this.navigateTab = function(tab) {
                 _this.toggleTabsMenu();
-                Backbone.history.navigate('#' + tab + '/' + _this.name() + '/' + _this.address() + '/' + _this.lat() + '/' + _this.lng(), { trigger: true });
+                Backbone.history.navigate('#' + tab + '/' + _this.id() + '/' + _this.name() + '/' + _this.address() + '/' + _this.lat() + '/' + _this.lng(), { trigger: true });
             };
             return this;
         };

@@ -37,7 +37,7 @@ define([
         FBHelper
     ) {
 
-        var Main = function() {
+        var Main = function() {               
             var _this = this;
             this.map = {};
             // A function that can be called to create drawer menu items, creates a collection from created items and using knockout via 

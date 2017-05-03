@@ -96,7 +96,7 @@ define([
                     google.maps.event.addDomListener(_infowindow, 'domready', function() {
                         if (!_infowindow.clickListenerAdded) {
                             $('#infoWin-' + _i).click(function() {
-                                Backbone.history.navigate('#events/' + _infowindow.place.name + '/' + _infowindow.place.address + '/' + _infowindow.place.lat + '/' + _infowindow.place.lng, { trigger: true });
+                                Backbone.history.navigate('#events/' + _infowindow.place.id + '/' + _infowindow.place.name + '/' + _infowindow.place.address + '/' + _infowindow.place.lat + '/' + _infowindow.place.lng, { trigger: true });
                             });
                             _infowindow.clickListenerAdded = true;
                         }

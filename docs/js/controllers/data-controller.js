@@ -18,7 +18,7 @@ define([
             var _this = this;
             this.dataRequestCount = 0;
             this.eventsApiKey = '2J8Xh6BQhcPvkQCd';
-            this.userPlaces = 0;
+            this.userPlacesCount = 0;
             this.callbackSync = function(func, args, data, callbackId) {
                 if (callbackId === _this.dataRequestCount) {
                     func(args, data);
@@ -68,7 +68,7 @@ define([
                     if (places) {
                         console.log(places);
                         $.each(places, function(key, value) {
-                            func(value, places.length);
+                            func(value);
                         });
                     } else {
                         _this.getDefaultPlaces(func);
@@ -79,14 +79,18 @@ define([
             this.getDefaultPlaces = function(func) {
                 firebase.database().ref("default").once('value').then(function(snapshot) {
                     var places = snapshot.val();
+                    console.dir(places);
                     $.each(places, function(key, value) {
-                        func(value, places.length);
+                        func(value);
                     });
                 });
             };
             this.updateUserPlaces = function(place, uid) {
-                _this.userPlaces += 1;
-                firebase.database().ref(uid + '/place_'+ _this.userPlaces).update(place);
+                firebase.database().ref(uid + '/' + place.id).update(place);
+                console.log('Place: ' + place);
+            };
+            this.removeUserPlace = function(place, uid) {
+                firebase.database().ref(uid + '/' + place.id).remove();
                 console.log('Place: ' + place);
             };
         };

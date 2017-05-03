@@ -8,6 +8,7 @@ define([
     function($, Backbone, _, ko, tpl) {
         var DrawerListViewModel = function(places) {
             var _this = this;
+            this.id = ko.observable();
             this.name = ko.observable();
             this.name.subscribe(function() {
                 _this.nameRequestVisible(false);
@@ -23,8 +24,7 @@ define([
             this.nameRequestVisible = ko.observable(false);
             this.places = ko.observableArray(places);
             this.onClick = function(place) {
-                var obj = { name: place.name, address: place.address, lat: place.lat, lng: place.lng };
-                Backbone.history.navigate('#events/' + obj.name + '/' + obj.address + '/' + obj.lat + '/' + obj.lng, { trigger: true });
+                Backbone.history.navigate('#events/'+ place.id + '/' + place.name + '/' + place.address + '/' + place.lat + '/' + place.lng, { trigger: true });
             };
             this.onSelectAddress = function(place) {
                 _this.selectedPlace(place);
@@ -40,7 +40,7 @@ define([
             this.addPlace = function() {
                 if (_this.name()) {
                     _this.nameRequestVisible(false);
-                    var place = { name: _this.name(), address: _this.selectedPlace().formatted_address, lat: _this.selectedPlace().geometry.location.lat(), lng: _this.selectedPlace().geometry.location.lng() };
+                    var place = { id: _this.selectedPlace().place_id, name: _this.name(), address: _this.selectedPlace().formatted_address, lat: _this.selectedPlace().geometry.location.lat(), lng: _this.selectedPlace().geometry.location.lng() };
                     _this.pushPlace(place);
                     _this.updatePlacesData(place);
                     _this.toggleAddressSearch();
@@ -52,6 +52,7 @@ define([
                 }
             };
             this.pushPlace = function(place) {
+                console.log(place);
                 _this.map.addMarker(place);
                 _this.places.push(place);
             };
