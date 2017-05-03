@@ -14,7 +14,6 @@ define([
         ko,
         EventsApi
     ) {
-
         var DataController = function() {
             var _this = this;
             this.dataRequestCount = 0;
@@ -75,11 +74,8 @@ define([
 
                 });
             };
-<<<<<<< HEAD
-            this.getDefaultPlaces = function(func) {
-=======
+            this.getDefaultPlaces = function(func) {};
             this.getUserPlaces = function(func) {
->>>>>>> de56f560b2ba154341624b746604a6f28480bff0
                 firebase.database().ref("default").once('value').then(function(snapshot) {
                     var places = snapshot.val();
                     console.log(places);
