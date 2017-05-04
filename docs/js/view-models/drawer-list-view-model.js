@@ -6,10 +6,18 @@ define([
         'util'
     ],
     function($, Backbone, _, ko, tpl) {
+
+        /**
+         * @param {function} func - The title of the book.
+         * @param {string} id - The author of the book.
+         */
         var DrawerListViewModel = function(places) {
             var _this = this;
             this.id = ko.observable();
             this.name = ko.observable();
+
+            /**
+             */
             this.name.subscribe(function() {
                 _this.nameRequestVisible(false);
             });
@@ -23,9 +31,18 @@ define([
             this.addButtonVisible = ko.observable(false);
             this.nameRequestVisible = ko.observable(false);
             this.places = ko.observableArray(places);
+
+            /**
+             * @param {function} func - The title of the book.
+             */
             this.onClick = function(place) {
                 Backbone.history.navigate('#events/'+ place.id + '/' + place.name + '/' + place.address + '/' + place.lat + '/' + place.lng, { trigger: true });
             };
+
+
+            /**
+             * @param {} place - The title of the book.
+             */
             this.onSelectAddress = function(place) {
                 _this.selectedPlace(place);
                 _this.selectedFormattedAddress(_this.selectedPlace().formatted_address);
@@ -34,9 +51,21 @@ define([
                 _this.toggleAddButton();
                 _this.searchResults([]);
             };
+
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.searchAddress = function(value) {
                 _this.map.searchAddress(value, _this.searchResults);
             };
+
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.addPlace = function() {
                 if (_this.name()) {
                     _this.nameRequestVisible(false);
@@ -51,40 +80,96 @@ define([
                     _this.nameRequestVisible(true);
                 }
             };
+
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.pushPlace = function(place) {
                 console.log(place);
                 _this.map.addMarker(place);
                 _this.places.push(place);
             };
+
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.removePlace = function() {
                 _this.map.removeMarker(_this.places.indexOf(this));
                 _this.places.remove(this);
                 _this.removePlaceData(this);
             };
+
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.toggleAddressSearch = function() {
                 _this.addressSearchVisible(!_this.addressSearchVisible());
             };
+
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.toggleSearchInput = function() {
                 _this.searchInputVisible(!_this.searchInputVisible());
             };
+
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.toggleSelectedPlace = function() {
                 _this.selectedPlaceDisplayVisible(!_this.selectedPlaceDisplayVisible());
             };
+
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.toggleAddButton = function() {
                 _this.addButtonVisible(!_this.addButtonVisible());
             };
+
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.centerLocation = function(place) {
                 _this.map.centerOnLocation(place);
             };
+
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.resetSearchView = function() {
                 _this.nameRequestVisible(false);
                 _this.toggleSearchInput();
                 _this.toggleSelectedPlace();
                 _this.toggleAddButton();
             };
+
+
+            /**
+             * @param {function} func - The title of the book.
+             */
             this.query.subscribe(this.searchAddress);
 
+            /** */
             return this;
         };
+
+        /** */
         return DrawerListViewModel;
     });

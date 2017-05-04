@@ -1,5 +1,6 @@
-// More description
-
+/**
+ * Using Require.js to define a module responsible for...
+ */
 define([
         'jquery',
         'backbone',
@@ -37,72 +38,164 @@ define([
         FBHelper
     ) {
 
+        /**
+         * @param {function} func - The title of the book.
+         * @param {string} id - The author of the book.
+         */
         var Main = function() {               
             var _this = this;
             this.map = {};
-            // A function that can be called to create drawer menu items, creates a collection from created items and using knockout via 
-            // knockback bridge to render list into the view. The list created is an observable collection (array).  This means knockout will dynamiclly update the UI when the 
-            // collection is changed.
+           
+           /** */
             this.dataController = new DataController();
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.renderDrawerListView = function() {
+
+                /** */
                 require(['drawer_list_view_model', 'drawer_list_view'], function(DrawerListViewModel, DrawerListView) {
+
+                    /** */
                     if (!_this.drawerListView) {
+
+                        /** */
                         _this.drawerListView = new DrawerListView().render();
-                        // creating a new Backbone collection and passing it to the DrawerListViewModel to create an observable collection 
+
+                        /** */
                         _this.placesViewModel = new DrawerListViewModel();
+
+                        /** */
                         _this.renderMap();
+
+                        /** */
                         FBHelper.initAuth(_this.dataController.getUserPlaces, _this.placesViewModel.pushPlace);
+
+                        /**
+                         * @param {function} func - The title of the book.
+                         * @param {string} id - The author of the book.
+                         */
                         _this.placesViewModel.updatePlacesData = function(place) {
+
+                            /** */
                             _this.dataController.updateUserPlaces(place, FBHelper.uid);
                         };
+
+                        /**
+                         * @param {function} func - The title of the book.
+                         * @param {string} id - The author of the book.
+                         */
                         _this.placesViewModel.removePlaceData = function(place) {
+
+                            /** */
                             _this.dataController.removeUserPlace(place, FBHelper.uid);
                         };
+
+                        /** */
                         ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
                     }
+
+                    /** */
                     var loc = _this.placesViewModel.places()[0] ? { lat: _this.placesViewModel.places()[0].lat, lng: _this.placesViewModel.places()[0].lng } : null;
+                    
+                    /** */
                     _this.map.refreshMap(loc);
 
                 });
             };
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.renderMap = function() {
                 _this.map = new Map();
                 _this.map.init();
                 _this.placesViewModel.map = _this.map;
             };
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.renderTabsView = function(place, view) {
+
+                /** */
                 _this.renderDrawerListView();
                 $('#container-view').show();
                 $('#map-container-view').hide();
+
+                /** */
                 var args = ['tabsView', TabsView, 'tabsViewModel', TabsViewModel, '#tabs-container', place];
+
+                /** */
                 if (!_this.tabsView) {
+
+                    /** */
                     _this.renderView(args, { lat: 'Hello', lng: 'World' });
+
+                /** */
                 } else {
+
+                    /** */
                     _this.tabsViewModel.place(place);
+
+                    /** */
                     $('#tab-container').html(_.template(tpl.get('tabs-spinner-view')));
                 }
+
+                /** */
                 switch (view) {
                     case 'events':
+
+                        /** */
                         args = ['eventsView', EventsView, 'eventsListViewModel', EventsListViewModel, '#events-view', place];
+
+                        /** */
                         _this.dataController.getEventsDataList(_this.renderView, args);
                         break;
+
                     case 'weather':
+
+                        /** */
                         args = ['weatherView', WeatherView, 'weatherListViewModel', WeatherListViewModel, '#weather-view', place];
+
+                        /** */
                         _this.renderView(args, { Page: 'Weather' });
                         break;
+
                     case 'real-estate':
+
+                        /** */
                         args = ['realEstateView', RealEstateView, 'realEstateViewModel', RealEstateListViewModel, '#real-estate-view', place];
+
+                        /** */
                         _this.renderView(args, { Page: 'Real-Estate' });
                         break;
                 }
             };
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
             this.renderView = function(args, data) {
+
+                /** */
                 _this[args[0]] = new(args[1])().render();
+
+                /** */
                 _this[args[2]] = new args[3]({ id: args[5].id, name: args[5].name, address: args[5].address, lat: args[5].lat, lng: args[5].lng }, data);
+
+                /** */
                 if (!!!ko.dataFor($(args[4])[0])) {
                     ko.applyBindings(_this[args[2]], $(args[4])[0]);
                 }
             };
         };
+
+        /** */
         return new Main();
     });
