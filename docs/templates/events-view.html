@@ -4,7 +4,7 @@
             <li class="tab-list-item">
                 <div class="tab-list-item-container">
                     <div class="tab-list-item-img">
-                        <img class="item-img" style="width: 100px;" data-bind="attr: { src: event.image !== null ? event.image.medium.url : 'res/images/placeholder.png' }">
+                        <img class="item-img" style="width: 100px;" data-bind="visible: event.image !== null, attr: { src: event.image !== null ? event.image.medium.url : 'res/images/placeholder.png' }">
                     </div>
                     <h2 class="event-title" data-bind="text: event.title"></h2>
                     <h3 class="event-time" data-bind="text: event.start_time"></h3>

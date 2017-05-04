@@ -44,9 +44,7 @@ define([
                 var startDate = newDate.getFullYear() + formattedMonthStart + newDate.getDate() + '00';
                 var formattedMonthEnd = ((newDate.getMonth() + 1) < 10) ? ('0' + (newDate.getMonth() + 1)) : (newDate.getMonth() + 1);
                 var endDate = (newDate.getFullYear() + 1) + formattedMonthEnd + newDate.getDate() + '00';
-                console.log(startDate);
                 var where = args[5].lat + ',' + args[5].lng;
-                console.dir(args[5] + ',' + args[5]);
                 var oArgs = {
                     app_key: _this.eventsApiKey,
                     q: "events",

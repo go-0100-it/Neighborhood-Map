@@ -59,6 +59,7 @@ define([
             this.removePlace = function() {
                 _this.map.removeMarker(_this.places.indexOf(this));
                 _this.places.remove(this);
+                _this.removePlaceData(this);
             };
             this.toggleAddressSearch = function() {
                 _this.addressSearchVisible(!_this.addressSearchVisible());

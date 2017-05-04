@@ -55,6 +55,9 @@ define([
                         _this.placesViewModel.updatePlacesData = function(place) {
                             _this.dataController.updateUserPlaces(place, FBHelper.uid);
                         };
+                        _this.placesViewModel.removePlaceData = function(place) {
+                            _this.dataController.removeUserPlace(place, FBHelper.uid);
+                        };
                         ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
                     }
                     var loc = _this.placesViewModel.places()[0] ? { lat: _this.placesViewModel.places()[0].lat, lng: _this.placesViewModel.places()[0].lng } : null;
@@ -95,7 +98,7 @@ define([
             };
             this.renderView = function(args, data) {
                 _this[args[0]] = new(args[1])().render();
-                _this[args[2]] = new args[3]({ name: args[5].name, address: args[5].address, lat: args[5].lat, lng: args[5].lng }, data);
+                _this[args[2]] = new args[3]({ id: args[5].id, name: args[5].name, address: args[5].address, lat: args[5].lat, lng: args[5].lng }, data);
                 if (!!!ko.dataFor($(args[4])[0])) {
                     ko.applyBindings(_this[args[2]], $(args[4])[0]);
                 }
