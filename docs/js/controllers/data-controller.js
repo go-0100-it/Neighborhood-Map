@@ -28,9 +28,11 @@ define([
             // This variable is used by the callbackSync function.  Used to keep count of the data requests made by the user.
             this.dataRequestCount = 0;
 
-            // An API key supplied by eventful.com is required to access the Eventful API.
+            // An API key supplied by http://api.eventful.com/ is required to access the Eventful API.
             this.eventsApiKey = '2J8Xh6BQhcPvkQCd';
 
+            // An API key supplied by http://developer.zoopla.com/home is required to access the Zoopla API.
+            this.realEstateApiKey = 'j9wprgzzbx6h8r794c4sj793';
 
 
             /**
