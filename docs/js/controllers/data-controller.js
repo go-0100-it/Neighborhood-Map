@@ -1,6 +1,6 @@
 /**
- * Using Require.js to define a module responsible for creating a Controller object.
- */ 
+ * Using Require.js to define a module responsible for creating a Data Controller object and defining the modules required by this module.
+ */
 define([
         'jquery',
         'backbone',
@@ -16,53 +16,63 @@ define([
         EventsApi
     ) {
         /**
-         * Creates a controller object.
+         * Creates a Data controller object.
          * @constructor
-         * This allows the object to be created in one module and be passed to another.
-         * This controller is resposible for retriving all external data required by the app.
+         * This controller is responsible for retrieving all external data required by the app.
+         * The controller constructor could be called from any module but, for sake of clenliness, is only contained and referenced in the main controller.
+         * @return - returns the DataController constructor.
          */
         var DataController = function() {
             var _this = this;
 
-            // This variable is used by the callbackSync function to keep count of the data requests made by the user.
+            // This variable is used by the callbackSync function.  Used to keep count of the data requests made by the user.
             this.dataRequestCount = 0;
 
-            // The API key supplied by eventful.com is required to access the Eventful API.
+            // An API key supplied by eventful.com is required to access the Eventful API.
             this.eventsApiKey = '2J8Xh6BQhcPvkQCd';
 
+
+
             /**
-             * 
-             * @param {function} func - The title of the book.
-             * @param {array} args - The author of the book.
-             * @param {object} data - The author of the book.
-             * @param {string} args - The author of the book.
+             * I was unable to find a way to cancel the previously made AJAX requests upon making another so I came up with this work around were the previous requests are simply ignored.
+             * Using this function to call only the render function associated with the most recent data requested by the user.  If the user has previously requested data and 
+             * commits to subsequent data requests before the previous data has been processed and rendered, then only the last data request will be processed and rendered.
+             * @param {function} func - The callback function.
+             * @param {array} args - The array of args being passed to the callback function.
+             * @param {object} data - The data being passed to the callback function.
+             * @param {string} callbackId - The id of the requested callback(the dataRequestCount value captured when the request was made).
              */
             this.callbackSync = function(func, args, data, callbackId) {
+
+                // Checking if the callbackId matches the current data request count, if it does, call the function passed in (The render tabs view function)
                 if (callbackId === _this.dataRequestCount) {
                     func(args, data);
-                    _this.dataRequestCount = 0;
                 }
             };
 
-            /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
-             */
-            this.getEventData = function(id, func) {
-                var oArgs = {
-                    app_key: _this.eventsApiKey,
-                    id: id,
-                    page_size: 1,
-                };
 
-                /**
-                 * 
-                 */
-                EVDB.API.call("/events/get", oArgs, function(oData) {
-                    // Note: this relies on the custom toString() methods below
-                    func(oData);
-                });
-            };
+
+            // /**
+            //  * @param {function} func - The title of the book.
+            //  * @param {string} id - The author of the book.
+            //  */
+            // this.getEventData = function(id, func) {
+            //     var oArgs = {
+            //         app_key: _this.eventsApiKey,
+            //         id: id,
+            //         page_size: 1,
+            //     };
+
+            //     /**
+            //      * 
+            //      */
+            //     EVDB.API.call("/events/get", oArgs, function(oData) {
+            //         // Note: this relies on the custom toString() methods below
+            //         func(oData);
+            //     });
+            // };
+
+
 
             /**
              * @param {function} func - The title of the book.
@@ -70,16 +80,16 @@ define([
              */
             this.getEventsDataList = function(func, args) {
 
-                // Incrementing the dataRequestCount variable by 1 every time this code is called.
+                // Incrementing the dataRequestCount variable by 1 every time a request is made(this code is run).
                 _this.dataRequestCount += 1;
 
                 // Capturing the current dataRequestCount value as this requests id.
                 var callId = _this.dataRequestCount;
 
-                // Formatting the geo-coords for the API request.
+                // Formatting the geo-coords for the API requests where value.
                 var where = args[5].lat + ',' + args[5].lng;
 
-                // Creating an obj literal to pass as the API request arguments.
+                // Creating an obj literal to pass as the APIs request arguments.
                 var oArgs = {
                     app_key: _this.eventsApiKey,
                     q: "events",
@@ -92,14 +102,19 @@ define([
                 };
 
                 /**
-                 * 
+                 * Making the data request call via the EVDB.API.call function(contained in Eventful's api.js file) and 
+                 * passing the arguments to filter the search and the callback function to run when the result is ready.
                  */
                 EVDB.API.call("/events/search", oArgs, function(oData) {
+
+                    // Calling callbackSync function to check if this is the most recent request made by the user.
                     _this.callbackSync(func, args, oData, callId);
                 });
             };
 
-             /**
+
+
+            /**
              * @param {function} func - The title of the book.
              * @param {string} uid - The author of the book.
              */
@@ -125,56 +140,72 @@ define([
                 });
             };
 
+
+
             /**
-             * 
+             * A function to query the firebase database for the default places.  
+             * This function is called only if the anonymous user does not have any places save to the database.
+             * @param {function} func - The callback function to be called in the for each loop after firebase returns the requested data.
              */
             this.getDefaultPlaces = function(func) {
 
-                /**
-                 * 
-                 */
+                // Requesting the value stored at the key "default" at the root of the database. 
                 firebase.database().ref("default").once('value').then(function(snapshot) {
 
-                    //
+                    // Storing the object returned from firebase to a variable.
                     var places = snapshot.val();
 
-                    //
+                    // Calling the callback function on each key(googles place id) in the object and passing in the value(a place object) to the function.
                     $.each(places, function(key, value) {
                         func(value);
                     });
                 });
             };
 
+
+
             /**
-             * @param {object} place - The title of the book.
-             * @param {string} uid - The author of the book.
+             * A function to add a selected place object to the users database.
+             * @param {object} place - The place object to be added to the database.
+             * @param {string} uid - The unique user id given by firebase when the current user was logged in anonymously. 
+             * NOTE: The uid is used as the key for the main containing object.  The place id is used as the key for each place object.
              */
             this.updateUserPlaces = function(place, uid) {
                 firebase.database().ref(uid + '/' + place.id).update(place);
             };
 
+
+
             /**
-             * @param {object} place - The title of the book.
-             * @param {string} uid - The author of the book.
+             * A function to remove the selected place object residing in the firebase database.
+             * @param {object} place - The place object to be removed from the database.
+             * @param {string} uid - The unique user id given by firebase when the current user was logged in anonymously.
+             * NOTE: The uid is used as the key for the main containing object.  The place id is used as the key for each place object.
              */
             this.removeUserPlace = function(place, uid) {
                 firebase.database().ref(uid + '/' + place.id).remove();
             };
 
+
+
             /**
+             * A function to create a date of string type and formatted as required by the eventful API. (ie. Feb 1st, 2017 = '2017020100')
              * @param {int} span - The time offset in years from current date.
+             * @return {string} - Returns a formatted date as a string.  The date returned will be either the current date or, if a parameter is passed,
+             * will be the current date plus the the number of years corresponding to the number passed in.
              */
-            this.getFormattedDate = function(span){
+            this.getFormattedDate = function(span) {
+
+                // Setting the variable span to the arg span if it is present or 0 if no arg is passed in.
                 var span = span ? span : 0;
                 var newDate = new Date();
                 var formattedMonth = ((newDate.getMonth() + 1) < 10) ? ('0' + (newDate.getMonth() + 1)) : (newDate.getMonth() + 1);
                 var date = (newDate.getFullYear() + span) + formattedMonth + newDate.getDate() + '00';
-                return date
-            }
+
+                return date;
+            };
         };
 
-       /**
-         * @return - sdsvdfva
-         */
+
         return DataController;
     });

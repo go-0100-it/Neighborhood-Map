@@ -1,3 +1,6 @@
+/**
+ * Using Require.js to define a module responsible for...
+ */
 define([
         'jquery',
         'backbone',
@@ -36,7 +39,7 @@ define([
              * @param {function} func - The title of the book.
              */
             this.onClick = function(place) {
-                Backbone.history.navigate('#events/'+ place.id + '/' + place.name + '/' + place.address + '/' + place.lat + '/' + place.lng, { trigger: true });
+                Backbone.history.navigate('#events/' + place.id + '/' + place.name + '/' + place.address + '/' + place.lat + '/' + place.lng, { trigger: true });
             };
 
 

@@ -1,3 +1,6 @@
+/**
+ * Using Require.js to define a module responsible for...
+ */
 requirejs.config({
     //By default load any module IDs from js
     baseUrl: 'js',

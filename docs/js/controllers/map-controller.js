@@ -1,3 +1,6 @@
+/**
+ * Using Require.js to define a module responsible for creating a Controller object.
+ */
 define([
         'jquery',
         'backbone',
@@ -78,9 +81,9 @@ define([
                     _marker.setAnimation(null);
                     _infowindow.close(_map, _marker);
 
-                /** */
-            } else {
-                
+                    /** */
+                } else {
+
                     /** */
                     _marker.setAnimation(google.maps.Animation.BOUNCE);
 

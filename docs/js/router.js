@@ -1,3 +1,6 @@
+/**
+ * Using Require.js to define a module responsible for...
+ */
 define(['jquery', 'main_controller'],
     function($, MainController) { // TODO: Need to require USER
 
@@ -20,7 +23,7 @@ define(['jquery', 'main_controller'],
 
             'places': function() {
                 // Calling function @ Maincontroller to create the drawer list
-                console.log("Calling Drawer"); 
+                console.log("Calling Drawer");
                 MainController.renderDrawerListView();
                 $('#container-view').hide();
                 $('#map-container-view').show();
