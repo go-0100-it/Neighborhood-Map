@@ -4,6 +4,7 @@
 define(['jquery'],
     function($) {
 
+
         /**
          * A function constructor to create a new UserAuth object. The UserAuth object created handles the user log-in details,
          * monitors log in state and updates the app via callback functions upon login state changes.
