@@ -87,7 +87,6 @@ define([
 
             /**
              * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
              */
             this.pushPlace = function(place) {
                 console.log(place);
@@ -97,8 +96,7 @@ define([
 
 
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
+             * 
              */
             this.removePlace = function() {
                 _this.map.removeMarker(_this.places.indexOf(this));
@@ -108,8 +106,7 @@ define([
 
 
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
+             * 
              */
             this.toggleAddressSearch = function() {
                 _this.addressSearchVisible(!_this.addressSearchVisible());
@@ -117,8 +114,7 @@ define([
 
 
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
+             * 
              */
             this.toggleSearchInput = function() {
                 _this.searchInputVisible(!_this.searchInputVisible());
@@ -126,8 +122,7 @@ define([
 
 
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
+             * 
              */
             this.toggleSelectedPlace = function() {
                 _this.selectedPlaceDisplayVisible(!_this.selectedPlaceDisplayVisible());
@@ -135,8 +130,7 @@ define([
 
 
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
+             * 
              */
             this.toggleAddButton = function() {
                 _this.addButtonVisible(!_this.addButtonVisible());
@@ -144,8 +138,8 @@ define([
 
 
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
+             * @param {function} place - The title of the book.
+             * 
              */
             this.centerLocation = function(place) {
                 _this.map.centerOnLocation(place);
@@ -153,8 +147,7 @@ define([
 
 
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
+             * 
              */
             this.resetSearchView = function() {
                 _this.nameRequestVisible(false);
@@ -165,7 +158,7 @@ define([
 
 
             /**
-             * @param {function} func - The title of the book.
+             * 
              */
             this.query.subscribe(this.searchAddress);
 

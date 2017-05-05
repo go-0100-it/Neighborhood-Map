@@ -128,13 +128,20 @@ define([
                 $('#map-container-view').hide();
 
                 /** */
-                var args = ['tabsView', TabsView, 'tabsViewModel', TabsViewModel, '#tabs-container', place];
+                var viewConfigData = { 
+                                        viewVaiable: 'tabsView',
+                                        viewConstructor: TabsView,
+                                        viewModelVariable: 'tabsViewModel', 
+                                        viewModelConstructor: TabsViewModel, 
+                                        el: '#tabs-container', 
+                                        place: place
+                                    };
 
                 /** */
                 if (!_this.tabsView) {
 
                     /** */
-                    _this.renderView(args, { lat: 'Hello', lng: 'World' });
+                    _this.renderView(viewConfigData, { lat: 'Hello', lng: 'World' });
 
                 /** */
                 } else {
@@ -151,28 +158,49 @@ define([
                     case 'events':
 
                         /** */
-                        args = ['eventsView', EventsView, 'eventsListViewModel', EventsListViewModel, '#events-view', place];
+                        viewConfigData = { 
+                                            viewVaiable: 'eventsView', 
+                                            viewConstructor: EventsView, 
+                                            viewModelVariable: 'eventsListViewModel', 
+                                            viewModelConstructor: EventsListViewModel, 
+                                            el: '#events-view', 
+                                            place: place
+                                        };
 
                         /** */
-                        _this.dataController.getEventsDataList(_this.renderView, args);
+                        _this.dataController.getEventsDataList(_this.renderView, viewConfigData);
                         break;
 
                     case 'weather':
 
                         /** */
-                        args = ['weatherView', WeatherView, 'weatherListViewModel', WeatherListViewModel, '#weather-view', place];
+                        viewConfigData = { 
+                                            viewVaiable: 'weatherView', 
+                                            viewConstructor: WeatherView, 
+                                            viewModelVariable: 'weatherListViewModel', 
+                                            viewModelConstructor: WeatherListViewModel, 
+                                            el: '#weather-view', 
+                                            place: place
+                                        };
 
                         /** */
-                        _this.renderView(args, { Page: 'Weather' });
+                        _this.renderView(viewConfigData, { Page: 'Weather' });
                         break;
 
                     case 'real-estate':
 
                         /** */
-                        args = ['realEstateView', RealEstateView, 'realEstateViewModel', RealEstateListViewModel, '#real-estate-view', place];
+                        viewConfigData = { 
+                                            viewVaiable: 'realEstateView', 
+                                            viewConstructor: RealEstateView, 
+                                            viewModelVariable: 'realEstateViewModel', 
+                                            viewModelConstructor: RealEstateListViewModel, 
+                                            el: '#real-estate-view', 
+                                            place: place
+                                        };
 
                         /** */
-                        _this.renderView(args, { Page: 'Real-Estate' });
+                        _this.renderView(viewConfigData, { Page: 'Real-Estate' });
                         break;
                 }
             };
@@ -181,17 +209,24 @@ define([
              * @param {function} func - The title of the book.
              * @param {string} id - The author of the book.
              */
-            this.renderView = function(args, data) {
+            this.renderView = function(vcd, data) {
 
                 /** */
-                _this[args[0]] = new(args[1])().render();
+                _this[vcd.viewVariable] = new vcd.viewConstructor().render();
 
                 /** */
-                _this[args[2]] = new args[3]({ id: args[5].id, name: args[5].name, address: args[5].address, lat: args[5].lat, lng: args[5].lng }, data);
+                _this[vcd.viewModelVariable] = new vcd.viewModelConstructor({ 
+                                                                                                    id: vcd.place.id, 
+                                                                                                    name: vcd.place.name, 
+                                                                                                    address: vcd.place.address, 
+                                                                                                    lat: vcd.place.lat, 
+                                                                                                    lng: vcd.place.lng 
+                                                                                                  }, 
+                                                                                                  data);
 
                 /** */
-                if (!!!ko.dataFor($(args[4])[0])) {
-                    ko.applyBindings(_this[args[2]], $(args[4])[0]);
+                if (!!!ko.dataFor($(vcd.el)[0])) {
+                    ko.applyBindings(_this[vcd.viewModelVariable], $(vcd.el)[0]);
                 }
             };
         };
