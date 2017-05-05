@@ -89,7 +89,7 @@ define([
                 var callId = _this.dataRequestCount;
 
                 // Formatting the geo-coords for the API requests where value.
-                var where = args[5].lat + ',' + args[5].lng;
+                var where = args.place.lat + ',' + args.place.lng;
 
                 // Creating an obj literal to pass as the APIs request arguments.
                 var oArgs = {
