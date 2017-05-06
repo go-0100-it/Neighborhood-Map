@@ -25,6 +25,8 @@ define([
             var _this = this;
             this.searching = false;
             this.markers = [];
+            this.openWindow = null;
+            this.openMarker = null;
 
 
             /**
@@ -45,7 +47,6 @@ define([
                     });
 
                     /** */
-                    google.maps.InfoWindow.prototype.opened = false;
 
                 } else {
                     //Do something else because Google maps is unavailable
@@ -76,42 +77,46 @@ define([
              */
             this.toggleMarker = function(_infowindow, _map, _marker, _place) {
 
-                /** */
-                if (_marker.getAnimation() !== null) {
-                    _marker.setAnimation(null);
-                    _infowindow.close(_map, _marker);
-
-                    /** */
-                } else {
-
-                    /** */
-                    _marker.setAnimation(google.maps.Animation.BOUNCE);
-
-                    /** */
-                    _infowindow.open(_map, _marker);
-
-                    /** */
-                    setTimeout(function() {
-
-                        /** */
-                        var btnOverlay = $("img[src$='maps.gstatic.com/mapfiles/transparent.png']")[0];
-                        var closeBtn = $("img[src$='maps.gstatic.com/mapfiles/api-3/images/mapcnt6.png']")[0];
-
-                        /** */
-                        if (typeof btnOverlay === 'object') {
-                            btnOverlay.addEventListener('click', function() {
-                                _marker.setAnimation(null);
-                            });
-                        }
-
-                        /** */
-                        if (typeof closeBtn === 'object') {
-                            closeBtn.addEventListener('click', function() {
-                                _marker.setAnimation(null);
-                            });
-                        }
-                    }, 1500);
+                if (_this.openWindow !== null) {
+                    console.log('openWindow is not null');
+                    _this.openWindow.close(_map, _this.openMarker);
+                    _this.openMarker.setAnimation(null);
+                    _this.openMarker = null;
+                    _this.openWindow = null;
                 }
+                _this.openMarker = _marker;
+                _this.openWindow = _infowindow;
+                /** */
+                _marker.setAnimation(google.maps.Animation.BOUNCE);
+
+                /** */
+                _infowindow.open(_map, _marker);
+
+                /** */
+                setTimeout(function() {
+
+                    /** */
+                    var btnOverlay = $("img[src$='maps.gstatic.com/mapfiles/transparent.png']")[0];
+                    var closeBtn = $("img[src$='maps.gstatic.com/mapfiles/api-3/images/mapcnt6.png']")[0];
+
+                    /** */
+                    if (typeof btnOverlay === 'object') {
+                        btnOverlay.addEventListener('click', function() {
+                            _marker.setAnimation(null);
+                            _this.openMarker = null;
+                            _this.openWindow = null;
+                        });
+                    }
+
+                    /** */
+                    if (typeof closeBtn === 'object') {
+                        closeBtn.addEventListener('click', function() {
+                            _marker.setAnimation(null);
+                            _this.openMarker = null;
+                            _this.openWindow = null;
+                        });
+                    }
+                }, 1500);
             };
 
 
@@ -124,7 +129,7 @@ define([
 
                 /** */
                 for (var i = 0; i < len; i++) {
-                    _this.addMarker(places[i], i);
+                    _this.addMarker(places[i]);
                 }
             };
 
@@ -133,8 +138,7 @@ define([
              * @param {function} func - The title of the book.
              * @param {string} id - The author of the book.
              */
-            this.addMarker = function(place, i) {
-                i = i ? i : 1;
+            this.addMarker = function(place) {
 
 
                 /** */
@@ -156,7 +160,7 @@ define([
                         '<img id="info-img" src="https://maps.googleapis.com/maps/api/streetview?size=400x200&location=' + place.lat + ',' + place.lng + '&pitch=2&key=AIzaSyBSpWUS_wBjBq5kXfnbQO19ewpQPdStRDg">' +
                         '<h3>' + place.address + '</h3>' +
                         '<h3>Latitude: ' + place.lat + '&nbsp&nbsp Longitude: ' + place.lng + '</h3>' +
-                        '<button type="submit" class="map-info-btn" id="infoWin-' + i + '">Get Info</button>' +
+                        '<button type="submit" class="map-info-btn" id="infoWin-' + place.id + '">Get Info</button>' +
                         '</div>',
                     place: place,
                     clickListenerAdded: false
@@ -167,19 +171,20 @@ define([
                  * @param {function} func - The title of the book.
                  * @param {string} id - The author of the book.
                  */
-                (function(_infowindow, _map, _marker, _place, _i) {
+                (function(_infowindow, _map, _marker, _place) {
 
                     /** */
                     google.maps.event.addDomListener(_infowindow, 'domready', function() {
-
                         /** */
                         if (!_infowindow.clickListenerAdded) {
-                            $('#infoWin-' + _i).click(function() {
+
+                            $('#infoWin-' + _infowindow.place.id).click(function() {
                                 Backbone.history.navigate('#events/' + _infowindow.place.id + '/' + _infowindow.place.name + '/' + _infowindow.place.address + '/' + _infowindow.place.lat + '/' + _infowindow.place.lng, { trigger: true });
                             });
                             _infowindow.clickListenerAdded = true;
                         }
                     });
+
 
 
                     /**
@@ -199,8 +204,8 @@ define([
                      */
                     setTimeout(function() {
                         _marker.setMap(_map);
-                    }, i * 300);
-                })(infowindow, _this.map, marker, place, i);
+                    }, 300);
+                })(infowindow, _this.map, marker, place);
                 _this.refreshMap({ lat: place.lat, lng: place.lng });
             };
 
