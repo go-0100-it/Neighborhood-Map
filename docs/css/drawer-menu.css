@@ -4,7 +4,8 @@
 
 #drawer-menu-container {
     position: relative;
-    height: 105vh;
+    width: 450px;
+    height: 100vh;
 }
 
 .drawer-menu {
@@ -195,6 +196,11 @@
     left: -470px;
 }
 
+.drawer-menu-container.responsive {
+    width: 0 !important;
+}
+
+
 .drawer-toggler.responsive {
     left: -10px;
     box-shadow: none;
@@ -206,11 +212,15 @@
 }
 
 @media only screen and (max-width: 1300px) {
+
     .drawer-menu {
         width: 400px;
     }
     .drawer-toggler {
         left: 350px;
+    }
+    .drawer-menu-container.responsive {
+        width: 0;
     }
 }
 
@@ -221,12 +231,15 @@
     .drawer-toggler {
         left: 280px;
     }
+    .drawer-menu-container.responsive {
+        width: 0;
+    }
 }
 
 @media only screen and (max-width: 600px) {
     .drawer-menu {
         width: 290px;
-        top: 0;
+        top: -2px;
         left: -2px;
     }
     .drawer-menu-header {
@@ -275,5 +288,8 @@
     }
     .drawer-toggler.responsive {
         left: 5px;
+    }
+    .drawer-menu-container.responsive {
+        width: 0;
     }
 }
