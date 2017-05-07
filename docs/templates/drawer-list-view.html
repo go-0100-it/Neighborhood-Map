@@ -18,7 +18,7 @@
 </div>
 <div class="list-container">
     <ul class="drawer-menu-list" data-bind="foreach: { data: places, as: 'place' }">
-        <li class="drawer-list-item" data-bind="event: { mouseover: $parent.centerLocation }">
+        <li class="drawer-list-item">
             <div class="remove-button" data-bind="click: $parent.removePlace"><span class="remove-icon">⊗</span><span class="remove-title">remove</span></div>
             <div class="item-details" data-bind="click: $parent.onClick"><span class="li-name" data-bind="text: place.name"></span><span class="li-addr" data-bind="text: place.address"></span></div>
         </li>

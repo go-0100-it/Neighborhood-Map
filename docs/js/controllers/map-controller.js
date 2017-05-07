@@ -25,6 +25,7 @@ define([
             var _this = this;
             this.searching = false;
             this.markers = [];
+            this.infoWindows = [];
             this.openWindow = null;
             this.openMarker = null;
 
@@ -40,7 +41,6 @@ define([
 
                     /** */
                     var mapView = new MapView().render();
-
                     /** */
                     _this.map = new google.maps.Map(document.getElementById('map'), {
                         zoom: 8
@@ -65,58 +65,25 @@ define([
                 google.maps.event.trigger(_this.map, 'resize');
 
                 /** */
-                if (loc) {
-                    _this.centerOnLocation(loc);
-                }
+                _this.centerOnLocation(loc);
+
             };
 
 
-            /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
-             */
-            this.toggleMarker = function(_infowindow, _map, _marker, _place) {
+            this.openInfoWindow = function(infoWindow, marker, map) {
+                console.log('Opening info Window and starting bounce');
+                _this.openMarker = marker;
+                _this.openWindow = infoWindow;
+                infoWindow.open(map, marker);
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+            };
 
-                if (_this.openWindow !== null) {
-                    console.log('openWindow is not null');
-                    _this.openWindow.close(_map, _this.openMarker);
-                    _this.openMarker.setAnimation(null);
-                    _this.openMarker = null;
-                    _this.openWindow = null;
-                }
-                _this.openMarker = _marker;
-                _this.openWindow = _infowindow;
-                /** */
-                _marker.setAnimation(google.maps.Animation.BOUNCE);
-
-                /** */
-                _infowindow.open(_map, _marker);
-
-                /** */
-                setTimeout(function() {
-
-                    /** */
-                    var btnOverlay = $("img[src$='maps.gstatic.com/mapfiles/transparent.png']")[0];
-                    var closeBtn = $("img[src$='maps.gstatic.com/mapfiles/api-3/images/mapcnt6.png']")[0];
-
-                    /** */
-                    if (typeof btnOverlay === 'object') {
-                        btnOverlay.addEventListener('click', function() {
-                            _marker.setAnimation(null);
-                            _this.openMarker = null;
-                            _this.openWindow = null;
-                        });
-                    }
-
-                    /** */
-                    if (typeof closeBtn === 'object') {
-                        closeBtn.addEventListener('click', function() {
-                            _marker.setAnimation(null);
-                            _this.openMarker = null;
-                            _this.openWindow = null;
-                        });
-                    }
-                }, 1500);
+            this.closeInfoWindow = function(map) {
+                console.log('Closing info Window and stopping bounce');
+                _this.openWindow.close(map, _this.openMarker);
+                _this.openMarker.setAnimation(null);
+                _this.openMarker = null;
+                _this.openWindow = null;
             };
 
 
@@ -166,6 +133,8 @@ define([
                     clickListenerAdded: false
                 });
 
+                _this.infoWindows.push(infowindow);
+
 
                 /**
                  * @param {function} func - The title of the book.
@@ -181,7 +150,25 @@ define([
                             $('#infoWin-' + _infowindow.place.id).click(function() {
                                 Backbone.history.navigate('#events/' + _infowindow.place.id + '/' + _infowindow.place.name + '/' + _infowindow.place.address + '/' + _infowindow.place.lat + '/' + _infowindow.place.lng, { trigger: true });
                             });
+
                             _infowindow.clickListenerAdded = true;
+                        }
+                        /** */
+                        var btnOverlay = $("img[src$='maps.gstatic.com/mapfiles/transparent.png']")[0];
+                        var closeBtn = $("img[src$='maps.gstatic.com/mapfiles/api-3/images/mapcnt6.png']")[0];
+                        if (typeof btnOverlay === 'object') {
+                            btnOverlay.addEventListener('click', function() {
+                                console.log("clicked");
+                                _this.closeInfoWindow(_map);
+                            });
+                        }
+
+                        /** */
+                        if (typeof closeBtn === 'object') {
+                            closeBtn.addEventListener('click', function() {
+                                console.log("clicked");
+                                _this.closeInfoWindow(_map);
+                            });
                         }
                     });
 
@@ -192,9 +179,8 @@ define([
                      * @param {string} id - The author of the book.
                      */
                     _marker.addListener('click', function() {
-
-                        /** */
-                        _this.toggleMarker(_infowindow, _map, _marker, _place);
+                        _this.toggleWindowsMarkers(_infowindow, _marker, _map);
+                        // TODO check if window is open.
                     });
 
 
@@ -206,7 +192,24 @@ define([
                         _marker.setMap(_map);
                     }, 300);
                 })(infowindow, _this.map, marker, place);
-                _this.refreshMap({ lat: place.lat, lng: place.lng });
+
+            };
+
+            this.toggleWindowsMarkers = function(infowindow, marker, map) {
+
+                /** */
+                if (_this.openWindow === null) {
+                    _this.openInfoWindow(infowindow, marker, map);
+
+                } else {
+                    if (marker !== _this.openMarker) {
+                        _this.closeInfoWindow(map);
+                        _this.openInfoWindow(infowindow, marker, map);
+                    } else {
+                        _this.closeInfoWindow(map);
+                    }
+
+                }
             };
 
 
@@ -216,6 +219,7 @@ define([
              */
             this.removeMarker = function(index) {
                 _this.markers[index].setMap(null);
+                _this.infoWindows.splice(index, 1);
                 _this.markers.splice(index, 1);
             };
 
@@ -224,9 +228,8 @@ define([
              * @param {function} func - The title of the book.
              * @param {string} id - The author of the book.
              */
-            this.centerOnLocation = function(place) {
-                requestedLocation = new google.maps.LatLng({ lat: place.lat, lng: place.lng });
-                _this.map.panTo(requestedLocation);
+            this.centerOnLocation = function(loc) {
+                _this.map.panTo(loc);
             };
 
             /**

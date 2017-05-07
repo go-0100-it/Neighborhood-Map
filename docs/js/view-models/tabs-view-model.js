@@ -5,8 +5,7 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'knockout',
-        'router'
+        'knockout'
     ],
     function($, Backbone, _, ko) {
         var TabsViewModel = function(place) {
@@ -45,7 +44,7 @@ define([
                 _this.navigateTab(_this.tabsList[0]);
             };
             this.onClickMapIcon = function() {
-                Backbone.history.navigate('#places', { trigger: true });
+                Backbone.history.navigate('#places/' + _this.id() + '/' + _this.name() + '/' + _this.address() + '/' + _this.lat() + '/' + _this.lng(), { trigger: true });
             };
             this.navigateTab = function(tab) {
                 _this.toggleTabsMenu();

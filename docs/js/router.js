@@ -14,33 +14,38 @@ define(['jquery', 'main_controller'],
             routes: {
 
                 // Calls the home method when there is no hashtag on the url
-                '': 'places',
-                'places': 'places',
+                '': 'placesOnMap',
+                'places/:id/:name/:address/:lat/:lng': 'placeOnMap',
                 'events/:id/:name/:address/:lat/:lng': 'events',
                 'weather/:id/:name/:address/:lat/:lng': 'weather',
                 'real-estate/:id/:name/:address/:lat/:lng': 'real-estate'
             },
-
-            'places': function() {
+            'placesOnMap': function() {
                 // Calling function @ Maincontroller to create the drawer list
-                console.log("Calling Drawer");
                 MainController.renderDrawerListView();
                 $('#container-view').hide();
                 $('#map-container-view').show();
             },
+            'placeOnMap': function(id, name, address, lat, lng) {
+                // Calling function @ Maincontroller to create the drawer list
+                var place = { id: id, name: name, address: address, lat: lat, lng: lng };
+                MainController.renderDrawerListView(place);
+                $('#container-view').hide();
+                $('#map-container-view').show();
+            },
             'events': function(id, name, address, lat, lng) {
-                var obj = { id: id, name: name, address: address, lat: lat, lng: lng };
-                MainController.renderTabsView(obj, 'events');
+                var place = { id: id, name: name, address: address, lat: lat, lng: lng };
+                MainController.renderTabsView(place, 'events');
 
             },
             'weather': function(id, name, address, lat, lng) {
-                var obj = { id: id, name: name, address: address, lat: lat, lng: lng };
-                MainController.renderTabsView(obj, 'weather');
+                var place = { id: id, name: name, address: address, lat: lat, lng: lng };
+                MainController.renderTabsView(place, 'weather');
 
             },
             'real-estate': function(id, name, address, lat, lng) {
-                var obj = { id: id, name: name, address: address, lat: lat, lng: lng };
-                MainController.renderTabsView(obj, 'real-estate');
+                var place = { id: id, name: name, address: address, lat: lat, lng: lng };
+                MainController.renderTabsView(place, 'real-estate');
 
             },
         });

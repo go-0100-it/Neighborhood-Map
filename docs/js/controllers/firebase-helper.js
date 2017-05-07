@@ -1,6 +1,6 @@
 /**
  * Using Require.js to define a module responsible for creating a UserAuth object.
- */ 
+ */
 define(['jquery'],
     function($) {
 
@@ -14,7 +14,7 @@ define(['jquery'],
         var UserAuth = function() {
             var _this = this;
             this.uid = '';
-
+            this.initialized = false;
 
             /**
              * A function to initiate the user sign in to firebase.
@@ -23,26 +23,28 @@ define(['jquery'],
              * The callback(func1) being passed in, in this case, is a function to query the database.  This callback(func1) also requires a callback(func2) to be passed in.
              * The callback(func2) passed in will be called once the results are returned from the database query.
              */
-            this.initAuth = function(func1, func2) {
+            this.initAuth = function(func1, func2, request) {
 
                 /**
                  * 
                  */
                 firebase.auth().onAuthStateChanged(function(user) {
-
                     // Checking if user has been logged in.
                     if (user) {
-
+                        console.log("State changed: Logged in");
                         // User is signed in, assigning the uid, passed back from firebase,
                         // to a variable encapsulated within this UserAuth objects exection context for later reference.
                         _this.uid = user.uid;
 
                         // 
-                        func1(func2, _this.uid);
+                        if (!_this.initialized) {
+                            func1(func2, _this.uid, request);
+                            _this.initialized = true;
+                        }
 
-                    // User is not signed in.
+                        // User is not signed in.
                     } else {
-
+                        console.log("State changed: Logged out");
                         /**
                          * Requesting an anonymous user sign-in to firebase.
                          */

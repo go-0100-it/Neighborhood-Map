@@ -120,13 +120,13 @@ define([
              * @param {function} func - The title of the book.
              * @param {string} uid - The author of the book.
              */
-            this.getUserPlaces = function(func, uid) {
+            this.getUserPlaces = function(func, uid, request) {
 
                 /**
                  * 
                  */
                 firebase.database().ref(uid).once('value').then(function(snapshot) {
-
+                    console.log("Requesting Data from Firebase");
                     //
                     var places = snapshot.val();
 
@@ -135,8 +135,12 @@ define([
                         $.each(places, function(key, value) {
                             func(value);
                         });
+                        if (request.centerRequested) {
+                            console.log('Center requested 1');
+                            request.centerOnLocation(request.locRequested);
+                        }
                     } else {
-                        _this.getDefaultPlaces(func);
+                        _this.getDefaultPlaces(func, request);
                     }
 
                 });
@@ -149,7 +153,7 @@ define([
              * This function is called only if the anonymous user does not have any places save to the database.
              * @param {function} func - The callback function to be called in the for each loop after firebase returns the requested data.
              */
-            this.getDefaultPlaces = function(func) {
+            this.getDefaultPlaces = function(func, request) {
 
                 // Requesting the value stored at the key "default" at the root of the database. 
                 firebase.database().ref("default").once('value').then(function(snapshot) {
@@ -161,6 +165,10 @@ define([
                     $.each(places, function(key, value) {
                         func(value);
                     });
+                    if (request.centerRequested) {
+                        console.log('Center requested 2');
+                        request.centerOnLocation(request.locRequested);
+                    }
                 });
             };
 

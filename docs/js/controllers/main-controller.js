@@ -42,24 +42,36 @@ define([
          * @param {function} func - The title of the book.
          * @param {string} id - The author of the book.
          */
-        var Main = function() {               
+        var Main = function() {
             var _this = this;
             this.map = {};
-           
-           /** */
+
+            /** */
             this.dataController = new DataController();
 
             /**
              * @param {function} func - The title of the book.
              * @param {string} id - The author of the book.
              */
-            this.renderDrawerListView = function() {
+            this.renderDrawerListView = function(place) {
 
                 /** */
                 require(['drawer_list_view_model', 'drawer_list_view'], function(DrawerListViewModel, DrawerListView) {
 
+                    var loc = place ? { lat: Number(place.lat), lng: Number(place.lng) } : null;
+
                     /** */
                     if (!_this.drawerListView) {
+
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(function(position) {
+                                defaultLoc = {
+                                    lat: position.coords.latitude,
+                                    lng: position.coords.longitude
+                                };
+                                _this.map.centerOnLocation(defaultLoc);
+                            });
+                        }
 
                         /** */
                         _this.drawerListView = new DrawerListView().render();
@@ -70,8 +82,14 @@ define([
                         /** */
                         _this.renderMap();
 
+                        var locationRequest = {};
+                        if (loc) {
+                            var isRequested = true;
+                            locationRequest = { centerOnLocation: _this.map.centerOnLocation, centerRequested: isRequested, locRequested: loc };
+                        }
+
                         /** */
-                        FBHelper.initAuth(_this.dataController.getUserPlaces, _this.placesViewModel.pushPlace);
+                        FBHelper.initAuth(_this.dataController.getUserPlaces, _this.placesViewModel.pushPlace, locationRequest);
 
                         /**
                          * @param {function} func - The title of the book.
@@ -95,14 +113,9 @@ define([
 
                         /** */
                         ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
+                    } else {
+                        _this.map.refreshMap(loc);
                     }
-
-                    /** */
-                    var loc = _this.placesViewModel.places()[0] ? { lat: _this.placesViewModel.places()[0].lat, lng: _this.placesViewModel.places()[0].lng } : null;
-                    
-                    /** */
-                    _this.map.refreshMap(loc);
-
                 });
             };
 
@@ -110,9 +123,9 @@ define([
              * @param {function} func - The title of the book.
              * @param {string} id - The author of the book.
              */
-            this.renderMap = function() {
+            this.renderMap = function(loc) {
                 _this.map = new Map();
-                _this.map.init();
+                _this.map.init(loc);
                 _this.placesViewModel.map = _this.map;
             };
 
@@ -123,19 +136,19 @@ define([
             this.renderTabsView = function(place, view) {
 
                 /** */
-                _this.renderDrawerListView();
+                _this.renderDrawerListView(place);
                 $('#container-view').show();
                 $('#map-container-view').hide();
 
                 /** */
-                var viewConfigData = { 
-                                        viewVaiable: 'tabsView',
-                                        viewConstructor: TabsView,
-                                        viewModelVariable: 'tabsViewModel', 
-                                        viewModelConstructor: TabsViewModel, 
-                                        el: '#tabs-container', 
-                                        place: place
-                                    };
+                var viewConfigData = {
+                    viewVaiable: 'tabsView',
+                    viewConstructor: TabsView,
+                    viewModelVariable: 'tabsViewModel',
+                    viewModelConstructor: TabsViewModel,
+                    el: '#tabs-container',
+                    place: place
+                };
 
                 /** */
                 if (!_this.tabsView) {
@@ -143,7 +156,7 @@ define([
                     /** */
                     _this.renderView(viewConfigData, { lat: 'Hello', lng: 'World' });
 
-                /** */
+                    /** */
                 } else {
 
                     /** */
@@ -158,14 +171,14 @@ define([
                     case 'events':
 
                         /** */
-                        viewConfigData = { 
-                                            viewVaiable: 'eventsView', 
-                                            viewConstructor: EventsView, 
-                                            viewModelVariable: 'eventsListViewModel', 
-                                            viewModelConstructor: EventsListViewModel, 
-                                            el: '#events-view', 
-                                            place: place
-                                        };
+                        viewConfigData = {
+                            viewVaiable: 'eventsView',
+                            viewConstructor: EventsView,
+                            viewModelVariable: 'eventsListViewModel',
+                            viewModelConstructor: EventsListViewModel,
+                            el: '#events-view',
+                            place: place
+                        };
 
                         /** */
                         _this.dataController.getEventsDataList(_this.renderView, viewConfigData);
@@ -174,14 +187,14 @@ define([
                     case 'weather':
 
                         /** */
-                        viewConfigData = { 
-                                            viewVaiable: 'weatherView', 
-                                            viewConstructor: WeatherView, 
-                                            viewModelVariable: 'weatherListViewModel', 
-                                            viewModelConstructor: WeatherListViewModel, 
-                                            el: '#weather-view', 
-                                            place: place
-                                        };
+                        viewConfigData = {
+                            viewVaiable: 'weatherView',
+                            viewConstructor: WeatherView,
+                            viewModelVariable: 'weatherListViewModel',
+                            viewModelConstructor: WeatherListViewModel,
+                            el: '#weather-view',
+                            place: place
+                        };
 
                         /** */
                         _this.renderView(viewConfigData, { Page: 'Weather' });
@@ -190,14 +203,14 @@ define([
                     case 'real-estate':
 
                         /** */
-                        viewConfigData = { 
-                                            viewVaiable: 'realEstateView', 
-                                            viewConstructor: RealEstateView, 
-                                            viewModelVariable: 'realEstateViewModel', 
-                                            viewModelConstructor: RealEstateListViewModel, 
-                                            el: '#real-estate-view', 
-                                            place: place
-                                        };
+                        viewConfigData = {
+                            viewVaiable: 'realEstateView',
+                            viewConstructor: RealEstateView,
+                            viewModelVariable: 'realEstateViewModel',
+                            viewModelConstructor: RealEstateListViewModel,
+                            el: '#real-estate-view',
+                            place: place
+                        };
 
                         /** */
                         _this.renderView(viewConfigData, { Page: 'Real-Estate' });
@@ -215,14 +228,14 @@ define([
                 _this[vcd.viewVariable] = new vcd.viewConstructor().render();
 
                 /** */
-                _this[vcd.viewModelVariable] = new vcd.viewModelConstructor({ 
-                                                                                                    id: vcd.place.id, 
-                                                                                                    name: vcd.place.name, 
-                                                                                                    address: vcd.place.address, 
-                                                                                                    lat: vcd.place.lat, 
-                                                                                                    lng: vcd.place.lng 
-                                                                                                  }, 
-                                                                                                  data);
+                _this[vcd.viewModelVariable] = new vcd.viewModelConstructor({
+                        id: vcd.place.id,
+                        name: vcd.place.name,
+                        address: vcd.place.address,
+                        lat: vcd.place.lat,
+                        lng: vcd.place.lng
+                    },
+                    data);
 
                 /** */
                 if (!!!ko.dataFor($(vcd.el)[0])) {

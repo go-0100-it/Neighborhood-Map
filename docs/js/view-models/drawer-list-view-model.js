@@ -34,14 +34,30 @@ define([
             this.addButtonVisible = ko.observable(false);
             this.nameRequestVisible = ko.observable(false);
             this.places = ko.observableArray(places);
+            this.expanded = ko.observable(false);
+            this.expandedClass = ko.observable('');
 
             /**
-             * @param {function} func - The title of the book.
              */
-            this.onClick = function(place) {
-                Backbone.history.navigate('#events/' + place.id + '/' + place.name + '/' + place.address + '/' + place.lat + '/' + place.lng, { trigger: true });
+            this.toggleDrawerList = function() {
+                if (_this.expanded()) {
+                    _this.expandedClass('');
+                } else {
+                    _this.expandedClass('responsive');
+                }
+                _this.expanded(!_this.expanded());
             };
 
+            this.onClick = function(place) {
+
+                if ($('#map').is(":hidden")) {
+                    console.log('Map is hidden');
+                    Backbone.history.navigate('#places/' + place.id + '/' + place.name + '/' + place.address + '/' + place.lat + '/' + place.lng, { trigger: true });
+                    _this.centerLocation(place);
+                } else {
+                    _this.centerLocation(place);
+                }
+            };
 
             /**
              * @param {} place - The title of the book.
@@ -142,7 +158,12 @@ define([
              * 
              */
             this.centerLocation = function(place) {
-                _this.map.centerOnLocation(place);
+                var index = _this.places.indexOf(place);
+                var loc = { lat: place.lat, lng: place.lng };
+                _this.map.centerOnLocation(loc);
+                if (_this.map.openWindow !== _this.map.infoWindows[index]) {
+                    _this.map.toggleWindowsMarkers(_this.map.infoWindows[index], _this.map.markers[index], _this.map);
+                }
             };
 
 
