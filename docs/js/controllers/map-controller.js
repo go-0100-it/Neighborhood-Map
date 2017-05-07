@@ -124,7 +124,7 @@ define([
                 var infowindow = new google.maps.InfoWindow({
                     content: '<div>' +
                         '<h1>' + place.name + '</h1>' +
-                        '<img id="info-img" src="https://maps.googleapis.com/maps/api/streetview?size=400x200&location=' + place.lat + ',' + place.lng + '&pitch=2&key=AIzaSyBSpWUS_wBjBq5kXfnbQO19ewpQPdStRDg">' +
+                        '<img id="info-img" src="https://maps.googleapis.com/maps/api/streetview?size=400x200&location=' + place.address + '&pitch=2&key=AIzaSyBSpWUS_wBjBq5kXfnbQO19ewpQPdStRDg">' +
                         '<h3>' + place.address + '</h3>' +
                         '<h3>Latitude: ' + place.lat + '&nbsp&nbsp Longitude: ' + place.lng + '</h3>' +
                         '<button type="submit" class="map-info-btn" id="infoWin-' + place.id + '">Get Info</button>' +

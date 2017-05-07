@@ -57,6 +57,7 @@ define([
                 } else {
                     _this.centerLocation(place);
                 }
+                _this.toggleDrawerList();
             };
 
             /**
