@@ -225,7 +225,6 @@
 
 @media only screen and (max-width: 600px) {
     .drawer-menu {
-        position: fixed;
         width: 290px;
     }
     .drawer-menu-header {
