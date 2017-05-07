@@ -3,14 +3,14 @@
 }
 
 #drawer-menu-container {
-    position: fixed;
-    max-height: 100vh;
+    position: relative;
+    height: 100vh;
 }
 
 .drawer-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: relative;
+    top: -10px;
+    left: -20px;
     bottom: 0;
     right: 0;
     z-index: 10;
@@ -34,7 +34,7 @@
     float: left;
     width: 60px;
     height: 60px;
-    top: 0;
+    top: -100%;
     left: 400px;
     bottom: 0;
     right: 0;
@@ -192,7 +192,7 @@
 
 .drawer-menu.responsive {
     box-shadow: none;
-    left: -450px !important;
+    left: -470px;
 }
 
 .drawer-toggler.responsive {
