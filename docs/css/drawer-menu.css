@@ -190,22 +190,16 @@
     background: #505050;
 }
 
-#drawer-menu-check {
-    display: none;
-}
-
-#drawer-menu-check:checked+.drawer-menu {
+.drawer-menu.responsive {
     box-shadow: none;
-    left: -450px;
+    left: -450px !important;
 }
 
-#drawer-menu-check:checked~.drawer-toggler {
+.drawer-toggler.responsive {
     left: -10px;
     box-shadow: none;
     transform: rotate(0deg);
 }
-
-#drawer-menu-check:checked~.drawer-toggler>.drawer-menu-span {}
 
 .drawer-menu-item-selected {
     background: #404040;
@@ -278,7 +272,7 @@
     .drawer-spinner {
         width: 15vw;
     }
-    #drawer-menu-check:checked~.drawer-toggler {
+    .drawer-toggler.responsive {
         left: 5px;
     }
 }
