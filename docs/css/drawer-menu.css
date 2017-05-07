@@ -226,6 +226,8 @@
 @media only screen and (max-width: 600px) {
     .drawer-menu {
         width: 290px;
+        top: 0;
+        left: -2px;
     }
     .drawer-menu-header {
         font-size: 28px;
@@ -264,7 +266,7 @@
     .drawer-toggler {
         width: 38px;
         height: 38px;
-        top: 5px;
+        top: -99.6%;
         left: 265px;
         font-size: 30px;
     }
