@@ -31,8 +31,8 @@ define([
             // An API key supplied by http://api.eventful.com/ is required to access the Eventful API.
             this.eventsApiKey = '2J8Xh6BQhcPvkQCd';
 
-            // An API key supplied by http://developer.zoopla.com/home is required to access the Zoopla API.
-            this.realEstateApiKey = 'j9wprgzzbx6h8r794c4sj793';
+            // An API key supplied by https://developers.zomato.com is required to access the Zomato API.
+            this.restaurantsApiKey = 'de81b40aeca20309296e437c5914de3d';
 
 
             /**
