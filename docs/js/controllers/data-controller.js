@@ -179,20 +179,20 @@ define([
                 var getRequest = new XMLHttpRequest();
                 getRequest.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        console.dir(getRequest);
+                        var jsonResponse = JSON.parse(this.response);
+                        var restaurants = jsonResponse.restaurants;
+                        console.log(restaurants);
                         // Calling callbackSync function to check if this is the most recent request made by the user.
-                        _this.callbackSync(this.response, callId, args, func);
+                        _this.callbackSync(restaurants, callId, args, func);
                     } else if(this.status > 399) {
                         console.error(this.responseText);
                         console.error('Server response code: ' + this.status)
-                    } else {
-                        console.warn(this.responseText);
                     }
                 };
-                client.open('GET', 'developers.zomato.com/api/v2.1/search?lat=' + place.lat + '&lon=' + place.lng + '&radius=3000', true);
-                client.setRequestHeader('Accept: application/json');
-                client.setRequestHeader('user-key', _this.restaurantsApiKey);
-                client.send();
+                getRequest.open('GET', 'https://developers.zomato.com/api/v2.1/search?lat=' + args.place.lat + '&lon=' + args.place.lng + '&radius=3000', true);
+                getRequest.setRequestHeader('Accept', 'application/json');
+                getRequest.setRequestHeader('user-key', _this.restaurantsApiKey);
+                getRequest.send();
             };
 
 

@@ -8,8 +8,10 @@
             <li class="tab-list-item">
                 <div class="tab-list-item-container">
                     <div class="tab-list-item-img">
-                        <img class="item-img" style="width: 100px;" data-bind="visible: event.image !== null, attr: { src: event.image !== null ? event.image.medium.url : 'res/images/placeholder.png' }">
+                        <img class="item-img" style="width: 100px;" data-bind="visible: restaurant.thumb !== null, attr: { src: restaurant.thumb !== null ? restaurant.thumb : 'res/images/placeholder.png' }">
                     </div>
+                    <h2 class="restaurant-name" data-bind="text: restaurant.name"></h2>
+                    
                 </div>
             </li>
         </ul>

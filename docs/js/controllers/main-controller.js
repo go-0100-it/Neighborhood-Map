@@ -13,8 +13,8 @@ define([
         'events_view',
         'weather_list_view_model',
         'weather_view',
-        'real_estate_list_view_model',
-        'real_estate_view',
+        'restaurants_list_view_model',
+        'restaurants_view',
         'data_controller',
         'map_controller',
         'firebase_helper'
@@ -31,8 +31,8 @@ define([
         EventsView,
         WeatherListViewModel,
         WeatherView,
-        RealEstateListViewModel,
-        RealEstateView,
+        RestaurantsListViewModel,
+        RestaurantsView,
         DataController,
         Map,
         FBHelper
@@ -154,7 +154,7 @@ define([
                 if (!_this.tabsView) {
 
                     /** */
-                    _this.renderView(viewConfigData, { lat: 'Hello', lng: 'World' });
+                    _this.renderView({ lat: 'Hello', lng: 'World' }, viewConfigData);
 
                     /** */
                 } else {
@@ -206,8 +206,8 @@ define([
                         viewConfigData = {
                             viewVaiable: 'restaurantsView',
                             viewConstructor: RestaurantsView,
-                            viewModelVariable: 'restaurantsViewModel',
-                            viewModelConstructor: RestaurantsViewModel,
+                            viewModelVariable: 'restaurantsListViewModel',
+                            viewModelConstructor: RestaurantsListViewModel,
                             el: '#restaurants-view',
                             place: place
                         };
