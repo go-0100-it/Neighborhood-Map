@@ -186,9 +186,6 @@ define([
                 client.setRequestHeader('Accept: application/json');
                 client.setRequestHeader('user-key', _this.restaurantsApiKey);
                 client.send();
-
-                // …results in the following header being sent:
-                // X-Test: one, two
             };
 
 
