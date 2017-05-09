@@ -44,11 +44,11 @@ define([
              * @param {object} data - The data being passed to the callback function.
              * @param {string} callbackId - The id of the requested callback(the dataRequestCount value captured when the request was made).
              */
-            this.callbackSync = function(func, args, data, callbackId) {
+            this.callbackSync = function(data, callbackId, args, func) {
 
                 // Checking if the callbackId matches the current data request count, if it does, call the function passed in (The render tabs view function)
                 if (callbackId === _this.dataRequestCount) {
-                    func(args, data);
+                    func(data, args);
                 }
             };
 
@@ -80,7 +80,7 @@ define([
              * @param {function} func - The title of the book.
              * @param {array} args - The author of the book.
              */
-            this.getEventsDataList = function(func, args) {
+            this.getEventsDataList = function(args, func) {
 
                 // Incrementing the dataRequestCount variable by 1 every time a request is made(this code is run).
                 _this.dataRequestCount += 1;
@@ -110,7 +110,7 @@ define([
                 EVDB.API.call("/events/search", oArgs, function(oData) {
 
                     // Calling callbackSync function to check if this is the most recent request made by the user.
-                    _this.callbackSync(func, args, oData, callId);
+                    _this.callbackSync(oData, callId, args, func);
                 });
             };
 
@@ -140,7 +140,7 @@ define([
                             request.centerOnLocation(request.locRequested);
                         }
                     } else {
-                        _this.getDefaultPlaces(func, request);
+                        _this.getDefaultPlaces(request, func);
                     }
 
                 });
@@ -153,7 +153,7 @@ define([
              * This function is called only if the anonymous user does not have any places save to the database.
              * @param {function} func - The callback function to be called in the for each loop after firebase returns the requested data.
              */
-            this.getDefaultPlaces = function(func, request) {
+            this.getDefaultPlaces = function(request, func) {
 
                 // Requesting the value stored at the key "default" at the root of the database. 
                 firebase.database().ref("default").once('value').then(function(snapshot) {
@@ -172,17 +172,24 @@ define([
                 });
             };
 
-            this.getRestaurants = function(place) {
+            this.getRestaurantsList = function(args, func) {
                 // The following script:
-                var client = new XMLHttpRequest();
-                client.onreadystatechange = function() {
+                _this.dataRequestCount += 1;
+                var callId = _this.dataRequestCount;
+                var getRequest = new XMLHttpRequest();
+                getRequest.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
-                        console.dir(client);
+                        console.dir(getRequest);
+                        // Calling callbackSync function to check if this is the most recent request made by the user.
+                        _this.callbackSync(this.response, callId, args, func);
+                    } else if(this.status > 399) {
+                        console.error(this.responseText);
+                        console.error('Server response code: ' + this.status)
                     } else {
-
+                        console.warn(this.responseText);
                     }
                 };
-                client.open('GET', 'developers.zomato.com/api/v2.1/search?lat=' + place.lat + '&lon=' + place.lng + '&radius=3000');
+                client.open('GET', 'developers.zomato.com/api/v2.1/search?lat=' + place.lat + '&lon=' + place.lng + '&radius=3000', true);
                 client.setRequestHeader('Accept: application/json');
                 client.setRequestHeader('user-key', _this.restaurantsApiKey);
                 client.send();

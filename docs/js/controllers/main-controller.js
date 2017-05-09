@@ -181,7 +181,7 @@ define([
                         };
 
                         /** */
-                        _this.dataController.getEventsDataList(_this.renderView, viewConfigData);
+                        _this.dataController.getEventsDataList(viewConfigData, _this.renderView);
                         break;
 
                     case 'weather':
@@ -200,20 +200,20 @@ define([
                         _this.renderView(viewConfigData, { Page: 'Weather' });
                         break;
 
-                    case 'real-estate':
+                    case 'restaurants':
 
                         /** */
                         viewConfigData = {
-                            viewVaiable: 'realEstateView',
-                            viewConstructor: RealEstateView,
-                            viewModelVariable: 'realEstateViewModel',
-                            viewModelConstructor: RealEstateListViewModel,
-                            el: '#real-estate-view',
+                            viewVaiable: 'restaurantsView',
+                            viewConstructor: RestaurantsView,
+                            viewModelVariable: 'restaurantsViewModel',
+                            viewModelConstructor: RestaurantsViewModel,
+                            el: '#restaurants-view',
                             place: place
                         };
 
                         /** */
-                        _this.renderView(viewConfigData, { Page: 'Real-Estate' });
+                        _this.dataController.getRestaurantsList(viewConfigData, _this.renderView);
                         break;
                 }
             };
@@ -222,7 +222,7 @@ define([
              * @param {function} func - The title of the book.
              * @param {string} id - The author of the book.
              */
-            this.renderView = function(vcd, data) {
+            this.renderView = function(data, vcd) {
 
                 /** */
                 _this[vcd.viewVariable] = new vcd.viewConstructor().render();
@@ -237,7 +237,9 @@ define([
                     },
                     data);
 
-                /** */
+                /**
+                 * Checking if the element has bindings applied. If no bindings have previously been applied to this element then apply bindings. 
+                 */
                 if (!!!ko.dataFor($(vcd.el)[0])) {
                     ko.applyBindings(_this[vcd.viewModelVariable], $(vcd.el)[0]);
                 }

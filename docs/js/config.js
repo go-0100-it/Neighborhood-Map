@@ -35,7 +35,7 @@ requirejs.config({
         tabs_view_model: 'view-models/tabs-view-model',
         events_list_view_model: 'view-models/events-list-view-model',
         weather_list_view_model: 'view-models/weather-list-view-model',
-        real_estate_list_view_model: 'view-models/real-estate-list-view-model',
+        restaurants_list_view_model: 'view-models/restaurants-list-view-model',
 
         /*Views*/
         drawer_list_view: 'views/drawer-list-view',
@@ -43,7 +43,7 @@ requirejs.config({
         tabs_view: 'views/tabs-view',
         weather_view: 'views/weather-view',
         events_view: 'views/events-view',
-        real_estate_view: 'views/real-estate-view',
+        restaurants_view: 'views/restaurants-view',
         map_view: 'views/map-view'
     },
 
@@ -63,7 +63,7 @@ requirejs([
     'util'
 
 ], function($, _, bb, ko, tpl) {
-    tpl.loadTemplates(['drawer-list-view', 'map', 'tabs-view', 'events-view', 'weather-view', 'real-estate-view', 'tabs-spinner-view'], function() {
+    tpl.loadTemplates(['drawer-list-view', 'map', 'tabs-view', 'events-view', 'weather-view', 'restaurants-view', 'tabs-spinner-view'], function() {
         // Start the main app logic.
         requirejs(['firebase_app', 'firebase_auth', 'firebase_data'], function() {
             // Initialize Firebase
