@@ -172,6 +172,25 @@ define([
                 });
             };
 
+            this.getRestaurants = function(place) {
+                // The following script:
+                var client = new XMLHttpRequest();
+                client.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.dir(client);
+                    } else {
+
+                    }
+                };
+                client.open('GET', 'developers.zomato.com/api/v2.1/search?lat=' + place.lat + '&lon=' + place.lng + '&radius=3000');
+                client.setRequestHeader('Accept: application/json');
+                client.setRequestHeader('user-key', _this.restaurantsApiKey);
+                client.send();
+
+                // …results in the following header being sent:
+                // X-Test: one, two
+            };
+
 
 
             /**
