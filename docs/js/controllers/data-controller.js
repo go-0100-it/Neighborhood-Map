@@ -37,7 +37,7 @@ define([
             // An API key supplied by https://developers.zomato.com is required to access the Zomato API.
             this.restaurantsApiKey = 'de81b40aeca20309296e437c5914de3d';
 
-            this.weatherApiKey = '8063483be3c33c058c9eec81c2e7c397';
+            this.weatherApiKey = 'e699f514c84a4a1c98f84105171005';
                                   
             /**
              * I was unable to find a way to cancel the previously made AJAX requests upon making another so I came up with this work around were the previous requests are simply ignored.
@@ -215,7 +215,7 @@ define([
                         console.error('Server response code: ' + this.status)
                     }
                 };
-                getRequest.open('GET', 'https://api.openweathermap.org/data/2.5/weather?lat=' + args.place.lat + '&lon=' + args.place.lng + '&units=metric&APPID=' + _this.weatherApiKey, true);
+                getRequest.open('GET', 'https://api.worldweatheronline.com/premium/v1/weather.ashx?key=' + _this.weatherApiKey + '&q=' + args.place.lat + ',' + args.place.lng + '&format=json&num_of_days=1', true);
                 getRequest.send();
             };
 
