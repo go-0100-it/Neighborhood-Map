@@ -215,7 +215,7 @@ define([
                         console.error('Server response code: ' + this.status)
                     }
                 };
-                getRequest.open('GET', 'http://api.openweathermap.org/data/2.5/weather?lat=' + args.place.lat + '&lon=' + args.place.lng + '&units=metric&APPID={' + _this.weatherApiKey +'}', true);
+                getRequest.open('GET', 'http://api.openweathermap.org/data/2.5/weather?lat=' + args.place.lat + '&lon=' + args.place.lng + '&units=metric&APPID=' + _this.weatherApiKey, true);
                 getRequest.send();
             };
 
