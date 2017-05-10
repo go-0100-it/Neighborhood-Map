@@ -16,6 +16,8 @@ define([
             this.lat = ko.observable(place.lat);
             this.lng = ko.observable(place.lng);
             this.data = ko.observableArray(data);
+            this.getInfo = function() {};
+            this.addToMap = function() {};
             return this;
         };
         return RestaurantsListViewModel;

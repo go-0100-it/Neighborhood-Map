@@ -6,7 +6,10 @@ define([
         'backbone',
         'underscore',
         'knockout',
-        'events_API'
+        'events_API',
+        'firebase_app',
+        'firebase_auth',
+        'firebase_data'
     ],
     function(
         $,
@@ -184,12 +187,12 @@ define([
                         console.log(restaurants);
                         // Calling callbackSync function to check if this is the most recent request made by the user.
                         _this.callbackSync(restaurants, callId, args, func);
-                    } else if(this.status > 399) {
+                    } else if (this.status > 399) {
                         console.error(this.responseText);
                         console.error('Server response code: ' + this.status)
                     }
                 };
-                getRequest.open('GET', 'https://developers.zomato.com/api/v2.1/search?lat=' + args.place.lat + '&lon=' + args.place.lng + '&radius=3000', true);
+                getRequest.open('GET', 'https://developers.zomato.com/api/v2.1/search?lat=' + args.place.lat + '&lon=' + args.place.lng + '&radius=5000', true);
                 getRequest.setRequestHeader('Accept', 'application/json');
                 getRequest.setRequestHeader('user-key', _this.restaurantsApiKey);
                 getRequest.send();

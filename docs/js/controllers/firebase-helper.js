@@ -1,7 +1,11 @@
 /**
  * Using Require.js to define a module responsible for creating a UserAuth object.
  */
-define(['jquery'],
+define(['jquery',
+        'firebase_app',
+        'firebase_auth',
+        'firebase_data'
+    ],
     function($) {
 
 

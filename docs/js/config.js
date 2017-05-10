@@ -60,12 +60,13 @@ requirejs([
     'underscore',
     'backbone',
     'knockout',
-    'util'
+    'util',
+    'firebase_app'
 
 ], function($, _, bb, ko, tpl) {
     tpl.loadTemplates(['drawer-list-view', 'map', 'tabs-view', 'events-view', 'weather-view', 'restaurants-view', 'tabs-spinner-view'], function() {
         // Start the main app logic.
-        requirejs(['firebase_app', 'firebase_auth', 'firebase_data'], function() {
+        requirejs(['firebase_auth', 'firebase_data'], function() {
             // Initialize Firebase
             var configFB = {
                 apiKey: "AIzaSyAlFaHJIu2go9re03lp6AaunDBfuI9GkCk",

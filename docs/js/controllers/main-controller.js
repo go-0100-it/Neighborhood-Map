@@ -197,7 +197,7 @@ define([
                         };
 
                         /** */
-                        _this.renderView(viewConfigData, { Page: 'Weather' });
+                        _this.renderView({ Page: 'Weather' }, viewConfigData);
                         break;
 
                     case 'restaurants':
