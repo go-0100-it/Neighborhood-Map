@@ -37,7 +37,8 @@ define([
             // An API key supplied by https://developers.zomato.com is required to access the Zomato API.
             this.restaurantsApiKey = 'de81b40aeca20309296e437c5914de3d';
 
-
+            this.weatherApiKey = '8063483be3c33c058c9eec81c2e7c397';
+                                  
             /**
              * I was unable to find a way to cancel the previously made AJAX requests upon making another so I came up with this work around were the previous requests are simply ignored.
              * Using this function to call only the render function associated with the most recent data requested by the user.  If the user has previously requested data and 
@@ -195,6 +196,26 @@ define([
                 getRequest.open('GET', 'https://developers.zomato.com/api/v2.1/search?lat=' + args.place.lat + '&lon=' + args.place.lng + '&radius=5000', true);
                 getRequest.setRequestHeader('Accept', 'application/json');
                 getRequest.setRequestHeader('user-key', _this.restaurantsApiKey);
+                getRequest.send();
+            };
+
+            this.getCurrentWeather = function(args, func){
+            // The following script:
+                _this.dataRequestCount += 1;
+                var callId = _this.dataRequestCount;
+                var getRequest = new XMLHttpRequest();
+                getRequest.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var currentWeather = JSON.parse(this.response);
+                        console.log(currentWeather);
+                        // Calling callbackSync function to check if this is the most recent request made by the user.
+                        _this.callbackSync(currentWeather, callId, args, func);
+                    } else if (this.status > 399) {
+                        console.error(this.responseText);
+                        console.error('Server response code: ' + this.status)
+                    }
+                };
+                getRequest.open('GET', 'http://api.openweathermap.org/data/2.5/weather?lat=' + args.place.lat + '&lon=' + args.place.lng + '&units=metric&APPID={' + _this.weatherApiKey +'}', true);
                 getRequest.send();
             };
 
