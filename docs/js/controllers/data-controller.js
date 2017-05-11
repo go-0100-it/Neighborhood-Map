@@ -29,6 +29,9 @@ define([
          */
         var DataController = function() {
             var _this = this;
+            let DONE = 4;
+            let OK = 200;
+            let ERROR = 400;
 
             // This variable is used by the callbackSync function.  Used to keep count of the data requests made by the user.
             this.dataRequestCount = 0;
@@ -105,10 +108,10 @@ define([
                 // Capturing the current dataRequestCount value as this requests id.
                 var callId = _this.dataRequestCount;
 
-                // Formatting the geo-coords for the API requests where value.
+                // Formatting the geo-coords for the API request's where value.
                 var where = args.place.lat + ',' + args.place.lng;
 
-                // Creating an obj literal to pass as the APIs request arguments.
+                // Creating an obj literal to pass as the API's request parameters.
                 var oArgs = {
                     app_key: _this.eventsApiKey,
                     q: "events",
@@ -183,20 +186,27 @@ define([
                     $.each(places, function(key, value) {
                         func(value);
                     });
+
+                    // If centerRequested is true calling the centerOnLocation function and passing the location contained in the request object.
+                    // 
                     if (request.centerRequested) {
-                        console.log('Center requested 2');
                         request.centerOnLocation(request.locRequested);
                     }
                 });
             };
 
             this.getRestaurantsList = function(args, func) {
-                // The following script:
+
+                // Incrementing the dataRequestCount variable by 1 every time a request is made(this code is run).
                 _this.dataRequestCount += 1;
+
+                // Capturing the current dataRequestCount value as this requests id.
                 var callId = _this.dataRequestCount;
+
+
                 var getRequest = new XMLHttpRequest();
                 getRequest.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
+                    if (this.readyState == DONE && this.status == OK) {
                         var jsonResponse = JSON.parse(this.response);
                         var restaurants = jsonResponse.restaurants;
                         var stamp = args.viewVariable + args.place.id;
@@ -204,7 +214,7 @@ define([
                         console.log(restaurants);
                         // Calling callbackSync function to check if this is the most recent request made by the user.
                         _this.callbackSync(restaurants, callId, args, func);
-                    } else if (this.status > 399) {
+                    } else if (this.status >= ERROR) {
                         console.error(this.responseText);
                         console.error('Server response code: ' + this.status)
                     }
@@ -216,19 +226,32 @@ define([
             };
 
             this.getCurrentWeather = function(args, func) {
-                // The following script:
+
+                // Incrementing the dataRequestCount variable by 1 every time a request is made(this code is run).
                 _this.dataRequestCount += 1;
+
+                // Capturing the current dataRequestCount value as this requests id.
                 var callId = _this.dataRequestCount;
+
+                // Creating a new Http get request.
                 var getRequest = new XMLHttpRequest();
+
+                // Setting the callback for the onreadystatechange Event handler which is called when the readystate changes.
                 getRequest.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
+
+                    // 
+                    if (this.readyState == DONE && this.status == OK) {
                         var currentWeather = JSON.parse(this.response);
+
+                        // Creating a unique label for caching the result
                         var stamp = args.viewVariable + args.place.id;
+
+                        // Caching the result to reduce the number of Http requests.
                         Cache.storeResult(stamp, 600000, currentWeather);
-                        console.log(currentWeather);
+
                         // Calling callbackSync function to check if this is the most recent request made by the user.
                         _this.callbackSync(currentWeather, callId, args, func);
-                    } else if (this.status > 399) {
+                    } else if (this.status >= ERROR) {
                         console.error(this.responseText);
                         console.error('Server response code: ' + this.status)
                     }
