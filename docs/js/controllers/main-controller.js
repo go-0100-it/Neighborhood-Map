@@ -197,7 +197,7 @@ define([
                         };
 
                         /** */
-                        _this.dataController.getCurrentWeather(viewConfigData, _this.renderView);
+                        _this.dataController.queryCache(viewConfigData, _this.dataController.getCurrentWeather, _this.renderView);
                         break;
 
                     case 'restaurants':
@@ -213,7 +213,7 @@ define([
                         };
 
                         /** */
-                        _this.dataController.getRestaurantsList(viewConfigData, _this.renderView);
+                        _this.dataController.queryCache(viewConfigData, _this.dataController.getRestaurantsList, _this.renderView);
                         break;
                 }
             };

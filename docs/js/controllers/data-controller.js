@@ -62,8 +62,10 @@ define([
                 Cache.clearStale();
                 var stamp = args.viewVariable + args.place.id;
                 if (Cache.has(stamp)) {
+                    _this.dataRequestCount += 1;
+                    var callId = _this.dataRequestCount;
                     var data = Cache.getCachedData(stamp);
-                    callbackSync(data, callId, args, func2);
+                    _this.callbackSync(data, callId, args, func2);
                 } else {
                     func1(args, func2);
                 }
@@ -124,8 +126,7 @@ define([
                  */
                 EVDB.API.call("/events/search", oArgs, function(oData) {
                     var stamp = args.viewVariable + args.place.id;
-                    var cacheData = new Cache.Data(stamp, 60000, oData);
-                    Cache.storeResult(cacheData);
+                    Cache.storeResult(stamp, 3600000, oData);
                     // Calling callbackSync function to check if this is the most recent request made by the user.
                     _this.callbackSync(oData, callId, args, func);
                 });
@@ -198,6 +199,8 @@ define([
                     if (this.readyState == 4 && this.status == 200) {
                         var jsonResponse = JSON.parse(this.response);
                         var restaurants = jsonResponse.restaurants;
+                        var stamp = args.viewVariable + args.place.id;
+                        Cache.storeResult(stamp, 3600000, restaurants);
                         console.log(restaurants);
                         // Calling callbackSync function to check if this is the most recent request made by the user.
                         _this.callbackSync(restaurants, callId, args, func);
@@ -220,6 +223,8 @@ define([
                 getRequest.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         var currentWeather = JSON.parse(this.response);
+                        var stamp = args.viewVariable + args.place.id;
+                        Cache.storeResult(stamp, 600000, currentWeather);
                         console.log(currentWeather);
                         // Calling callbackSync function to check if this is the most recent request made by the user.
                         _this.callbackSync(currentWeather, callId, args, func);
