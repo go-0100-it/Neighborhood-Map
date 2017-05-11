@@ -74,27 +74,6 @@ define([
                 }
             };
 
-            // /**
-            //  * @param {function} func - The title of the book.
-            //  * @param {string} id - The author of the book.
-            //  */
-            // this.getEventData = function(id, func) {
-            //     var oArgs = {
-            //         app_key: _this.eventsApiKey,
-            //         id: id,
-            //         page_size: 1,
-            //     };
-
-            //     /**
-            //      * 
-            //      */
-            //     EVDB.API.call("/events/get", oArgs, function(oData) {
-            //         // Note: this relies on the custom toString() methods below
-            //         func(oData);
-            //     });
-            // };
-
-
 
             /**
              * @param {function} func - The title of the book.
@@ -203,8 +182,10 @@ define([
                 // Capturing the current dataRequestCount value as this requests id.
                 var callId = _this.dataRequestCount;
 
-
+                // Creating a new Http get request.
                 var getRequest = new XMLHttpRequest();
+
+                // Setting the callback for the onreadystatechange Event handler which is called when the readystate changes.
                 getRequest.onreadystatechange = function() {
                     if (this.readyState == DONE && this.status == OK) {
                         var jsonResponse = JSON.parse(this.response);
@@ -239,8 +220,10 @@ define([
                 // Setting the callback for the onreadystatechange Event handler which is called when the readystate changes.
                 getRequest.onreadystatechange = function() {
 
-                    // 
+                    // If the readyState is Done and status is 200(OK) 
                     if (this.readyState == DONE && this.status == OK) {
+
+                        // Parsing the response and setting to a variable for readability.
                         var currentWeather = JSON.parse(this.response);
 
                         // Creating a unique label for caching the result
@@ -249,13 +232,18 @@ define([
                         // Caching the result to reduce the number of Http requests.
                         Cache.storeResult(stamp, 600000, currentWeather);
 
-                        // Calling callbackSync function to check if this is the most recent request made by the user.
+                        // Calling the callbackSync function to check if this is the most recent request made by the user.
+                        // Passing the data and the function to call if this is the most recent request.
                         _this.callbackSync(currentWeather, callId, args, func);
+
+                        // If the response from server is an error, log the error
                     } else if (this.status >= ERROR) {
                         console.error(this.responseText);
-                        console.error('Server response code: ' + this.status)
+                        console.error('Server response code: ' + this.status);
                     }
                 };
+
+                // Opening and sending the request
                 getRequest.open('GET', 'https://api.worldweatheronline.com/premium/v1/weather.ashx?key=' + _this.weatherApiKey + '&q=' + args.place.lat + ',' + args.place.lng + '&format=json&num_of_days=1', true);
                 getRequest.send();
             };
@@ -263,10 +251,10 @@ define([
 
 
             /**
-             * A function to add a selected place object to the users database.
+             * A function to add the user selected place object to the database.
              * @param {object} place - The place object to be added to the database.
              * @param {string} uid - The unique user id given by firebase when the current user was logged in anonymously. 
-             * NOTE: The uid is used as the key for the main containing object.  The place id is used as the key for each place object.
+             * NOTE: The uid is used as the key for the places object(the object containing all the places).  The place id is used as the key for each place object.
              */
             this.updateUserPlaces = function(place, uid) {
                 firebase.database().ref(uid + '/' + place.id).update(place);
@@ -278,7 +266,7 @@ define([
              * A function to remove the selected place object residing in the firebase database.
              * @param {object} place - The place object to be removed from the database.
              * @param {string} uid - The unique user id given by firebase when the current user was logged in anonymously.
-             * NOTE: The uid is used as the key for the main containing object.  The place id is used as the key for each place object.
+             * NOTE: The uid is used as the key for the places object(the object containing all the places).  The place id is used as the key for each place object.
              */
             this.removeUserPlace = function(place, uid) {
                 firebase.database().ref(uid + '/' + place.id).remove();
@@ -289,21 +277,20 @@ define([
             /**
              * A function to create a date of string type and formatted as required by the eventful API. (ie. Feb 1st, 2017 = '2017020100')
              * @param {int} span - The time offset in years from current date.
-             * @return {string} - Returns a formatted date as a string.  The date returned will be either the current date or, if a parameter is passed,
-             * will be the current date plus the the number of years corresponding to the number passed in.
+             * @return {string} - Returns a formatted date as a string.  The date returned will be either the current date if no parameter is passed in @param span or, 
+             * if a parameter is passed in, will be the current date plus the the number of years corresponding to the number passed in.
              */
             this.getFormattedDate = function(span) {
 
-                // Setting the variable span to the arg span if it is present or 0 if no arg is passed in.
-                var span = span ? span : 0;
+                var yearSpan = span ? span : 0;
                 var newDate = new Date();
                 var formattedMonth = ((newDate.getMonth() + 1) < 10) ? ('0' + (newDate.getMonth() + 1)) : (newDate.getMonth() + 1);
-                var date = (newDate.getFullYear() + span) + formattedMonth + newDate.getDate() + '00';
+                var date = (newDate.getFullYear() + yearSpan) + formattedMonth + newDate.getDate() + '00';
 
                 return date;
             };
         };
 
-
+        // Returning the DataController constructor
         return DataController;
     });
