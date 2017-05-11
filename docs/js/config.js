@@ -29,6 +29,7 @@ requirejs.config({
         main_controller: 'controllers/main-controller',
         map_controller: 'controllers/map-controller',
         data_controller: 'controllers/data-controller',
+        cache: 'controllers/cache',
 
         /*ViewsModels*/
         drawer_list_view_model: 'view-models/drawer-list-view-model',

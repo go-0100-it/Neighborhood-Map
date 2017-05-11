@@ -7,6 +7,7 @@ define([
         'underscore',
         'knockout',
         'events_API',
+        'cache',
         'firebase_app',
         'firebase_auth',
         'firebase_data'
@@ -16,7 +17,8 @@ define([
         backbone,
         _,
         ko,
-        EventsApi
+        EventsApi,
+        Cache
     ) {
         /**
          * Creates a Data controller object.
@@ -38,7 +40,7 @@ define([
             this.restaurantsApiKey = 'de81b40aeca20309296e437c5914de3d';
 
             this.weatherApiKey = 'e699f514c84a4a1c98f84105171005';
-                                  
+
             /**
              * I was unable to find a way to cancel the previously made AJAX requests upon making another so I came up with this work around were the previous requests are simply ignored.
              * Using this function to call only the render function associated with the most recent data requested by the user.  If the user has previously requested data and 
@@ -56,7 +58,16 @@ define([
                 }
             };
 
-
+            this.queryCache = function(args, func1, func2) {
+                Cache.clearStale();
+                var stamp = args.viewVariable + args.place.id;
+                if (Cache.has(stamp)) {
+                    var data = Cache.getCachedData(stamp);
+                    callbackSync(data, callId, args, func2);
+                } else {
+                    func1(args, func2);
+                }
+            };
 
             // /**
             //  * @param {function} func - The title of the book.
@@ -112,7 +123,9 @@ define([
                  * passing the arguments to filter the search and the callback function to run when the result is ready.
                  */
                 EVDB.API.call("/events/search", oArgs, function(oData) {
-
+                    var stamp = args.viewVariable + args.place.id;
+                    var cacheData = new Cache.Data(stamp, 60000, oData);
+                    Cache.storeResult(cacheData);
                     // Calling callbackSync function to check if this is the most recent request made by the user.
                     _this.callbackSync(oData, callId, args, func);
                 });
@@ -199,8 +212,8 @@ define([
                 getRequest.send();
             };
 
-            this.getCurrentWeather = function(args, func){
-            // The following script:
+            this.getCurrentWeather = function(args, func) {
+                // The following script:
                 _this.dataRequestCount += 1;
                 var callId = _this.dataRequestCount;
                 var getRequest = new XMLHttpRequest();

@@ -142,7 +142,7 @@ define([
 
                 /** */
                 var viewConfigData = {
-                    viewVaiable: 'tabsView',
+                    viewVariable: 'tabsView',
                     viewConstructor: TabsView,
                     viewModelVariable: 'tabsViewModel',
                     viewModelConstructor: TabsViewModel,
@@ -172,7 +172,7 @@ define([
 
                         /** */
                         viewConfigData = {
-                            viewVaiable: 'eventsView',
+                            viewVariable: 'eventsView',
                             viewConstructor: EventsView,
                             viewModelVariable: 'eventsListViewModel',
                             viewModelConstructor: EventsListViewModel,
@@ -181,14 +181,14 @@ define([
                         };
 
                         /** */
-                        _this.dataController.getEventsDataList(viewConfigData, _this.renderView);
+                        _this.dataController.queryCache(viewConfigData, _this.dataController.getEventsDataList, _this.renderView);
                         break;
 
                     case 'weather':
 
                         /** */
                         viewConfigData = {
-                            viewVaiable: 'weatherView',
+                            viewVariable: 'weatherView',
                             viewConstructor: WeatherView,
                             viewModelVariable: 'weatherListViewModel',
                             viewModelConstructor: WeatherListViewModel,
@@ -204,7 +204,7 @@ define([
 
                         /** */
                         viewConfigData = {
-                            viewVaiable: 'restaurantsView',
+                            viewVariable: 'restaurantsView',
                             viewConstructor: RestaurantsView,
                             viewModelVariable: 'restaurantsListViewModel',
                             viewModelConstructor: RestaurantsListViewModel,
