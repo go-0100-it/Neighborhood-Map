@@ -54,7 +54,8 @@ define([
 
 
                 /**
-                 * A function to determine if this data is stale
+                 * A function to determine if this data is stale.
+                 * @return - returns true if the data is stale(expired), false if it is not stale(fresh).
                  */
                 this.isStale = function() {
                     var currentTime = new Date().getTime();
@@ -66,7 +67,7 @@ define([
 
 
             /**
-             * A function to call the Data constructorn to create a Data object and store the data object in the Cash storage array.
+             * A function to call the Data constructorn to create a Data object and store the data object in the Cache storage array.
              * @param {string} stamp - a unique stamp(request Id) created by combining a place id and the view variable(view type).
              * @param {number} life - time in MS till the data will be considered stale(expired).
              * 
