@@ -20,6 +20,8 @@ define([
         EventsApi,
         Cache
     ) {
+
+
         /**
          * Creates a Data controller object.
          * @constructor
@@ -36,48 +38,82 @@ define([
             // This variable is used by the callbackSync function.  Used to keep count of the data requests made by the user.
             this.dataRequestCount = 0;
 
-            // An API key supplied by http://api.eventful.com/ is required to access the Eventful API.
+            // An API key supplied by http://api.eventful.com/ and is required to access the Eventful API.
             this.eventsApiKey = '2J8Xh6BQhcPvkQCd';
 
-            // An API key supplied by https://developers.zomato.com is required to access the Zomato API.
+            // An API key supplied by https://developers.zomato.com and is required to access the Zomato API.
             this.restaurantsApiKey = 'de81b40aeca20309296e437c5914de3d';
 
+            // An API key supplied by https://worldweatheronline.com and is required to access the World Weather Online API.
             this.weatherApiKey = 'e699f514c84a4a1c98f84105171005';
 
+
+
+
             /**
-             * I was unable to find a way to cancel the previously made AJAX requests upon making another so I came up with this work around were the previous requests are simply ignored.
+             * I was unable to find a way to cancel the previously made AJAX requests upon making another so I came up with this work around were the previous requests
+             * are simply ignored.  The request would not be completely wasted as the result would be cached and therefor, this seemed like a viable solution to me.
              * Using this function to call only the render function associated with the most recent data requested by the user.  If the user has previously requested data and 
              * commits to subsequent data requests before the previous data has been processed and rendered, then only the last data request will be processed and rendered.
-             * @param {function} func - The callback function.
-             * @param {array} args - The array of args being passed to the callback function.
              * @param {object} data - The data being passed to the callback function.
              * @param {string} callbackId - The id of the requested callback(the dataRequestCount value captured when the request was made).
+             * @param {array} args - The array of args being passed to the callback function.
+             * @param {function} func - The callback function.
              */
             this.callbackSync = function(data, callbackId, args, func) {
 
-                // Checking if the callbackId matches the current data request count, if it does, call the function passed in (The render tabs view function)
+                // Checking if the callbackId matches the current data request count, if it does then it's the most recent, then call the function passed in (The render tabs view function)
                 if (callbackId === _this.dataRequestCount) {
                     func(data, args);
                 }
             };
 
+
+
+
+            /**
+             * 
+             * @param {object} args - 
+             * @param {function} func1 - 
+             * @param {function} func2 - 
+             */
             this.queryCache = function(args, func1, func2) {
+
+                // Calling the clearStale function on the Cache to remove all the expired data stored before querying the Cache.
                 Cache.clearStale();
+
+                // Querying the Cache for the current request.
                 var stamp = args.viewVariable + args.place.id;
+
+                // If the a request stamp is found that matches the current one then continue with the users request but using the Cached data
+                // instead of doing a HTTP get request.
                 if (Cache.has(stamp)) {
+
+                    // Incrementing the dataRequestCount variable by 1 every time a request is made(this code is run).
                     _this.dataRequestCount += 1;
+
+                    // Capturing the current dataRequestCount value as this requests id.
                     var callId = _this.dataRequestCount;
+
+                    // Getting the Cached data with the stamp that matches the current stamp.
                     var data = Cache.getCachedData(stamp);
+
+                    // Calling callbackSync function to check if this is the most recent request made by the user.
                     _this.callbackSync(data, callId, args, func2);
+
+
                 } else {
                     func1(args, func2);
                 }
             };
 
 
+
+
             /**
-             * @param {function} func - The title of the book.
-             * @param {array} args - The author of the book.
+             * 
+             * @param {object} args - 
+             * @param {function} func - 
              */
             this.getEventsDataList = function(args, func) {
 
@@ -108,7 +144,10 @@ define([
                  */
                 EVDB.API.call("/events/search", oArgs, function(oData) {
                     var stamp = args.viewVariable + args.place.id;
+
+                    // Caching the result to reduce the number of Http requests.
                     Cache.storeResult(stamp, 3600000, oData);
+
                     // Calling callbackSync function to check if this is the most recent request made by the user.
                     _this.callbackSync(oData, callId, args, func);
                 });
@@ -116,9 +155,12 @@ define([
 
 
 
+
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} uid - The author of the book.
+             * 
+             * @param {function} func - 
+             * @param {string} uid - 
+             * @param {object} request - 
              */
             this.getUserPlaces = function(func, uid, request) {
 
@@ -148,9 +190,11 @@ define([
 
 
 
+
             /**
              * A function to query the firebase database for the default places.  
              * This function is called only if the anonymous user does not have any places save to the database.
+             * @param {object} request - an object containing the request data, using to center the map view.
              * @param {function} func - The callback function to be called in the for each loop after firebase returns the requested data.
              */
             this.getDefaultPlaces = function(request, func) {
@@ -166,7 +210,7 @@ define([
                         func(value);
                     });
 
-                    // If centerRequested is true calling the centerOnLocation function and passing the location contained in the request object.
+                    // If request.centerRequested is true calling the centerOnLocation function and passing the location contained in the request object.
                     // 
                     if (request.centerRequested) {
                         request.centerOnLocation(request.locRequested);
@@ -174,6 +218,14 @@ define([
                 });
             };
 
+
+
+
+            /**
+             * A function to... 
+             * @param {object} args - 
+             * @param {function} func - The callback function to be called...
+             */
             this.getRestaurantsList = function(args, func) {
 
                 // Incrementing the dataRequestCount variable by 1 every time a request is made(this code is run).
@@ -188,24 +240,45 @@ define([
                 // Setting the callback for the onreadystatechange Event handler which is called when the readystate changes.
                 getRequest.onreadystatechange = function() {
                     if (this.readyState == DONE && this.status == OK) {
+
+                        // Parsing the response and setting to a variable for readability.
                         var jsonResponse = JSON.parse(this.response);
+
+                        // Parsing the response and setting to a variable for readability.
                         var restaurants = jsonResponse.restaurants;
+
+                        // Creating a unique label for caching the result
                         var stamp = args.viewVariable + args.place.id;
+
+                        // Caching the result to reduce the number of Http requests.
                         Cache.storeResult(stamp, 3600000, restaurants);
-                        console.log(restaurants);
-                        // Calling callbackSync function to check if this is the most recent request made by the user.
+
+                        // Calling the callbackSync function to check if this is the most recent request made by the user.
+                        // Passing the data and the function to call if this is the most recent request.
                         _this.callbackSync(restaurants, callId, args, func);
+
+                        // If the response from server is an error, log the error
                     } else if (this.status >= ERROR) {
                         console.error(this.responseText);
                         console.error('Server response code: ' + this.status)
                     }
                 };
+
+                // Opening and sending the request, adding required user-key in the request header.  User key supplied by Zomato.com.
                 getRequest.open('GET', 'https://developers.zomato.com/api/v2.1/search?lat=' + args.place.lat + '&lon=' + args.place.lng + '&radius=5000', true);
                 getRequest.setRequestHeader('Accept', 'application/json');
                 getRequest.setRequestHeader('user-key', _this.restaurantsApiKey);
                 getRequest.send();
             };
 
+
+
+
+            /**
+             * A function to... 
+             * @param {object} args - 
+             * @param {function} func - The callback function to be called...
+             */
             this.getCurrentWeather = function(args, func) {
 
                 // Incrementing the dataRequestCount variable by 1 every time a request is made(this code is run).
@@ -220,7 +293,6 @@ define([
                 // Setting the callback for the onreadystatechange Event handler which is called when the readystate changes.
                 getRequest.onreadystatechange = function() {
 
-                    // If the readyState is Done and status is 200(OK) 
                     if (this.readyState == DONE && this.status == OK) {
 
                         // Parsing the response and setting to a variable for readability.
@@ -250,6 +322,7 @@ define([
 
 
 
+
             /**
              * A function to add the user selected place object to the database.
              * @param {object} place - The place object to be added to the database.
@@ -262,6 +335,7 @@ define([
 
 
 
+
             /**
              * A function to remove the selected place object residing in the firebase database.
              * @param {object} place - The place object to be removed from the database.
@@ -271,6 +345,7 @@ define([
             this.removeUserPlace = function(place, uid) {
                 firebase.database().ref(uid + '/' + place.id).remove();
             };
+
 
 
 
@@ -290,6 +365,7 @@ define([
                 return date;
             };
         };
+
 
         // Returning the DataController constructor
         return DataController;
