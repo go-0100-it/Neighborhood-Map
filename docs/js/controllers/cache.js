@@ -76,7 +76,7 @@ define([
              * @param {array} result -  the array data returned from the HTTP request.
              */
             this.storeResult = function(stamp, life, result) {
-
+                console.log('storing data');
                 // Creating a new Data object to store.
                 var data = new Data(stamp, life, result);
 
@@ -96,6 +96,7 @@ define([
              * @return - returns true if the stamp exist in the array, false if it does not.
              */
             this.has = function(stamp) {
+                console.log(_this.requestArray);
                 return _this.requestArray.indexOf(stamp) !== -1 ? true : false;
             };
 
@@ -119,7 +120,7 @@ define([
                 $.each(_this.storage, function(index, value) {
                     if (!value.isStale()) {
                         arr1.push(value);
-                        arr2.push(value.request);
+                        arr2.push(value.stamp);
                     }
 
                     // replacing the original array data with the fresh(not stale) data from the temporary arrays.
@@ -138,6 +139,7 @@ define([
              * ensure the stamp exists.
              */
             this.getCachedData = function(stamp) {
+                console.log('getting stored data');
                 return _this.storage[_this.requestArray.indexOf(stamp)].result;
             };
 
