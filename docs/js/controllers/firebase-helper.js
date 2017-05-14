@@ -24,8 +24,9 @@ define(['jquery',
              * A function to initiate the user sign in to firebase.
              * @param {function} func1 - the callback function to execute upon user sign in.
              * @param {function} func2 - the function to be passed to the callback function(func1) when the callback function is being executed.
-             * The callback(func1) being passed in, in this case, is a function to query the database.  This callback(func1) also requires a callback(func2) to be passed in.
-             * The callback(func2) passed in will be called once the results are returned from the database query.
+             * The callback function(func1) being passed in, in this case, is a function to query the database.  This callback function(func1) also 
+             * requires a callback function(func2) to be passed in.  The callback function(func2) passed in will be called once the results are 
+             * returned from the database query.
              */
             this.initAuth = function(func1, func2, request) {
 
@@ -36,6 +37,8 @@ define(['jquery',
                     // Checking if user has been logged in.
                     if (user) {
                         console.log("State changed: Logged in");
+
+                        
                         // User is signed in, assigning the uid, passed back from firebase,
                         // to a variable encapsulated within this UserAuth objects exection context for later reference.
                         _this.uid = user.uid;

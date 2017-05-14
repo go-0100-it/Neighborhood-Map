@@ -23,10 +23,11 @@ define([
 
 
         /**
-         * Creates a Data controller object.
-         * @constructor
-         * This controller is responsible for retrieving all external data required by the app.
-         * The controller constructor could be called from any module but, for sake of clenliness, is only contained and referenced in the main controller.
+         * @constructor - Creates a Data controller object.
+         * This controller is responsible for retrieving all external data required by the app.  This Controller queries the apps firebase database 
+         * for drawers list of places, as well as other third party API calls used to render the tabs view.
+         * The controller constructor could be called from any module but, for sake of clenliness, is only created once in the main controller and 
+         * referenced only in the main controller.
          * @return - returns the DataController constructor.
          */
         var DataController = function() {
@@ -38,13 +39,13 @@ define([
             // This variable is used by the callbackSync function.  Used to keep count of the data requests made by the user.
             this.dataRequestCount = 0;
 
-            // An API key supplied by http://api.eventful.com/ and is required to access the Eventful API.
+            // The API key supplied by http://api.eventful.com/ and is required to access the Eventful API.
             this.eventsApiKey = '2J8Xh6BQhcPvkQCd';
 
-            // An API key supplied by https://developers.zomato.com and is required to access the Zomato API.
+            // The API key supplied by https://developers.zomato.com and is required to access the Zomato API.
             this.restaurantsApiKey = 'de81b40aeca20309296e437c5914de3d';
 
-            // An API key supplied by https://worldweatheronline.com and is required to access the World Weather Online API.
+            // The API key supplied by https://worldweatheronline.com and is required to access the World Weather Online API.
             this.weatherApiKey = 'e699f514c84a4a1c98f84105171005';
 
 
@@ -72,10 +73,14 @@ define([
 
 
             /**
-             * 
-             * @param {object} args - 
-             * @param {function} func1 - 
-             * @param {function} func2 - 
+             * A function to query the application cache prior to HTTP requests and call the appropriate callback function. This function checks if data 
+             * from a previous request with the same stamp(requestId) is currently stored in the cache.  If data exists, retrieve the data and call the 
+             * callbackSync function. If no data exists, initiate the HTTP request by calling the first callback function (func1).
+             * @param {object} args - is an object to define the view and view model to be created, it will be passed to the second callback function(func2)
+             * when calling it.
+             * @param {function} func1 - the callback function to be called if no data with the same stamp(requestId) exists in the cache.
+             * @param {function} func2 - the callback function to be passed to either the callbackSync function if data exists or the first callback 
+             * function(func1) if no data exists. This function will create the view and view model necessary to display the data to the user.
              */
             this.queryCache = function(args, func1, func2) {
 
@@ -101,7 +106,8 @@ define([
                     // Calling callbackSync function to check if this is the most recent request made by the user.
                     _this.callbackSync(data, callId, args, func2);
 
-
+                // as there is no data stored, call the callback function(func1) which will initiate the HTTP request to fetch the data.  Passing in the 
+                // second callback function and args to create the required view to display the requested data.
                 } else {
                     func1(args, func2);
                 }
@@ -111,9 +117,12 @@ define([
 
 
             /**
-             * 
-             * @param {object} args - 
-             * @param {function} func - 
+             * A function to query the evenful API.  Stores the returned data in the application cache and calls the callback function to render the view.
+             * This is not a typical HTTP request but contains the method supplied by evenful to interact with their API.
+             * @param {object} args - is an object to define the view and view model to be created, it will be passed to the callback function(func)
+             * when calling it.
+             * @param {function} func - the callback function to be passed to the callbackSync function after the request has been processed.  This 
+             * function will create the view and view model necessary to display the data to the user.
              */
             this.getEventsDataList = function(args, func) {
 
@@ -157,10 +166,14 @@ define([
 
 
             /**
-             * 
-             * @param {function} func - 
-             * @param {string} uid - 
-             * @param {object} request - 
+             * A function to query the applications firebase database for the anonymous users data.  The query returns an object containing the 
+             * users stored places objects, if there are any.  If the request returns a places object, loop through the places object and call the 
+             * callback function passed in for each place.  If the request does not return a places object(no places stored) then call the getDefaultPlaces
+             * function to rertrieve the default places stored.
+             * @param {function} func - the callback function to be called on each place if the firebase request result returns a places object.  Pushes
+             * each place to the drawer-list-view-models ko.observableArray(this auto magically adds them to the view).
+             * @param {string} uid - the unique id generated by firebase for the current anonymous user.
+             * @param {object} request - an object containing the request data, using to center a location in the map view.
              */
             this.getUserPlaces = function(func, uid, request) {
 
@@ -194,7 +207,7 @@ define([
             /**
              * A function to query the firebase database for the default places.  
              * This function is called only if the anonymous user does not have any places save to the database.
-             * @param {object} request - an object containing the request data, using to center the map view.
+             * @param {object} request - an object containing the request data, using to center a location in the map view.
              * @param {function} func - The callback function to be called in the for each loop after firebase returns the requested data.
              */
             this.getDefaultPlaces = function(request, func) {
