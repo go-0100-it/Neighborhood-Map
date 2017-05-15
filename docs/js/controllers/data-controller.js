@@ -73,9 +73,9 @@ define([
 
 
             /**
-             * A function to query the application cache prior to HTTP requests and call the appropriate callback function. This function checks if data 
-             * from a previous request with the same stamp(requestId) is currently stored in the cache.  If data exists, retrieve the data and call the 
-             * callbackSync function. If no data exists, initiate the HTTP request by calling the first callback function (func1).
+             * A function to query the application cache prior to HTTP requests and then, depending on the results, call the appropriate callback function. 
+             * This function checks if data from a previous request with the same stamp(requestId) is currently stored in the cache.  If data exists, 
+             * retrieve the data and call the callbackSync function. If no data exists, initiate the HTTP request by calling the first callback function (func1).
              * @param {object} args - is an object to define the view and view model to be created, it will be passed to the second callback function(func2)
              * when calling it.
              * @param {function} func1 - the callback function to be called if no data with the same stamp(requestId) exists in the cache.
@@ -106,8 +106,8 @@ define([
                     // Calling callbackSync function to check if this is the most recent request made by the user.
                     _this.callbackSync(data, callId, args, func2);
 
-                // as there is no data stored, call the callback function(func1) which will initiate the HTTP request to fetch the data.  Passing in the 
-                // second callback function and args to create the required view to display the requested data.
+                    // as there is no data stored, call the callback function(func1) which will initiate the HTTP request to fetch the data.  Passing in the 
+                    // second callback function and args to create the required view to display the requested data.
                 } else {
                     func1(args, func2);
                 }
@@ -122,7 +122,7 @@ define([
              * @param {object} args - is an object to define the view and view model to be created, it will be passed to the callback function(func)
              * when calling it.
              * @param {function} func - the callback function to be passed to the callbackSync function after the request has been processed.  This 
-             * function will create the view and view model necessary to display the data to the user.
+             * function will create the view and view model necessary to display the data, returned by the HTTP request, to the user.
              */
             this.getEventsDataList = function(args, func) {
 
@@ -178,23 +178,28 @@ define([
             this.getUserPlaces = function(func, uid, request) {
 
                 /**
-                 * 
+                 * Querying the firebase database for the places object saved by the anonymous user and passing a callback function to be called once the 
+                 * database responds to the request.
                  */
                 firebase.database().ref(uid).once('value').then(function(snapshot) {
-                    console.log("Requesting Data from Firebase");
-                    //
+
+                    // snapshot is the object returned by firebase containing the data requested.  Assigning the value of snapshot to a variable.
                     var places = snapshot.val();
 
-                    //
+                    //  If firebase returned a data object then loop through that objects keys(place Ids) and push to the drawer-list-view-nodels
+                    // ko.observableArray(this auto magically adds them to the view).
                     if (places) {
                         $.each(places, function(key, value) {
                             func(value);
                         });
+
+                        // If request.centerRequested is true calling the centerOnLocation function and passing the location contained in the request object.
                         if (request.centerRequested) {
-                            console.log('Center requested 1');
                             request.centerOnLocation(request.locRequested);
                         }
                     } else {
+
+                        // If firebase returned no data then call this function to get the defaults list of places stored.
                         _this.getDefaultPlaces(request, func);
                     }
 
@@ -205,14 +210,18 @@ define([
 
 
             /**
-             * A function to query the firebase database for the default places.  
+             * A function to query the firebase database for the list of default places.  To be called only if the anonymous user does not have
+             * any places saved to the database. 
              * This function is called only if the anonymous user does not have any places save to the database.
              * @param {object} request - an object containing the request data, using to center a location in the map view.
              * @param {function} func - The callback function to be called in the for each loop after firebase returns the requested data.
              */
             this.getDefaultPlaces = function(request, func) {
 
-                // Requesting the value stored at the key "default" at the root of the database. 
+                /**
+                 * Querying the firebase database for the default places object and passing a callback function to be called once the 
+                 * database responds to the request.  This function is only called if the user has not yet created any new places.
+                 */
                 firebase.database().ref("default").once('value').then(function(snapshot) {
 
                     // Storing the object returned from firebase to a variable.
@@ -224,7 +233,6 @@ define([
                     });
 
                     // If request.centerRequested is true calling the centerOnLocation function and passing the location contained in the request object.
-                    // 
                     if (request.centerRequested) {
                         request.centerOnLocation(request.locRequested);
                     }
@@ -235,9 +243,11 @@ define([
 
 
             /**
-             * A function to... 
-             * @param {object} args - 
-             * @param {function} func - The callback function to be called...
+             * A function to query the Zoopla API for a list of restaurants local to the selected place.  The place data is passed in the args object.
+             * @param {object} args - is an object to define the view and view model to be created, it will be passed to the callback function(func)
+             * when calling it.
+             * @param {function} func - the callback function to be passed to the callbackSync function after the request has been processed.  This 
+             * function will create the view and view model necessary to display the data, returned by the HTTP request, to the user.
              */
             this.getRestaurantsList = function(args, func) {
 
@@ -277,7 +287,7 @@ define([
                     }
                 };
 
-                // Opening and sending the request, adding required user-key in the request header.  User key supplied by Zomato.com.
+                // Opening and sending the request, adding the required user-key in the request header. The user key is supplied by Zomato.com.
                 getRequest.open('GET', 'https://developers.zomato.com/api/v2.1/search?lat=' + args.place.lat + '&lon=' + args.place.lng + '&radius=5000', true);
                 getRequest.setRequestHeader('Accept', 'application/json');
                 getRequest.setRequestHeader('user-key', _this.restaurantsApiKey);
@@ -288,9 +298,11 @@ define([
 
 
             /**
-             * A function to... 
-             * @param {object} args - 
-             * @param {function} func - The callback function to be called...
+             * A function to query the Worldweatheronline API for the local weather forecast, local to the selected place.  The place data is passed in the args object.
+             * @param {object} args - is an object to define the view and view model to be created, it will be passed to the callback function(func)
+             * when calling it.
+             * @param {function} func - the callback function to be passed to the callbackSync function after the request has been processed.  This 
+             * function will create the view and view model necessary to display the data, returned by the HTTP request, to the user.
              */
             this.getCurrentWeather = function(args, func) {
 
@@ -328,7 +340,7 @@ define([
                     }
                 };
 
-                // Opening and sending the request
+                // Opening and sending the request. The user key is supplied by Worldweatheronline.com.
                 getRequest.open('GET', 'https://api.worldweatheronline.com/premium/v1/weather.ashx?key=' + _this.weatherApiKey + '&q=' + args.place.lat + ',' + args.place.lng + '&format=json&num_of_days=1', true);
                 getRequest.send();
             };
@@ -375,6 +387,7 @@ define([
                 var formattedMonth = ((newDate.getMonth() + 1) < 10) ? ('0' + (newDate.getMonth() + 1)) : (newDate.getMonth() + 1);
                 var date = (newDate.getFullYear() + yearSpan) + formattedMonth + newDate.getDate() + '00';
 
+                // returning the formatted date string
                 return date;
             };
         };

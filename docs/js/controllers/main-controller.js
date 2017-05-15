@@ -38,9 +38,10 @@ define([
         FBHelper
     ) {
 
+
         /**
-         * @param {function} func - The title of the book.
-         * @param {string} id - The author of the book.
+         * @constructor -
+         * @return {object} - 
          */
         var Main = function() {
             var _this = this;
@@ -49,20 +50,24 @@ define([
             /** */
             this.dataController = new DataController();
 
+
+
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
+             * 
+             * @param {object} place - The author of the book.
              */
             this.renderDrawerListView = function(place) {
 
-                /** */
+                //
                 require(['drawer_list_view_model', 'drawer_list_view'], function(DrawerListViewModel, DrawerListView) {
 
+                    //
                     var loc = place ? { lat: Number(place.lat), lng: Number(place.lng) } : null;
 
-                    /** */
+                    //
                     if (!_this.drawerListView) {
 
+                        //
                         if (navigator.geolocation) {
                             navigator.geolocation.getCurrentPosition(function(position) {
                                 defaultLoc = {
@@ -73,55 +78,68 @@ define([
                             });
                         }
 
-                        /** */
+                        //
                         _this.drawerListView = new DrawerListView().render();
 
-                        /** */
+                        //
                         _this.placesViewModel = new DrawerListViewModel();
 
-                        /** */
+                        //
                         _this.renderMap();
 
                         var locationRequest = {};
+
+                        //
                         if (loc) {
                             var isRequested = true;
                             locationRequest = { centerOnLocation: _this.map.centerOnLocation, centerRequested: isRequested, locRequested: loc };
                         }
 
-                        /** */
+                        //
                         FBHelper.initAuth(_this.dataController.getUserPlaces, _this.placesViewModel.pushPlace, locationRequest);
 
+
+
+
                         /**
-                         * @param {function} func - The title of the book.
-                         * @param {string} id - The author of the book.
+                         * 
+                         * @param {object} place - 
                          */
                         _this.placesViewModel.updatePlacesData = function(place) {
 
-                            /** */
+                            //
                             _this.dataController.updateUserPlaces(place, FBHelper.uid);
                         };
 
+
+
+
                         /**
-                         * @param {function} func - The title of the book.
-                         * @param {string} id - The author of the book.
+                         * 
+                         * @param {object} place - 
                          */
                         _this.placesViewModel.removePlaceData = function(place) {
 
-                            /** */
+                            //
                             _this.dataController.removeUserPlace(place, FBHelper.uid);
                         };
 
-                        /** */
+                        //
                         ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
+
+                        //
                     } else {
                         _this.map.refreshMap(loc);
                     }
                 });
             };
 
+
+
+
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
+             * 
+             * @param {object} loc - 
              */
             this.renderMap = function(loc) {
                 _this.map = new Map();
@@ -129,18 +147,21 @@ define([
                 _this.placesViewModel.map = _this.map;
             };
 
+
+
+
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
+             * @param {object} place - 
+             * @param {object} view - 
              */
             this.renderTabsView = function(place, view) {
 
-                /** */
+                //
                 _this.renderDrawerListView(place);
                 $('#container-view').show();
                 $('#map-container-view').hide();
 
-                /** */
+                //
                 var viewConfigData = {
                     viewVariable: 'tabsView',
                     viewConstructor: TabsView,
@@ -150,27 +171,27 @@ define([
                     place: place
                 };
 
-                /** */
+                //
                 if (!_this.tabsView) {
 
-                    /** */
+                    //
                     _this.renderView({ lat: 'Hello', lng: 'World' }, viewConfigData);
 
-                    /** */
+                    //
                 } else {
 
-                    /** */
+                    //
                     _this.tabsViewModel.place(place);
 
-                    /** */
+                    //
                     $('#tab-container').html(_.template(tpl.get('tabs-spinner-view')));
                 }
 
-                /** */
+                //
                 switch (view) {
                     case 'events':
 
-                        /** */
+                        //
                         viewConfigData = {
                             viewVariable: 'eventsView',
                             viewConstructor: EventsView,
@@ -180,13 +201,13 @@ define([
                             place: place
                         };
 
-                        /** */
+                        //
                         _this.dataController.queryCache(viewConfigData, _this.dataController.getEventsDataList, _this.renderView);
                         break;
 
                     case 'weather':
 
-                        /** */
+                        //
                         viewConfigData = {
                             viewVariable: 'weatherView',
                             viewConstructor: WeatherView,
@@ -196,13 +217,13 @@ define([
                             place: place
                         };
 
-                        /** */
+                        //
                         _this.dataController.queryCache(viewConfigData, _this.dataController.getCurrentWeather, _this.renderView);
                         break;
 
                     case 'restaurants':
 
-                        /** */
+                        //
                         viewConfigData = {
                             viewVariable: 'restaurantsView',
                             viewConstructor: RestaurantsView,
@@ -212,22 +233,23 @@ define([
                             place: place
                         };
 
-                        /** */
+                        //
                         _this.dataController.queryCache(viewConfigData, _this.dataController.getRestaurantsList, _this.renderView);
                         break;
                 }
             };
 
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
+             * 
+             * @param {object} data - 
+             * @param {object} vcd - 
              */
             this.renderView = function(data, vcd) {
 
-                /** */
+                //
                 _this[vcd.viewVariable] = new vcd.viewConstructor().render();
 
-                /** */
+                //
                 _this[vcd.viewModelVariable] = new vcd.viewModelConstructor({
                         id: vcd.place.id,
                         name: vcd.place.name,
@@ -237,15 +259,13 @@ define([
                     },
                     data);
 
-                /**
-                 * Checking if the element has bindings applied. If no bindings have previously been applied to this element then apply bindings. 
-                 */
+                // Checking if the element has bindings applied. If no bindings have previously been applied to this element then apply bindings. 
                 if (!!!ko.dataFor($(vcd.el)[0])) {
                     ko.applyBindings(_this[vcd.viewModelVariable], $(vcd.el)[0]);
                 }
             };
         };
 
-        /** */
+        //
         return new Main();
     });

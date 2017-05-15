@@ -11,7 +11,7 @@ define(['jquery',
 
         /**
          * A function constructor to create a new UserAuth object. The UserAuth object created handles the user log-in details,
-         * monitors log in state and updates the app via callback functions upon login state changes.
+         * monitors log in state by updating the app via callback functions upon login state changes.
          * @constructor
          * @return - returns a new UserAuth object.
          */
@@ -22,7 +22,7 @@ define(['jquery',
 
             /**
              * A function to initiate the user sign in to firebase.
-             * @param {function} func1 - the callback function to execute upon user sign in.
+             * @param {function} func1 - the callback function to execute upon user sign in.  The function will query firebase for the list of places.
              * @param {function} func2 - the function to be passed to the callback function(func1) when the callback function is being executed.
              * The callback function(func1) being passed in, in this case, is a function to query the database.  This callback function(func1) also 
              * requires a callback function(func2) to be passed in.  The callback function(func2) passed in will be called once the results are 
@@ -34,27 +34,25 @@ define(['jquery',
                  * 
                  */
                 firebase.auth().onAuthStateChanged(function(user) {
+
                     // Checking if user has been logged in.
                     if (user) {
-                        console.log("State changed: Logged in");
 
-                        
                         // User is signed in, assigning the uid, passed back from firebase,
                         // to a variable encapsulated within this UserAuth objects exection context for later reference.
                         _this.uid = user.uid;
 
-                        // 
+                        // Checking if this is the initial user sign-in as it is only necessary to query firebase for the list of user places once.
+                        // If it is the initial sign-in then call the callback function(func1).
                         if (!_this.initialized) {
                             func1(func2, _this.uid, request);
                             _this.initialized = true;
                         }
 
-                        // User is not signed in.
+                        // If the user is not signed in.
                     } else {
-                        console.log("State changed: Logged out");
-                        /**
-                         * Requesting an anonymous user sign-in to firebase.
-                         */
+
+                        //Requesting an anonymous user sign-in to firebase.
                         firebase.auth().signInAnonymously().catch(function(error) {
 
                             // Retriving the error code from the error object passed back.
@@ -74,5 +72,6 @@ define(['jquery',
             };
         };
 
+        //  Returning a new UserAuth object.
         return new UserAuth();
     });
