@@ -20,6 +20,7 @@ define([
             this.name = ko.observable();
 
             /**
+             * 
              */
             this.name.subscribe(function() {
                 _this.nameRequestVisible(false);
@@ -38,6 +39,7 @@ define([
             this.expandedClass = ko.observable('');
 
             /**
+             * 
              */
             this.toggleDrawerList = function() {
                 if (_this.expanded()) {

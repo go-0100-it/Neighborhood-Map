@@ -319,7 +319,7 @@ define([
                 getRequest.onreadystatechange = function() {
 
                     if (this.readyState == DONE && this.status == OK) {
-
+                        console.log(this.response);
                         // Parsing the response and setting to a variable for readability.
                         var currentWeather = JSON.parse(this.response);
 
