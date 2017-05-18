@@ -151,11 +151,35 @@
 }
 
 .address-input,
-.place-name-input {
+.place-name-input,
+.filterBy-input-container {
+    box-sizing: border-box;
+    text-align: left;
+    font-size: 18px;
     width: 100%;
     height: 50px;
+}
+
+.filterBy-input {
+    box-sizing: border-box;
+    float: left;
+    height: 100%;
+    width: 80%;
     font-size: 18px;
     padding: 0 10px;
+}
+
+.filter-img-container {
+    box-sizing: border-box;
+    text-align: center;
+    float: left;
+    height: 100%;
+    width: 20%;
+}
+
+.filter-icon-img {
+    padding: 5px;
+    cursor: pointer;
 }
 
 .item-details {
@@ -200,7 +224,6 @@
     width: 0 !important;
 }
 
-
 .drawer-toggler.responsive {
     left: -10px;
     box-shadow: none;
@@ -212,7 +235,6 @@
 }
 
 @media only screen and (max-width: 1300px) {
-
     .drawer-menu {
         width: 400px;
     }

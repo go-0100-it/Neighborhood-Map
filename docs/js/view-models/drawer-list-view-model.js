@@ -30,6 +30,7 @@ define([
             this.selectedFormattedAddress = ko.observable('');
             this.query = ko.observable('');
             this.addressSearchVisible = ko.observable(false);
+            this.filterVisible = ko.observable(false);
             this.searchInputVisible = ko.observable(true);
             this.selectedPlaceDisplayVisible = ko.observable(false);
             this.addButtonVisible = ko.observable(false);
@@ -128,6 +129,7 @@ define([
              * 
              */
             this.toggleAddressSearch = function() {
+                _this.filterVisible(false);
                 _this.addressSearchVisible(!_this.addressSearchVisible());
             };
 
@@ -137,6 +139,14 @@ define([
              */
             this.toggleSearchInput = function() {
                 _this.searchInputVisible(!_this.searchInputVisible());
+            };
+
+            /**
+             * A function to show/hide the filter function view elements upon button click.
+             */
+            this.toggleFilter = function() {
+                _this.addressSearchVisible(false);
+                _this.filterVisible(!_this.filterVisible());
             };
 
 

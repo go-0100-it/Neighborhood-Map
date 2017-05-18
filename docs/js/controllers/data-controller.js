@@ -154,11 +154,15 @@ define([
                 EVDB.API.call("/events/search", oArgs, function(oData) {
                     var stamp = args.viewVariable + args.place.id;
 
+                    // If there was an event array returned containing events for the API request then assign to the events variable.
+                    // If the event array returned was empty then assign a default object to the events variable to inform the user.
+                    var events = oData.events.event.length !== 0 ? oData : { events: { event: [{ name: 'No events found for this location' }] } };
+
                     // Caching the result to reduce the number of Http requests.
-                    Cache.storeResult(stamp, 3600000, oData);
+                    Cache.storeResult(stamp, 3600000, events);
 
                     // Calling callbackSync function to check if this is the most recent request made by the user.
-                    _this.callbackSync(oData, callId, args, func);
+                    _this.callbackSync(events, callId, args, func);
                 });
             };
 
@@ -267,8 +271,10 @@ define([
                         // Parsing the response and setting to a variable for readability.
                         var jsonResponse = JSON.parse(this.response);
 
-                        // Parsing the response and setting to a variable for readability.
-                        var restaurants = jsonResponse.restaurants;
+                        // Parsing the response and setting to a variable for readability if the array returned has values.  If the array is empty creating a default message
+                        // to display inform the user no results were found.
+                        console.log(jsonResponse.restaurants);
+                        var restaurants = jsonResponse.restaurants.length !== 0 ? jsonResponse.restaurants : [{ name: 'No restaurants found for this location', cuisine: '', location: { address: '' } }];
 
                         // Creating a unique label for caching the result
                         var stamp = args.viewVariable + args.place.id;

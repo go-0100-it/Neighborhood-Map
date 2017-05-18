@@ -4,14 +4,16 @@
         <ul class="tab-list" data-bind="foreach: { data: data, as: 'event' }">
             <li class="tab-list-item">
                 <div class="tab-list-item-container">
-                    <div class="tab-list-item-img">
+                    <div class="tab-list-item-img" data-bind="visible: event.title !== 'No events found for this location'">
                         <img class="item-img" style="width: 100px;" data-bind="visible: event.image !== null, attr: { src: event.image !== null ? event.image.medium.url : 'res/images/placeholder.png' }">
                     </div>
                     <h2 class="event-title" data-bind="text: event.title"></h2>
-                    <h3 class="event-time" data-bind="text: event.start_time"></h3>
-                    <h3 class="venue-title">Venue</h3>
-                    <a class="event-venue" target="_blank" data-bind="text: event.venue_name, attr: { href: event.venue_url }"></a>
-                    <p class="venue-addr" data-bind="text: event.venue_address"></p>
+                    <div data-bind="visible: event.title !== 'No events found for this location'">
+                        <h3 class=" event-time " data-bind="text: event.start_time "></h3>
+                        <h3 class="venue-title ">Venue</h3>
+                        <a class="event-venue " target="_blank " data-bind="text: event.venue_name, attr: { href: event.venue_url } "></a>
+                        <p class="venue-addr " data-bind="text: event.venue_address "></p>
+                    </div>
                 </div>
             </li>
         </ul>
