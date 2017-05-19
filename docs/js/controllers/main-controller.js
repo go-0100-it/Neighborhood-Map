@@ -40,8 +40,12 @@ define([
 
 
         /**
-         * @constructor -
-         * @return {object} - 
+         * @constructor - Creates a main controller object.
+         * The created main controller object is, as the name implies, the main controller.  It controls the majority of the functions of the application.  
+         * Nearly every function of the application is controlled via this main controller object.  The purpose of the main controller is to be 
+         * the hub in which all other modules can communicate through and in which all of the main functionality of the application is generated.  Having this 
+         * main controller helps to keep concerns seperate and helps keep code modulal and improve maintainability.  
+         * @return {object} - returns a new main controller object.
          */
         var Main = function() {
             var _this = this;

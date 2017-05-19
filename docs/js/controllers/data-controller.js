@@ -325,7 +325,7 @@ define([
                 getRequest.onreadystatechange = function() {
 
                     if (this.readyState == DONE && this.status == OK) {
-                        console.log(this.response);
+
                         // Parsing the response and setting to a variable for readability.
                         var currentWeather = JSON.parse(this.response);
 
@@ -343,6 +343,7 @@ define([
                     } else if (this.status >= ERROR) {
                         console.error(this.responseText);
                         console.error('Server response code: ' + this.status);
+                        alert('Server response code: ' + this.status);
                     }
                 };
 

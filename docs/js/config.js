@@ -40,7 +40,6 @@ requirejs.config({
 
         /*Views*/
         drawer_list_view: 'views/drawer-list-view',
-        navbar_filter_view: 'view-models/navbar-view',
         tabs_view: 'views/tabs-view',
         weather_view: 'views/weather-view',
         events_view: 'views/events-view',

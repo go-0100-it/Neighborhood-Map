@@ -55,7 +55,7 @@ define(['jquery',
                         //Requesting an anonymous user sign-in to firebase.
                         firebase.auth().signInAnonymously().catch(function(error) {
 
-                            // Retriving the error code from the error object passed back.
+                            // If error, retriving the error code from the error object passed back.
                             var errorCode = error.code;
 
                             // Retriving the error message from the error object passed back.
@@ -65,7 +65,7 @@ define(['jquery',
                             console.error(errorCode + ': ' + errorMessage);
 
                             // Alerting user of the login error and error code.
-                            alert('There was an during authentication (error: ' + errorCode + '). The app is not connected to the database!');
+                            alert('There was an error during authentication (error: ' + errorCode + '). The app is not connected to the database!');
                         });
                     }
                 });

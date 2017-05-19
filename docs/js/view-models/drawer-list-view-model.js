@@ -5,10 +5,9 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'knockout',
-        'util'
+        'knockout'
     ],
-    function($, Backbone, _, ko, tpl) {
+    function($, Backbone, _, ko) {
 
         /**
          * @param {function} func - The title of the book.

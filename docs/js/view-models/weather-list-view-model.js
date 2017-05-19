@@ -5,8 +5,7 @@ define([
         'jquery',
         'backbone',
         'underscore',
-        'knockout',
-        'router'
+        'knockout'
     ],
     function($, Backbone, _, ko) {
         var WeatherListViewModel = function(place, data) {
