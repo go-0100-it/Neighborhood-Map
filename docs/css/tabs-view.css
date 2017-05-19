@@ -36,6 +36,25 @@
     width: 5vw;
 }
 
+.tab-list {
+    list-style: none;
+    padding: 0;
+}
+
+.tab-list-container {
+    padding: 0 20px;
+}
+
+.tab-list-item {
+    display: block;
+    margin: 10px 0;
+    background-color: rgba(140, 140, 140, 0.96);
+}
+
+.tab-list-item-container {
+    padding: 20px 15px 1px 15px;
+}
+
 
 /* Style the links inside the navigation bar */
 
@@ -64,6 +83,14 @@
 
 .tabs .icon {
     display: none;
+}
+
+.badge-container {
+    box-sizing: border-box;
+    width: 100%;
+    background-color: #fff;
+    margin-top: 10px;
+    padding: 10px;
 }
 
 @media only screen and (max-width: 1000px) {

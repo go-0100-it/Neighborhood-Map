@@ -2,21 +2,19 @@
     height: 1px;
 }
 
-.tab-list {
-    list-style: none;
-    padding: 0;
+.eventful-badge,
+.eventful-badge * {
+    margin: 0 auto !important;
+    padding: 0 !important;
+    border: 0 !important;
+    text-align: center !important;
+    color: #ccc !important;
+    font-family: Arial !important;
+    text-decoration: none !important;
 }
 
-.tab-list-container {
-    padding: 0 20px;
-}
-
-.tab-list-item {
-    display: block;
-    margin: 10px 0;
-    background-color: rgba(140, 140, 140, 0.96);
-}
-
-.tab-list-item-container {
-    padding: 20px 15px 1px 15px;
+.eventful-medium {
+    width: 100px !important;
+    font-size: 12px !important;
+    line-height: 13px !important;
 }
