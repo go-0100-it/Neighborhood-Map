@@ -31,7 +31,6 @@ define([
 
 
 
-
             /**
              * 
              */
@@ -253,6 +252,41 @@ define([
                 _this.markers[index].setMap(null);
                 _this.infoWindows.splice(index, 1);
                 _this.markers.splice(index, 1);
+            };
+
+
+
+
+            /**
+             * 
+             * @param {number} index - 
+             */
+            this.hideAllMarkers = function() {
+                $.each(_this.markers, function(index, marker){
+                    marker.setMap(null);
+                });
+                
+            };
+
+
+
+
+            this.showMarker = function(index){
+                var marker = _this.markers[index];
+                marker.setMap(_this.map);
+            };
+
+
+
+
+            /**
+             * 
+             * @param {number} index - 
+             */
+            this.showAllMarkers = function() {
+                $.each(_this.markers, function(index, marker){
+                    marker.setMap(_this.map);
+                })
             };
 
 

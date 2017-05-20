@@ -324,10 +324,10 @@ define([
                 // Setting the callback for the onreadystatechange Event handler which is called when the readystate changes.
                 getRequest.onreadystatechange = function() {
 
-                    if (this.readyState == DONE && this.status == OK) {
+                    if (getRequest.readyState == DONE && getRequest.status == OK) {
 
                         // Parsing the response and setting to a variable for readability.
-                        var currentWeather = JSON.parse(this.response);
+                        var currentWeather = JSON.parse(getRequest.response);
 
                         // Creating a unique label for caching the result
                         var stamp = args.viewVariable + args.place.id;
@@ -340,10 +340,10 @@ define([
                         _this.callbackSync(currentWeather, callId, args, func);
 
                         // If the response from server is an error, log the error
-                    } else if (this.status >= ERROR) {
-                        console.error(this.responseText);
-                        console.error('Server response code: ' + this.status);
-                        alert('Server response code: ' + this.status);
+                    } else if (getRequest.status >= ERROR) {
+                        console.error(getRequest.responseText);
+                        console.error('Server response code: ' + getRequest.status);
+                        alert('Server response code: ' + getRequest.status);
                     }
                 };
 

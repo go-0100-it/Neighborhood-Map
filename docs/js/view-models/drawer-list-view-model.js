@@ -27,7 +27,8 @@ define([
             this.searchResults = ko.observableArray([]);
             this.selectedPlace = ko.observable({});
             this.selectedFormattedAddress = ko.observable('');
-            this.query = ko.observable('');
+            this.searchInput = ko.observable('');
+            this.filterInput = ko.observable('');
             this.addressSearchVisible = ko.observable(false);
             this.filterVisible = ko.observable(false);
             this.searchInputVisible = ko.observable(true);
@@ -35,6 +36,28 @@ define([
             this.addButtonVisible = ko.observable(false);
             this.nameRequestVisible = ko.observable(false);
             this.places = ko.observableArray(places);
+
+            this.filteredPlaces = ko.computed(function() {
+                if (_this.filterInput().length > 0) {
+                    _this.map.hideAllMarkers();
+                    var placesArray = _this.places();			
+                    return ko.utils.arrayFilter(placesArray, function(place) {
+                        if (place.name.toLowerCase().indexOf(_this.filterInput().toLowerCase()) > -1) {
+                            var index = _this.places().indexOf(place);
+                            _this.map.showMarker(index);
+                            return place;
+                        }else{
+                            return false;
+                        }
+                    });
+                }else{
+                    if(_this.map){
+                        _this.map.showAllMarkers();
+                    }
+                    return _this.places();
+                }
+            }).extend({ throttle: 500 });
+
             this.expanded = ko.observable(false);
             this.expandedClass = ko.observable('');
 
@@ -76,8 +99,8 @@ define([
 
 
             /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
+             * 
+             * @param {string} value - 
              */
             this.searchAddress = function(value) {
                 _this.map.searchAddress(value, _this.searchResults);
@@ -97,7 +120,7 @@ define([
                     _this.toggleAddressSearch();
                     _this.resetSearchView();
                     _this.name('');
-                    _this.query('');
+                    _this.searchInput('');
                 } else {
                     _this.nameRequestVisible(true);
                 }
@@ -118,6 +141,13 @@ define([
              * 
              */
             this.removePlace = function() {
+                var targetIndex = _this.places.indexOf(this);
+                if(_this.map.hiddenMarkers){
+                    var markerIndex = _this.map.hiddenMarkers.indexOf(targetIndex);
+                    if(markerIndex > -1){
+                        _this.map.hiddenMarkers.splice(markerIndex, 1);
+                    }
+                }
                 _this.map.removeMarker(_this.places.indexOf(this));
                 _this.places.remove(this);
                 _this.removePlaceData(this);
@@ -128,6 +158,7 @@ define([
              * 
              */
             this.toggleAddressSearch = function() {
+                _this.filterInput('');
                 _this.filterVisible(false);
                 _this.addressSearchVisible(!_this.addressSearchVisible());
             };
@@ -145,6 +176,7 @@ define([
              */
             this.toggleFilter = function() {
                 _this.addressSearchVisible(false);
+                _this.filterInput('');
                 _this.filterVisible(!_this.filterVisible());
             };
 
@@ -166,7 +198,7 @@ define([
 
 
             /**
-             * @param {function} place - The title of the book.
+             * @param {object} place - 
              * 
              */
             this.centerLocation = function(place) {
@@ -193,7 +225,7 @@ define([
             /**
              * 
              */
-            this.query.subscribe(this.searchAddress);
+            this.searchInput.subscribe(this.searchAddress);
 
             /** */
             return this;
