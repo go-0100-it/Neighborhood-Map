@@ -116,7 +116,8 @@ define([
 
 
             /**
-             * A function to query the Zoopla API for a list of restaurants local to the selected place.  The place data is passed in the args object.
+             * A function to query the evenful API.  Stores the returned data in the application cache and calls the callback function to render the view.
+             * This is not a typical HTTP request but contains the method supplied by evenful to interact with their API.
              * @param {object} args - is an object to define the view and view model to be created, it will be passed to the callback function(func)
              * when calling it.
              * @param {function} func - the callback function to be passed to the callbackSync function after the request has been processed.  This 
@@ -130,114 +131,39 @@ define([
                 // Capturing the current dataRequestCount value as this requests id.
                 var callId = _this.dataRequestCount;
 
-                // Creating a new Http get request.
-                var getRequest = new XMLHttpRequest();
+                // Formatting the geo-coords for the API request's where value.
+                var where = args.place.lat + ',' + args.place.lng;
 
-                // Setting the callback for the onreadystatechange Event handler which is called when the readystate changes.
-                getRequest.onreadystatechange = function() {
-
-                    var events;
-
-                    if (this.readyState == DONE && this.status == OK) {
-
-                        // Parsing the response and setting to a variable for readability.
-                        var jsonResponse = JSON.parse(this.response);
-
-                        // Parsing the response and setting to a variable for readability if the array returned has values.  If the array is empty creating a default message
-                        // to display inform the user no results were found.
-                        console.log(jsonResponse);
-                        events = oData.events.event.length !== 0 ? oData : { events: { event: [{ name: 'No events found for this location' }] } };
-
-                        // Creating a unique label for caching the result
-                        var stamp = args.viewVariable + args.place.id;
-
-                        // Caching the result to reduce the number of Http requests.
-                        Cache.storeResult(stamp, 3600000, events);
-
-                        // If the response from server is an error, log the error
-                    } else if (this.status >= ERROR) {
-                        console.error(this.responseText);
-                        console.error('Server response code: ' + this.status);
-                        events = { events: { event: [{ name: ERR_MSG + ' PROCESS EVENT: ' + e.type }] } };
-                    }
-
-                    // Calling the callbackSync function to check if this is the most recent request made by the user.
-                    // Passing the data and the function to call if this is the most recent request.
-                    _this.callbackSync(events, callId, args, func);
+                // Creating an obj literal to pass as the API's request parameters.
+                var oArgs = {
+                    app_key: _this.eventsApiKey,
+                    q: "events",
+                    where: where,
+                    within: 10,
+                    "date": _this.getFormattedDate() + '-' + _this.getFormattedDate(1),
+                    page_size: 40,
+                    sort_order: "date",
+                    sort_direction: 'ascending'
                 };
 
+                /**
+                 * Making the data request call via the EVDB.API.call function(contained in Eventful's api.js file) and 
+                 * passing the arguments to filter the search and the callback function to run when the result is ready.
+                 */
+                EVDB.API.call("/events/search", oArgs, function(oData) {
+                    var stamp = args.viewVariable + args.place.id;
 
-                getRequest.timeout = 5000;
-                getRequest.onerror = function(e) {
-                    console.dir(e);
-                    var events = { events: { event: [{ name: ERR_MSG + ' PROCESS EVENT: ' + e.type }] } };
-                    _this.callbackSync(events, callId, args, func);
-                };
-                getRequest.ontimeout = function() {
-                    var events = { events: { event: [{ name: TIMEOUT_MSG }] } };
-                    _this.callbackSync(events, callId, args, func);
-                };
+                    // If there was an event array returned containing events for the API request then assign to the events variable.
+                    // If the event array returned was empty then assign a default object to the events variable to inform the user.
+                    var events = oData.events.event.length !== 0 ? oData : { events: { event: [{ name: 'No events found for this location' }] } };
 
-                // Opening and sending the request, adding the required user-key in the request header. The user key is supplied by Zomato.com.
-                getRequest.open('GET', 'https://api.eventful.com/json/events/search?app_key=' + _this.eventsApiKey + '&q=events&where=' + args.place.lat + '%2C' + args.place.lng + '&within=10&date=' + _this.getFormattedDate() + '-' + _this.getFormattedDate(1) + '&page_size=40&sort_order=date&sort_direction=ascending&json_request_id=2&radius=5000', true);
-                getRequest.setRequestHeader('Accept', 'application/json');
-                getRequest.send();
+                    // Caching the result to reduce the number of Http requests.
+                    Cache.storeResult(stamp, 3600000, events);
+
+                    // Calling callbackSync function to check if this is the most recent request made by the user.
+                    _this.callbackSync(events, callId, args, func);
+                });
             };
-
-
-
-
-            /**
-             * A function to query the evenful API.  Stores the returned data in the application cache and calls the callback function to render the view.
-             * This is not a typical HTTP request but contains the method supplied by evenful to interact with their API.
-             * @param {object} args - is an object to define the view and view model to be created, it will be passed to the callback function(func)
-             * when calling it.
-             * @param {function} func - the callback function to be passed to the callbackSync function after the request has been processed.  This 
-             * function will create the view and view model necessary to display the data, returned by the HTTP request, to the user.
-             */
-            // this.getEventsList = function(args, func) {
-
-            //     // Incrementing the dataRequestCount variable by 1 every time a request is made(this code is run).
-            //     _this.dataRequestCount += 1;
-
-            //     // Capturing the current dataRequestCount value as this requests id.
-            //     var callId = _this.dataRequestCount;
-
-            //     // Formatting the geo-coords for the API request's where value.
-            //     var where = args.place.lat + ',' + args.place.lng;
-
-            //     // Creating an obj literal to pass as the API's request parameters.
-            //     var oArgs = {
-            //         app_key: ,
-            //         q: "events",
-            //         where: where,
-            //         within: 10,
-            //         "date": ,
-            //         page_size: 40,
-            //         sort_order: "date",
-            //         sort_direction: 'ascending'
-            //     };
-
-            //     '';
-
-            //     /**
-            //      * Making the data request call via the EVDB.API.call function(contained in Eventful's api.js file) and 
-            //      * passing the arguments to filter the search and the callback function to run when the result is ready.
-            //      */
-            //     EVDB.API.call("/events/search", oArgs, function(oData) {
-            //         var stamp = args.viewVariable + args.place.id;
-
-            //         // If there was an event array returned containing events for the API request then assign to the events variable.
-            //         // If the event array returned was empty then assign a default object to the events variable to inform the user.
-            //         var events = oData.events.event.length !== 0 ? oData : { events: { event: [{ name: 'No events found for this location' }] } };
-
-            //         // Caching the result to reduce the number of Http requests.
-            //         Cache.storeResult(stamp, 3600000, events);
-
-            //         // Calling callbackSync function to check if this is the most recent request made by the user.
-            //         _this.callbackSync(events, callId, args, func);
-            //     });
-            // };
 
 
 
@@ -366,7 +292,7 @@ define([
                     } else if (this.status >= ERROR) {
                         console.error(this.responseText);
                         console.error('Server response code: ' + this.status);
-                        restaurants = [{ name: this.responseText + ' ERROR: ' + this.status, cuisine: '', location: { address: '' } }];
+                        restaurants = [{ name: ERR_MSG + ' ERROR: ' + e.message, cuisine: '', location: { address: '' } }];
                     }
 
                     // Calling the callbackSync function to check if this is the most recent request made by the user.
@@ -442,11 +368,11 @@ define([
                 // Opening and sending the request. The user key is supplied by Worldweatheronline.com.
                 getRequest.timeout = 5000;
                 getRequest.onerror = function(e) {
-                    var currentWeather = [{ name: ERR_MSG + ' ERROR: ' + e, location: '' }];
+                    var currentWeather = [{ name: ERR_MSG + ' ERROR: ' + e, cuisine: '', location: { address: '' } }];
                     _this.callbackSync(currentWeather, callId, args, func);
                 };
                 getRequest.ontimeout = function(e) {
-                    var currentWeather = [{ name: TIMEOUT_MSG, location: '' }];
+                    var currentWeather = [{ name: TIMEOUT_MSG, cuisine: '', location: { address: '' } }];
                     _this.callbackSync(currentWeather, callId, args, func);
                 };
                 getRequest.open('GET', 'https://api.worldweatheronline.com/premium/v1/weather.ashx?key=' + _this.weatherApiKey + '&q=' + args.place.lat + ',' + args.place.lng + '&format=json&num_of_days=1', true);
