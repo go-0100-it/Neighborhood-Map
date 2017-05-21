@@ -146,26 +146,33 @@ define([
                     sort_direction: 'ascending'
                 };
 
+                _this.eventsTimeOut = window.setInterval(function() {
+                    window.clearInterval(_this.eventsTimeOut);
+                    alert('Timeout has occured!');
+                    var data = { events: { event: [{ title: ERR_MSG, image: null, start_time: '', venue_url: '', venue_address: '' }] } };
+                    _this.callbackSync(data, callId, args, func);
+                }, 15000);
+
                 /**
                  * Making the data request call via the EVDB.API.call function(contained in Eventful's api.js file) and 
                  * passing the arguments to filter the search and the callback function to run when the result is ready.
                  */
                 EVDB.API.call("/events/search", oArgs, function(oData) {
-                    var stamp = args.viewVariable + args.place.id;
 
+                    window.clearInterval(_this.eventsTimeOut);
+
+                    var stamp = args.viewVariable + args.place.id;
                     // If there was an event array returned containing events for the API request then assign to the events variable.
                     // If the event array returned was empty then assign a default object to the events variable to inform the user.
-                    var events = oData.events.event.length !== 0 ? oData : { events: { event: [{ name: 'No events found for this location' }] } };
+                    var data = oData.events.event.length !== 0 ? oData : { events: { event: [{ title: 'No events found for this location', image: null, start_time: '', venue_url: '', venue_address: '' }] } };
 
                     // Caching the result to reduce the number of Http requests.
-                    Cache.storeResult(stamp, 3600000, events);
+                    Cache.storeResult(stamp, 3600000, data);
 
                     // Calling callbackSync function to check if this is the most recent request made by the user.
-                    _this.callbackSync(events, callId, args, func);
+                    _this.callbackSync(data, callId, args, func);
                 });
             };
-
-
 
 
             /**
@@ -279,7 +286,6 @@ define([
 
                         // Parsing the response and setting to a variable for readability if the array returned has values.  If the array is empty creating a default message
                         // to display inform the user no results were found.
-                        console.log(jsonResponse.restaurants);
                         restaurants = jsonResponse.restaurants.length !== 0 ? jsonResponse.restaurants : [{ name: 'No restaurants found for this location', cuisine: '', location: { address: '' } }];
 
                         // Creating a unique label for caching the result
@@ -303,7 +309,6 @@ define([
 
                 getRequest.timeout = 5000;
                 getRequest.onerror = function(e) {
-                    console.dir(e);
                     var restaurants = [{ name: ERR_MSG + ' PROCESS EVENT: ' + e.type, cuisine: '', location: { address: '' } }];
                     _this.callbackSync(restaurants, callId, args, func);
                 };
@@ -345,6 +350,7 @@ define([
 
                     if (getRequest.readyState == DONE && getRequest.status == OK) {
 
+                        console.log(getRequest.response);
                         // Parsing the response and setting to a variable for readability.
                         var currentWeather = JSON.parse(getRequest.response);
 

@@ -17,7 +17,9 @@ requirejs.config({
         knockout: 'libs/knockout.min',
         app: 'app',
         util: 'util',
-        events_API: 'https://api.eventful.com/js/api',
+        events_API: ['libs/eventful-api-interface',
+            'https://api.eventful.com/js/api'
+        ],
 
         /*Firebase*/
         firebase_app: 'https://www.gstatic.com/firebasejs/3.9.0/firebase-app',

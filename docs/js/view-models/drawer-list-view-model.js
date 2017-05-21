@@ -40,18 +40,18 @@ define([
             this.filteredPlaces = ko.computed(function() {
                 if (_this.filterInput().length > 0) {
                     _this.map.hideAllMarkers();
-                    var placesArray = _this.places();			
+                    var placesArray = _this.places();
                     return ko.utils.arrayFilter(placesArray, function(place) {
                         if (place.name.toLowerCase().indexOf(_this.filterInput().toLowerCase()) > -1) {
                             var index = _this.places().indexOf(place);
                             _this.map.showMarker(index);
                             return place;
-                        }else{
+                        } else {
                             return false;
                         }
                     });
-                }else{
-                    if(_this.map){
+                } else {
+                    if (_this.map) {
                         _this.map.showAllMarkers();
                     }
                     return _this.places();
@@ -76,7 +76,6 @@ define([
             this.onClick = function(place) {
 
                 if ($('#map').is(":hidden")) {
-                    console.log('Map is hidden');
                     Backbone.history.navigate('#places/' + place.id + '/' + place.name + '/' + place.address + '/' + place.lat + '/' + place.lng, { trigger: true });
                     _this.centerLocation(place);
                 } else {
@@ -131,7 +130,6 @@ define([
              * @param {function} func - The title of the book.
              */
             this.pushPlace = function(place) {
-                console.log(place);
                 _this.map.addMarker(place);
                 _this.places.push(place);
             };
@@ -142,9 +140,9 @@ define([
              */
             this.removePlace = function() {
                 var targetIndex = _this.places.indexOf(this);
-                if(_this.map.hiddenMarkers){
+                if (_this.map.hiddenMarkers) {
                     var markerIndex = _this.map.hiddenMarkers.indexOf(targetIndex);
-                    if(markerIndex > -1){
+                    if (markerIndex > -1) {
                         _this.map.hiddenMarkers.splice(markerIndex, 1);
                     }
                 }

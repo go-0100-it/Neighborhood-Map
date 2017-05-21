@@ -80,7 +80,6 @@ define([
              * @param {object} map - 
              */
             this.openInfoWindow = function(infoWindow, marker, map) {
-                console.log('Opening info Window and starting bounce');
                 _this.openMarker = marker;
                 _this.openWindow = infoWindow;
                 infoWindow.open(map, marker);
@@ -95,7 +94,6 @@ define([
              * @param {object} map - 
              */
             this.closeInfoWindow = function(map) {
-                console.log('Closing info Window and stopping bounce');
                 _this.openWindow.close(map, _this.openMarker);
                 _this.openMarker.setAnimation(null);
                 _this.openMarker = null;
@@ -262,16 +260,16 @@ define([
              * @param {number} index - 
              */
             this.hideAllMarkers = function() {
-                $.each(_this.markers, function(index, marker){
+                $.each(_this.markers, function(index, marker) {
                     marker.setMap(null);
                 });
-                
+
             };
 
 
 
 
-            this.showMarker = function(index){
+            this.showMarker = function(index) {
                 var marker = _this.markers[index];
                 marker.setMap(_this.map);
             };
@@ -284,7 +282,7 @@ define([
              * @param {number} index - 
              */
             this.showAllMarkers = function() {
-                $.each(_this.markers, function(index, marker){
+                $.each(_this.markers, function(index, marker) {
                     marker.setMap(_this.map);
                 })
             };
