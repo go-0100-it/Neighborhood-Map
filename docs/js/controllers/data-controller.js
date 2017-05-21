@@ -179,7 +179,7 @@ define([
                 };
 
                 // Opening and sending the request, adding the required user-key in the request header. The user key is supplied by Zomato.com.
-                getRequest.open('GET', 'http://api.eventful.com/json/events/search?app_key=' + _this.eventsApiKey + '&q=events&where=' + args.place.lat + '%2C' + args.place.lng + '&within=10&date=' + _this.getFormattedDate() + '-' + _this.getFormattedDate(1) + '&page_size=40&sort_order=date&sort_direction=ascending&json_request_id=2&radius=5000', true);
+                getRequest.open('GET', 'https://api.eventful.com/json/events/search?app_key=' + _this.eventsApiKey + '&q=events&where=' + args.place.lat + '%2C' + args.place.lng + '&within=10&date=' + _this.getFormattedDate() + '-' + _this.getFormattedDate(1) + '&page_size=40&sort_order=date&sort_direction=ascending&json_request_id=2&radius=5000', true);
                 getRequest.setRequestHeader('Accept', 'application/json');
                 getRequest.send();
             };
