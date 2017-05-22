@@ -8,7 +8,7 @@ define([
         'knockout'
     ],
     function($, Backbone, _, ko) {
-        var EventsListViewModel = function(place, data) {
+        var EventsListViewModel = function(place, data, isError) {
             var _this = this;
             this.id = ko.observable(place.id);
             this.name = ko.observable(place.name);
@@ -16,6 +16,7 @@ define([
             this.lat = ko.observable(place.lat);
             this.lng = ko.observable(place.lng);
             this.data = ko.observableArray(data.events.event);
+            this.isErr = ko.observable(isError);
             return this;
         };
         return EventsListViewModel;

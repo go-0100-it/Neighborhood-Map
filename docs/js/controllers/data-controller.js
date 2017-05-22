@@ -63,11 +63,11 @@ define([
              * @param {array} args - The array of args being passed to the callback function.
              * @param {function} func - The callback function.
              */
-            this.callbackSync = function(data, callbackId, args, func) {
+            this.callbackSync = function(data, callbackId, args, func, isError) {
 
                 // Checking if the callbackId matches the current data request count, if it does then it's the most recent, then call the function passed in (The render tabs view function)
                 if (callbackId === _this.dataRequestCount) {
-                    func(data, args);
+                    func(data, args, isError);
                 }
             };
 
@@ -78,8 +78,8 @@ define([
              * @param {object} args - is an object to define the view and view model to be created, it will be passed to the second callback function(func2)
              * when calling it.
              * @param {function} func1 - the callback function to be called if no data with the same stamp(requestId) exists in the cache.
-             * @param {function} func2 - the callback function to be passed to either the callbackSync function if data exists or the first callback 
-             * function(func1) if no data exists. This function will create the view and view model necessary to display the data to the user.
+             * @param {function} func2 - the callback function to be passed to either the callbackSync function, if data exists, or the first callback 
+             * function(func1), if no data exists. This function(func2) will create the view and view model necessary to display the data to the user.
              */
             this.queryCache = function(args, func1, func2) {
 
@@ -103,7 +103,7 @@ define([
                     var data = Cache.getCachedData(stamp);
 
                     // Calling callbackSync function to check if this is the most recent request made by the user.
-                    _this.callbackSync(data, callId, args, func2);
+                    _this.callbackSync(data, callId, args, func2, false);
 
                     // as there is no data stored, call the callback function(func1) which will initiate the HTTP request to fetch the data.  Passing in the 
                     // second callback function and args to create the required view to display the requested data.
@@ -124,6 +124,12 @@ define([
              * function will create the view and view model necessary to display the data, returned by the HTTP request, to the user.
              */
             this.getEventsDataList = function(args, func) {
+
+                _this.eventsTimeOut = window.setInterval(function() {
+                    window.clearInterval(_this.eventsTimeOut);
+                    var err = { msg: TIMEOUT_MSG, type: 'ERROR: Timeout' };
+                    _this.processError(err, { events: { event: [{ title: err.msg, image: null, start_time: '', venue_url: '', venue_address: '' }] } }, callId, args, func);
+                }, 20000);
 
                 // Incrementing the dataRequestCount variable by 1 every time a request is made(this code is run).
                 _this.dataRequestCount += 1;
@@ -146,13 +152,6 @@ define([
                     sort_direction: 'ascending'
                 };
 
-                _this.eventsTimeOut = window.setInterval(function() {
-                    window.clearInterval(_this.eventsTimeOut);
-                    alert('Timeout has occured!');
-                    var data = { events: { event: [{ title: ERR_MSG, image: null, start_time: '', venue_url: '', venue_address: '' }] } };
-                    _this.callbackSync(data, callId, args, func);
-                }, 15000);
-
                 /**
                  * Making the data request call via the EVDB.API.call function(contained in Eventful's api.js file) and 
                  * passing the arguments to filter the search and the callback function to run when the result is ready.
@@ -170,7 +169,7 @@ define([
                     Cache.storeResult(stamp, 3600000, data);
 
                     // Calling callbackSync function to check if this is the most recent request made by the user.
-                    _this.callbackSync(data, callId, args, func);
+                    _this.callbackSync(data, callId, args, func, false);
                 });
             };
 
@@ -294,27 +293,26 @@ define([
                         // Caching the result to reduce the number of Http requests.
                         Cache.storeResult(stamp, 3600000, restaurants);
 
+                        // Calling the callbackSync function to check if this is the most recent request made by the user.
+                        // Passing the data and the function to call if this is the most recent request.
+                        _this.callbackSync(restaurants, callId, args, func, false);
+
                         // If the response from server is an error, log the error
                     } else if (this.status >= ERROR) {
-                        console.error(this.responseText);
-                        console.error('Server response code: ' + this.status);
-                        restaurants = [{ name: ERR_MSG + ' ERROR: ' + e.message, cuisine: '', location: { address: '' } }];
+                        var err = { msg: getRequest.responseText, type: 'ERROR: ' + getRequest.status };
+                        _this.processError(err, [{ name: ERR_MSG + ' ' + err.type, cuisine: '', location: { address: '' } }], callId, args, func);
                     }
-
-                    // Calling the callbackSync function to check if this is the most recent request made by the user.
-                    // Passing the data and the function to call if this is the most recent request.
-                    _this.callbackSync(restaurants, callId, args, func);
                 };
 
 
                 getRequest.timeout = 5000;
                 getRequest.onerror = function(e) {
-                    var restaurants = [{ name: ERR_MSG + ' PROCESS EVENT: ' + e.type, cuisine: '', location: { address: '' } }];
-                    _this.callbackSync(restaurants, callId, args, func);
+                    var err = { msg: ERR_MSG, type: 'PROCESS EVENT: ' + e.type };
+                    _this.processError(err, [{ name: err.msg + ' ' + err.type, cuisine: '', location: { address: '' } }], callId, args, func);
                 };
                 getRequest.ontimeout = function() {
-                    var restaurants = [{ name: TIMEOUT_MSG, cuisine: '', location: { address: '' } }];
-                    _this.callbackSync(restaurants, callId, args, func);
+                    var err = { msg: TIMEOUT_MSG, type: 'ERROR: Timeout' };
+                    _this.processError([{ name: err.msg, cuisine: '', location: { address: '' } }], callId, args, func);
                 };
 
                 // Opening and sending the request, adding the required user-key in the request header. The user key is supplied by Zomato.com.
@@ -348,11 +346,12 @@ define([
                 // Setting the callback for the onreadystatechange Event handler which is called when the readystate changes.
                 getRequest.onreadystatechange = function() {
 
+                    var currentWeather;
+
                     if (getRequest.readyState == DONE && getRequest.status == OK) {
 
-                        console.log(getRequest.response);
                         // Parsing the response and setting to a variable for readability.
-                        var currentWeather = JSON.parse(getRequest.response);
+                        currentWeather = getRequest.response !== '' ? JSON.parse(getRequest.response) : [{ name: 'No weather data found for this location', location: { address: '' } }];
 
                         // Creating a unique label for caching the result
                         var stamp = args.viewVariable + args.place.id;
@@ -362,30 +361,34 @@ define([
 
                         // Calling the callbackSync function to check if this is the most recent request made by the user.
                         // Passing the data and the function to call if this is the most recent request.
-                        _this.callbackSync(currentWeather, callId, args, func);
+                        _this.callbackSync(currentWeather, callId, args, func, false);
 
                         // If the response from server is an error, log the error
                     } else if (getRequest.status >= ERROR) {
-                        console.error(getRequest.responseText);
-                        console.error('Server response code: ' + getRequest.status);
-                        alert('Worldweatheronline data request error: ' + ERR_MSG + '/n/nServer response code: ' + getRequest.status + '/n/n' + getRequest.responseText);
+                        var err = { msg: getRequest.responseText, type: 'ERROR: ' + getRequest.status };
+                        _this.processError(err, [{ name: ERR_MSG + ' ' + err.type, cuisine: '', location: { address: '' } }], callId, args, func);
                     }
                 };
                 // Opening and sending the request. The user key is supplied by Worldweatheronline.com.
                 getRequest.timeout = 5000;
                 getRequest.onerror = function(e) {
-                    var currentWeather = [{ name: ERR_MSG + ' ERROR: ' + e, cuisine: '', location: { address: '' } }];
-                    _this.callbackSync(currentWeather, callId, args, func);
+                    var err = { msg: ERR_MSG, type: 'PROCESS EVENT: ' + e.type };
+                    _this.processError(err, [{ name: err.msg + ' ' + err.type, cuisine: '', location: { address: '' } }], callId, args, func);
                 };
-                getRequest.ontimeout = function(e) {
-                    var currentWeather = [{ name: TIMEOUT_MSG, cuisine: '', location: { address: '' } }];
-                    _this.callbackSync(currentWeather, callId, args, func);
+                getRequest.ontimeout = function() {
+                    var err = { msg: TIMEOUT_MSG, type: 'ERROR: Timeout' };
+                    _this.processError(err, [{ name: err.msg, cuisine: '', location: { address: '' } }], callId, args, func);
                 };
                 getRequest.open('GET', 'https://api.worldweatheronline.com/premium/v1/weather.ashx?key=' + _this.weatherApiKey + '&q=' + args.place.lat + ',' + args.place.lng + '&format=json&num_of_days=1', true);
                 getRequest.send();
+
             };
 
-
+            this.processError = function(err, errMsg, callId, args, func) {
+                console.error(err.msg);
+                console.error(err.type);
+                _this.callbackSync(errMsg, callId, args, func, true);
+            };
 
 
             /**

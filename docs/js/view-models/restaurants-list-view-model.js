@@ -8,7 +8,7 @@ define([
         'knockout'
     ],
     function($, Backbone, _, ko) {
-        var RestaurantsListViewModel = function(place, data) {
+        var RestaurantsListViewModel = function(place, data, isError) {
             var _this = this;
             this.id = ko.observable(place.id);
             this.name = ko.observable(place.name);
@@ -18,6 +18,7 @@ define([
             this.data = ko.observableArray(data);
             this.getInfo = function() {};
             this.addToMap = function() {};
+            this.isErr = ko.observable(isError);
             return this;
         };
         return RestaurantsListViewModel;

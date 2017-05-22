@@ -248,7 +248,7 @@ define([
              * @param {object} data - 
              * @param {object} vcd - 
              */
-            this.renderView = function(data, vcd) {
+            this.renderView = function(data, vcd, isError) {
 
                 //
                 _this[vcd.viewVariable] = new vcd.viewConstructor().render();
@@ -261,7 +261,7 @@ define([
                         lat: vcd.place.lat,
                         lng: vcd.place.lng
                     },
-                    data);
+                    data, isError);
 
                 // Checking if the element has bindings applied. If no bindings have previously been applied to this element then apply bindings. 
                 if (!!!ko.dataFor($(vcd.el)[0])) {
