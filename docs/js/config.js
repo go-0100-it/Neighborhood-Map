@@ -34,6 +34,7 @@ requirejs.config({
         cache: 'controllers/cache',
 
         /*ViewsModels*/
+        map_view_model: 'view-models/map-view-model',
         drawer_list_view_model: 'view-models/drawer-list-view-model',
         tabs_view_model: 'view-models/tabs-view-model',
         events_list_view_model: 'view-models/events-list-view-model',

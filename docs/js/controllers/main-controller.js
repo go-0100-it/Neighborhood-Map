@@ -49,7 +49,7 @@ define([
          */
         var Main = function() {
             var _this = this;
-            this.map = {};
+            this.map = new Map();
 
             /** */
             this.dataController = new DataController();
@@ -62,6 +62,7 @@ define([
              */
             this.renderDrawerListView = function(place) {
 
+
                 //
                 require(['drawer_list_view_model', 'drawer_list_view'], function(DrawerListViewModel, DrawerListView) {
 
@@ -70,6 +71,18 @@ define([
 
                     //
                     if (!_this.drawerListView) {
+
+                        console.log('Should be calling render Tabs');
+
+                        _this.renderTabsView(place ? place : {id: '', name: '', address: '', lat: '', lng: ''});
+                        //
+                        _this.drawerListView = new DrawerListView().render();
+
+                        //
+                        _this.drawerViewModel = new DrawerListViewModel();
+
+                        //
+                        _this.renderMap();
 
                         //
                         if (navigator.geolocation) {
@@ -82,15 +95,6 @@ define([
                             });
                         }
 
-                        //
-                        _this.drawerListView = new DrawerListView().render();
-
-                        //
-                        _this.placesViewModel = new DrawerListViewModel();
-
-                        //
-                        _this.renderMap();
-
                         var locationRequest = {};
 
                         //
@@ -100,7 +104,7 @@ define([
                         }
 
                         //
-                        FBHelper.initAuth(_this.dataController.getUserPlaces, _this.placesViewModel.pushPlace, locationRequest);
+                        FBHelper.initAuth(_this.dataController.getUserPlaces, _this.drawerViewModel.pushPlace, locationRequest);
 
 
 
@@ -109,7 +113,7 @@ define([
                          * 
                          * @param {object} place - 
                          */
-                        _this.placesViewModel.updatePlacesData = function(place) {
+                        _this.drawerViewModel.updatePlacesData = function(place) {
 
                             //
                             _this.dataController.updateUserPlaces(place, FBHelper.uid);
@@ -122,14 +126,14 @@ define([
                          * 
                          * @param {object} place - 
                          */
-                        _this.placesViewModel.removePlaceData = function(place) {
+                        _this.drawerViewModel.removePlaceData = function(place) {
 
                             //
                             _this.dataController.removeUserPlace(place, FBHelper.uid);
                         };
 
                         //
-                        ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
+                        ko.applyBindings(_this.drawerViewModel, $('#drawer-menu-container')[0]);
 
                         //
                     } else {
@@ -146,9 +150,23 @@ define([
              * @param {object} loc - 
              */
             this.renderMap = function(loc) {
-                _this.map = new Map();
                 _this.map.init(loc);
-                _this.placesViewModel.map = _this.map;
+                _this.drawerViewModel.map = _this.map;
+                _this.showMap();
+            };
+
+
+            this.showMap = function(){
+                console.log('Calling Show Map');
+                _this.tabsViewModel.showTabs(false);
+                _this.map.mapViewModel.showMap(true);
+            };
+
+
+            this.showTabsView = function(){
+                console.log('Calling Show Tabs');
+                _this.map.mapViewModel.showMap(false);
+                _this.tabsViewModel.showTabs(true);
             };
 
 
@@ -158,12 +176,8 @@ define([
              * @param {object} place - 
              * @param {object} view - 
              */
-            this.renderTabsView = function(place, view) {
-
-                //
-                _this.renderDrawerListView(place);
-                $('#container-view').show();
-                $('#map-container-view').hide();
+            this.renderTabsView = function(place) {
+                console.log('Yep, calling render Tabs');
 
                 //
                 var viewConfigData = {
@@ -171,25 +185,22 @@ define([
                     viewConstructor: TabsView,
                     viewModelVariable: 'tabsViewModel',
                     viewModelConstructor: TabsViewModel,
-                    el: '#tabs-container',
+                    el: '#container-view',
                     place: place
                 };
 
                 //
-                if (!_this.tabsView) {
+                _this.renderView({ lat: '', lng: '' }, viewConfigData);
+            }
 
-                    //
-                    _this.renderView({ lat: 'Hello', lng: 'World' }, viewConfigData);
+            this.renderTabView = function(place, view){
 
-                    //
-                } else {
+                _this.showTabsView();
+                //
+                _this.tabsViewModel.place(place);
 
-                    //
-                    _this.tabsViewModel.place(place);
-
-                    //
-                    $('#tab-container').html(_.template(tpl.get('tabs-spinner-view')));
-                }
+                //
+                $('#tab-container').html(_.template(tpl.get('tabs-spinner-view')));
 
                 //
                 switch (view) {
@@ -204,6 +215,8 @@ define([
                             el: '#events-view',
                             place: place
                         };
+
+                        console.log(place);
 
                         //
                         _this.dataController.queryCache(viewConfigData, _this.dataController.getEventsDataList, _this.renderView);

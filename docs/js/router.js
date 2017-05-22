@@ -23,30 +23,25 @@ define(['jquery', 'main_controller'],
             'placesOnMap': function() {
                 // Calling function @ Maincontroller to create the drawer list
                 MainController.renderDrawerListView();
-                $('#container-view').hide();
-                $('#map-container-view').show();
+                MainController.showMap();
             },
             'placeOnMap': function(id, name, address, lat, lng) {
                 // Calling function @ Maincontroller to create the drawer list
                 var place = { id: id, name: name, address: address, lat: lat, lng: lng };
                 MainController.renderDrawerListView(place);
-                $('#container-view').hide();
-                $('#map-container-view').show();
+                MainController.showMap();
             },
             'events': function(id, name, address, lat, lng) {
                 var place = { id: id, name: name, address: address, lat: lat, lng: lng };
-                MainController.renderTabsView(place, 'events');
-
+                MainController.renderTabView(place, 'events');
             },
             'weather': function(id, name, address, lat, lng) {
                 var place = { id: id, name: name, address: address, lat: lat, lng: lng };
-                MainController.renderTabsView(place, 'weather');
-
+                MainController.renderTabView(place, 'weather');
             },
             'restaurants': function(id, name, address, lat, lng) {
                 var place = { id: id, name: name, address: address, lat: lat, lng: lng };
-                MainController.renderTabsView(place, 'restaurants');
-
+                MainController.renderTabView(place, 'restaurants');
             },
         });
         return Router;
