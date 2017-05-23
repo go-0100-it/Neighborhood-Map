@@ -8,8 +8,9 @@ define([
         'knockout'
     ],
     function($, Backbone, _, ko) {
-        var RestaurantsListViewModel = function(place, data, isError) {
+        var RestaurantsListViewModel = function(place, data, isError, main) {
             var _this = this;
+            var Main = main;
             this.id = ko.observable(place.id);
             this.name = ko.observable(place.name);
             this.address = ko.observable(place.address);

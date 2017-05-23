@@ -261,7 +261,7 @@ define([
                         lat: vcd.place.lat,
                         lng: vcd.place.lng
                     },
-                    data, isError);
+                    data, isError, _this);
 
                 // Checking if the element has bindings applied. If no bindings have previously been applied to this element then apply bindings. 
                 if (!!!ko.dataFor($(vcd.el)[0])) {
