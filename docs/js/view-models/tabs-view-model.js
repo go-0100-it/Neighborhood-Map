@@ -10,7 +10,6 @@ define([
     function($, Backbone, _, ko) {
         var TabsViewModel = function(place) {
             var _this = this;
-            this.showTabs = ko.observable(true);
             this.tabsList = ['events', 'weather', 'restaurants'];
             this.place = ko.observable(place);
             this.id = ko.observable(this.place().id);

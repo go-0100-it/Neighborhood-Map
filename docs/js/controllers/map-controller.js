@@ -6,16 +6,14 @@ define([
         'backbone',
         'underscore',
         'knockout',
-        'map_view',
-        'map_view_model'
+        'map_view'
     ],
     function(
         $,
         backbone,
         _,
         ko,
-        MapView,
-        MapViewModel
+        MapView
     ) {
 
 
@@ -31,9 +29,7 @@ define([
             this.openWindow = null;
             this.openMarker = null;
 
-            //
-            this.mapViewModel = new MapViewModel();
-            ko.applyBindings(_this.mapViewModel, $('#map-container-view')[0]);
+
 
             /**
              * 
