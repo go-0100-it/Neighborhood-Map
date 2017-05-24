@@ -18,16 +18,17 @@ define([
             this.lng = ko.observable(place.lng);
             this.data = ko.observableArray(data.events.event);
             this.isErr = ko.observable(isError);
-            this.addToMap = function(place){
+            this.addToMap = function(place) {
                 var newPlace = {
                     name: place.venue_name,
-                    lat: place.latitude,
-                    lng: place.longitude,
+                    lat: Number(place.latitude),
+                    lng: Number(place.longitude),
                     address: place.venue_address,
                     id: place.id + place.venue_id
-                }
-                alert('Adding new place ')
+                };
+                alert('Adding new place ');
                 console.dir(newPlace);
+                Main.eventsViewModel.addPlace(newPlace);
             };
             return this;
         };

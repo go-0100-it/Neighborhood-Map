@@ -12,14 +12,19 @@ define([
         var WeatherListViewModel = function(place, data, isError, main) {
             var _this = this;
             var Main = main;
-            this.id = ko.observable(place.id);
-            this.name = ko.observable(place.name);
-            this.address = ko.observable(place.address);
-            this.lat = ko.observable(place.lat);
-            this.lng = ko.observable(place.lng);
-            this.data = ko.observable(data);
+            this.data = data.data;
+            this.currentCond = _this.data.current_condition[0];
+            this.weather = _this.data.weather[0];
+            this.iconSrc = ko.observable(_this.currentCond.weatherIconUrl[0].value);
+            this.weatherDesc = ko.observable(_this.currentCond.weatherDesc[0].value);
+            this.currentTemp = ko.observable(_this.currentCond.temp_C);
+            this.lowTemp = ko.observable(_this.weather.mintempC);
+            this.highTemp = ko.observable(_this.weather.maxtempC);
             this.isErr = ko.observable(isError);
-            console.log(Main.map);
+            this.get5day = function() {
+                alert('Getting 5 day');
+            };
+            console.log(_this.data);
             return this;
         };
         return WeatherListViewModel;

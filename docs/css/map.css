@@ -2,9 +2,33 @@
     height: 1px;
 }
 
+.info-window-container {
+    padding: 5px;
+}
+
+.info-window {
+    margin: 10px 0;
+    padding: 10px 15px;
+    background-color: rgba(140, 140, 140, 0.96);
+}
+
 .map-info-btn {
-    width: 100px;
-    height: 40px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    color: #ddd;
+    border: none;
+    background-color: #000;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+}
+
+.map-info-btn:hover {
+    background-color: #ddd;
+    color: #000;
 }
 
 #map {

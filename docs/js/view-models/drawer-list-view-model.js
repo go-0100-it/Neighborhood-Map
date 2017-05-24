@@ -106,22 +106,30 @@ define([
             };
 
 
-            /**
-             * @param {function} func - The title of the book.
-             * @param {string} id - The author of the book.
-             */
-            this.addPlace = function() {
+            this.clickAdd = function() {
                 if (_this.name()) {
                     _this.nameRequestVisible(false);
-                    var place = { id: _this.selectedPlace().place_id, name: _this.name(), address: _this.selectedPlace().formatted_address, lat: _this.selectedPlace().geometry.location.lat(), lng: _this.selectedPlace().geometry.location.lng() };
-                    _this.pushPlace(place);
-                    _this.updatePlacesData(place);
+                    var newPlace = { id: _this.selectedPlace().place_id, name: _this.name(), address: _this.selectedPlace().formatted_address, lat: _this.selectedPlace().geometry.location.lat(), lng: _this.selectedPlace().geometry.location.lng() };
+                    _this.addPlace(newPlace);
                     _this.toggleAddressSearch();
                     _this.resetSearchView();
                     _this.name('');
                     _this.searchInput('');
                 } else {
                     _this.nameRequestVisible(true);
+                }
+            };
+
+
+            /**
+             * @param {function} func - The title of the book.
+             * @param {string} id - The author of the book.
+             */
+            this.addPlace = function(place) {
+                console.log(place);
+                if (place) {
+                    _this.pushPlace(place);
+                    _this.updatePlacesData(place);
                 }
             };
 

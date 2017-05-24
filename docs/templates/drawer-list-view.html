@@ -19,7 +19,7 @@
                 <input class="filter-by-input" type="text" data-bind="value: filterInput, valueUpdate: 'keyup'" placeholder="Filter names by..." />
             </div>
             <hr/>
-            <button class="drawer-button-bar-button" data-bind="click: resetSearchView, visible: addButtonVisible">CANCEL</button><button class="drawer-button-bar-button" data-bind="click: addPlace, visible: addButtonVisible">ADD</button>
+            <button class="drawer-button-bar-button" data-bind="click: resetSearchView, visible: addButtonVisible">CANCEL</button><button class="drawer-button-bar-button" data-bind="click: clickAdd, visible: addButtonVisible">ADD</button>
         </div>
         <div class="list-container">
             <ul class="drawer-menu-list" data-bind="foreach: { data: filteredPlaces, as: 'place' }">

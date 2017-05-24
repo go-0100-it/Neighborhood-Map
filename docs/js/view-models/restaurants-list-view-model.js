@@ -20,6 +20,18 @@ define([
             this.getInfo = function() {};
             this.addToMap = function() {};
             this.isErr = ko.observable(isError);
+            this.addToMap = function(place) {
+                var newPlace = {
+                    name: place.restaurant.name,
+                    lat: Number(place.restaurant.location.latitude),
+                    lng: Number(place.restaurant.location.longitude),
+                    address: place.restaurant.location.address,
+                    id: place.restaurant.location.zipcode + place.restaurant.id
+                };
+                alert('Adding new place ');
+                console.dir(newPlace);
+                Main.eventsViewModel.addPlace(newPlace);
+            };
             return this;
         };
         return RestaurantsListViewModel;

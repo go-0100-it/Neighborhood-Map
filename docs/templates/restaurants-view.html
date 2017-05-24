@@ -17,8 +17,7 @@
                     <div data-bind="visible: restaurant.name !== 'No restaurants found for this location' && $parent.isErr !== true">
                         <span>Cuisine: </span><span data-bind="text: restaurant.cuisines"></span>
                         <h4 class="restaurant-address" data-bind="text: restaurant.location.address"></h4>
-                        <button class="show-on-map-button" data-bind="click: $parent.addToMap">Locate on Map</button>
-                        <button class="get-info-button" data-bind="click: $parent.getInfo">More Info</button>
+                        <button class="tab-item-button" data-bind="click: $parent.addToMap">Save place</button>
                     </div>
             </li>
         </ul>

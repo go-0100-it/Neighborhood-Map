@@ -86,7 +86,7 @@ define([
                         _this.drawerListView = new DrawerListView().render();
 
                         //
-                        _this.placesViewModel = new DrawerListViewModel();
+                        _this.eventsViewModel = new DrawerListViewModel();
 
                         //
                         _this.renderMap();
@@ -100,7 +100,7 @@ define([
                         }
 
                         //
-                        FBHelper.initAuth(_this.dataController.getUserPlaces, _this.placesViewModel.pushPlace, locationRequest);
+                        FBHelper.initAuth(_this.dataController.getUserPlaces, _this.eventsViewModel.pushPlace, locationRequest);
 
 
 
@@ -109,7 +109,7 @@ define([
                          * 
                          * @param {object} place - 
                          */
-                        _this.placesViewModel.updatePlacesData = function(place) {
+                        _this.eventsViewModel.updatePlacesData = function(place) {
 
                             //
                             _this.dataController.updateUserPlaces(place, FBHelper.uid);
@@ -122,14 +122,14 @@ define([
                          * 
                          * @param {object} place - 
                          */
-                        _this.placesViewModel.removePlaceData = function(place) {
+                        _this.eventsViewModel.removePlaceData = function(place) {
 
                             //
                             _this.dataController.removeUserPlace(place, FBHelper.uid);
                         };
 
                         //
-                        ko.applyBindings(_this.placesViewModel, $('#drawer-menu-container')[0]);
+                        ko.applyBindings(_this.eventsViewModel, $('#drawer-menu-container')[0]);
 
                         //
                     } else {
@@ -148,7 +148,7 @@ define([
             this.renderMap = function(loc) {
                 _this.map = new Map();
                 _this.map.init(loc);
-                _this.placesViewModel.map = _this.map;
+                _this.eventsViewModel.map = _this.map;
             };
 
 

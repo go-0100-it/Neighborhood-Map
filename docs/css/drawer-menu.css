@@ -4,7 +4,7 @@
 
 #drawer-menu-container {
     position: relative;
-    width: 450px;
+    width: 430px;
     height: 100vh;
 }
 
@@ -213,6 +213,9 @@
 }
 
 @media only screen and (max-width: 1300px) {
+    #drawer-menu-container {
+        width: 380px;
+    }
     .drawer-menu {
         width: 400px;
     }
@@ -225,6 +228,9 @@
 }
 
 @media only screen and (max-width: 900px) {
+    #drawer-menu-container {
+        width: 310px;
+    }
     .drawer-menu {
         width: 330px;
     }
@@ -237,6 +243,9 @@
 }
 
 @media only screen and (max-width: 600px) {
+    #drawer-menu-container {
+        width: 288.5px;
+    }
     .drawer-menu {
         width: 290px;
         top: -2px;
