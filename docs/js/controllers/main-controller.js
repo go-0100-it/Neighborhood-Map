@@ -15,6 +15,8 @@ define([
         'weather_view',
         'restaurants_list_view_model',
         'restaurants_view',
+        'others_list_view_model',
+        'others_view',
         'data_controller',
         'map_controller',
         'firebase_helper'
@@ -33,6 +35,8 @@ define([
         WeatherView,
         RestaurantsListViewModel,
         RestaurantsView,
+        OthersListViewModel,
+        OthersView,
         DataController,
         Map,
         FBHelper
@@ -179,7 +183,7 @@ define([
                 if (!_this.tabsView) {
 
                     //
-                    _this.renderView({ lat: 'Hello', lng: 'World' }, viewConfigData);
+                    _this.renderView(place, viewConfigData);
 
                     //
                 } else {
@@ -206,6 +210,7 @@ define([
                         };
 
                         //
+                        _this.tabsViewModel.title('Local Events');
                         _this.dataController.queryCache(viewConfigData, _this.dataController.getEventsDataList, _this.renderView);
                         break;
 
@@ -222,6 +227,7 @@ define([
                         };
 
                         //
+                        _this.tabsViewModel.title('Local Weather');
                         _this.dataController.queryCache(viewConfigData, _this.dataController.getCurrentWeather, _this.renderView);
                         break;
 
@@ -238,7 +244,25 @@ define([
                         };
 
                         //
+                        _this.tabsViewModel.title('Local Restaurants');
                         _this.dataController.queryCache(viewConfigData, _this.dataController.getRestaurantsList, _this.renderView);
+                        break;
+
+                    case 'others':
+
+                        //
+                        viewConfigData = {
+                            viewVariable: 'othersView',
+                            viewConstructor: OthersView,
+                            viewModelVariable: 'othersListViewModel',
+                            viewModelConstructor: OthersListViewModel,
+                            el: '#others-view',
+                            place: place
+                        };
+
+                        //
+                        _this.tabsViewModel.title('Other Places');
+                        _this.dataController.queryCache(viewConfigData, _this.dataController.getOthersList, _this.renderView);
                         break;
                 }
             };

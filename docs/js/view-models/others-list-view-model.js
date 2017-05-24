@@ -8,7 +8,7 @@ define([
         'knockout'
     ],
     function($, Backbone, _, ko) {
-        var RestaurantsListViewModel = function(place, data, isError, main) {
+        var OthersListViewModel = function(place, data, isError, main) {
             var _this = this;
             var Main = main;
             this.id = ko.observable(place.id);
@@ -34,5 +34,5 @@ define([
             };
             return this;
         };
-        return RestaurantsListViewModel;
+        return OthersListViewModel;
     });

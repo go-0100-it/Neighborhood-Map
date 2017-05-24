@@ -1,15 +1,15 @@
 <!-- -->
-<div id="events-view" class="tab-content current">
+<div id="other-view" class="tab-content current">
     <div class="tab-list-container">
         <div class="badge-container">
-            <div class="eventful-badge eventful-medium">
-                <a target="_blank" href="http://eventful.com/">
-                    <img src="http://api.eventful.com/images/powered/eventful_88x31.gif" alt="Local Events, Concerts, Tickets">
-                    <p>Events by Eventful</p>
+            <div class="eventful-badge">
+                <p>data powered by </p>
+                <a target="_blank" href="http://google.com/">
+                    <img src="res/images/google-places-logo.jpg" alt="Google places Logo">
                 </a>
             </div>
         </div>
-        <ul class="tab-list" data-bind="foreach: { data: data, as: 'event' }">
+        <ul class="tab-list" data-bind="foreach: { data: data, as: 'place' }">
             <li class="tab-list-item">
                 <div class="tab-list-item-container">
                     <div class="tab-list-item-img" data-bind="visible: event.title !== 'No events found for this location' && $parent.isErr !== true">

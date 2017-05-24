@@ -18,7 +18,8 @@ define(['jquery', 'main_controller'],
                 'places/:id/:name/:address/:lat/:lng': 'placeOnMap',
                 'events/:id/:name/:address/:lat/:lng': 'events',
                 'weather/:id/:name/:address/:lat/:lng': 'weather',
-                'restaurants/:id/:name/:address/:lat/:lng': 'restaurants'
+                'restaurants/:id/:name/:address/:lat/:lng': 'restaurants',
+                'others/:id/:name/:address/:lat/:lng': 'others'
             },
             'placesOnMap': function() {
                 // Calling function @ Maincontroller to create the drawer list
@@ -36,18 +37,19 @@ define(['jquery', 'main_controller'],
             'events': function(id, name, address, lat, lng) {
                 var place = { id: id, name: name, address: address, lat: lat, lng: lng };
                 MainController.renderTabsView(place, 'events');
-
             },
             'weather': function(id, name, address, lat, lng) {
                 var place = { id: id, name: name, address: address, lat: lat, lng: lng };
                 MainController.renderTabsView(place, 'weather');
-
             },
             'restaurants': function(id, name, address, lat, lng) {
                 var place = { id: id, name: name, address: address, lat: lat, lng: lng };
                 MainController.renderTabsView(place, 'restaurants');
-
             },
+            'others': function(id, name, address, lat, lng) {
+                var place = { id: id, name: name, address: address, lat: lat, lng: lng };
+                MainController.renderTabsView(place, 'others');
+            }
         });
         return Router;
     });

@@ -18,12 +18,13 @@ define([
             this.lng = ko.observable(place.lng);
             this.data = ko.observableArray(data.events.event);
             this.isErr = ko.observable(isError);
-            this.addToMap = function(place) {
+            this.addPlace = function(place) {
+                console.dir(place);
                 var newPlace = {
                     name: place.venue_name,
                     lat: Number(place.latitude),
                     lng: Number(place.longitude),
-                    address: place.venue_address,
+                    address: place.venue_address + ', ' + place.city_name,
                     id: place.id + place.venue_id
                 };
                 alert('Adding new place ');
